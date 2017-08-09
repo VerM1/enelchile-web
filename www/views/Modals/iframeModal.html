@@ -1,0 +1,19 @@
+<ion-modal-view title="{{translation.HELP | uppercase}}" class="help-modal-container">
+    <ion-content scroll="false" padding="false">
+            <div class="row height-full-size width-full-size" >
+                    <embed class="iframe"
+                            ng-src="{{modal.content}}" data-tap-disabled="true"
+                            ng-onload="loadComplete(contentLocation)"
+                            frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" ></embed>
+
+                </div>
+
+        <div class="row button-row">
+            <div class="col center">
+                <button class="button button-block featured-style button-general" ng-click="closeModal()">
+                    <span>{{translation.CLOSE | uppercase}}</span>
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

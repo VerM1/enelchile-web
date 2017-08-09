@@ -1,0 +1,19 @@
+<ion-modal-view title="{{translation.HELP | uppercase}}" class="help-modal-container">
+    <ion-header-bar>
+        <span class="title-page">{{modal.title}}</span>
+        <i class="featured-color icon icon_enel_help input-text-icon-helper"></i>
+    </ion-header-bar>
+    <ion-content scroll="false" padding="false">
+        <div class="row">
+            <div class="col center" ng-bind-html="modal.content">
+            </div>
+        </div>
+        <div class="row button-row">
+            <div class="col center">
+                <button class="button button-block featured-style button-general" ng-click="closeModal()">
+                    <span>{{translation.CLOSE | uppercase}}</span>
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

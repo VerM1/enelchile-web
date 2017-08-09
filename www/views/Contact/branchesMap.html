@@ -1,0 +1,45 @@
+<ion-view class="title-page" title="{{translation.BRANCHES | uppercase}}" enable-menu-with-back-views="false">
+    <ion-content scroll="true" padding="false" id="branchesmap">
+        <form name="branches-map-form" novalidate>
+            <div class="center branches-form-subtype">
+                <div class="element selected-element" ng-click="goToMap()">
+                    <a class="color-white">
+                        <div class="width-full-size">
+                            {{translation.MAP | uppercase}}
+                        </div>
+                    </a>
+                </div>
+                <div class="element" ng-click="goToList()">
+                    <a class="color-white">
+                        <div class="width-full-size">
+                            {{translation.LIST | uppercase}}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="branches-map-container">
+                <div class="branches-map-search-box contact-color">
+                    <input id="input-search-map" class="controls" ng-model="search" ng-blur="sendAnalytics('Sucursales Cercanas','Escribir dirección')" type="text" placeholder="{{translation.SEARCH_PLACE}}">
+                    <i class="ion-search" id="input-search-map-icon" ng-click="searchElementOnMap(search)"></i>
+                </div>
+                <div id="map" data-tap-disabled="true">
+                </div>
+            </div>
+            <div class="button-bar branches-map-bar center">
+                <a ng-class="{'map-bar-selected-item': selectedBar1}" ng-click="selectedItem(1)">
+                    <i class="icon icon_enel_location"></i>
+                    <h6>{{translation.BRANCHES}}</h6>
+                </a>
+                <a ng-class="{'map-bar-selected-item': selectedBar2}" ng-click="selectedItem(2)">
+                    <i class="icon icon_enel_branches"></i>
+                    <h6>{{translation.PLACES_OF_PAYMENT}}</h6>
+                </a>
+                <a ng-click="selectedItem(3)">
+                    <i class="icon icon_enel_payment_options"></i>
+                    <h6>{{translation.OTHER_MEANS_OF_PAYMENT}}</h6>
+                </a>
+            </div>
+        </form>
+
+    </ion-content>
+</ion-view>

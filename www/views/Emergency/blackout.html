@@ -1,0 +1,110 @@
+<ion-view class="title-page" title="{{translation.BLACKOUT | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="{{dataBlackout.items.length <= 1 ? false: true}}" active-slide="0" pager-click="pagerClick(index)" does-continue="false" class="slider">
+            <ion-slide ng-repeat="element in dataBlackout.items">
+                <div class="header-top emergency-style">
+                    <div class="row header-subtitle-page">
+                        <div class="col center position-rel">
+                            <div class="cursor"></div>
+                            <div class="header-first-row">
+                                <span>{{element.numeroSuministroDv}}</span>
+                            </div>
+                            <div class="header-second-row">
+                                <span>{{element.direccion}}</span>
+                            </div>
+                            <div class="header-radio-row">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+        <form name="forms.blackoutForm" novalidate="" ng-submit="validateForm()">
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_NAME}}</label>
+                <input type="text" name="name" placeholder="{{translation.PLACEHOLDER_NAME}}" ng-model="name" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir Nombre')" ng-class="{'has-errors' : forms.blackoutForm.name.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.name.$valid && forms.blackoutForm.$submitted}"
+                    required>
+                <div class="error-container last-error-container" ng-show="forms.blackoutForm.name.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.name.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_LASTNAMES}}</label>
+                <input type="text" name="lastnames" placeholder="{{translation.PLACEHOLDER_LASTNAMES}}" ng-model="lastnames" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir Escribir Apellidos')" ng-class="{'has-errors' : forms.blackoutForm.lastnames.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.lastnames.$valid && forms.blackoutForm.$submitted}"
+                    required>
+                <div class="error-container last-error-container" ng-show="forms.blackoutForm.lastnames.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.lastnames.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
+                <input type="email" name="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" ng-model="email" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir Correo Electrónico')" ng-class="{'has-errors' : forms.blackoutForm.email.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.email.$valid && forms.blackoutForm.$submitted}"
+                    required ng-maxlength="40">
+                <div class="error-container last-error-container" ng-show="forms.blackoutForm.email.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.email.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
+                <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="phone" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir teléfono')" ng-class="{'has-errors' : forms.blackoutForm.phone.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.phone.$valid && forms.blackoutForm.$submitted}"
+                    required>
+                <div class="error-container last-error-container" ng-show="forms.blackoutForm.phone.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.phone.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <div class="center margin-top-10 blackout-form-emergency-subtype">
+                <div class="element" ng-class="{'selected-element': selected1tab}" ng-click="selectedProblem(typesOfProblems1.value)">
+                    <a class="color-white">
+                        <div class="width-full-size">
+                            <i class="icon icon_enel_house"></i>
+                        </div>
+                        <div class="width-full-size">
+                            <!--{{translation.BLACKOUT_AT_HOME}}-->
+                            {{typesOfProblems1.label | uppercase}}
+                        </div>
+                    </a>
+                </div>
+                <div class="element" ng-class="{'selected-element': selected2tab}" ng-click="selectedProblem(typesOfProblems2.value)">
+                    <a class="color-white">
+                        <div class="width-full-size">
+                            <i class="icon icon_enel_neighborhood"></i>
+                        </div>
+                        <div class="width-full-size">
+                            <!--{{translation.BLACKOUT_AT_NEIGHBORHOOD}}-->
+                            {{typesOfProblems2.label | uppercase}}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <ion-item class="item-icon-right lined-item input-text-without-icon  position-rel">
+                <label class="label-input-form">{{translation.LABEL_DESCRIBE_THE_INCIDENT}}</label>
+                <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir detalle del requerimiento')" ng-model="description" ng-class="{'has-errors' : forms.blackoutForm.description.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.description.$valid && forms.blackoutForm.$submitted}"
+                    required></textarea>
+                <div class="error-container last-error-container" ng-show="forms.blackoutForm.description.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.description.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block emergency-style button-general" id="accept-button" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Aceptar')" type="submit">{{translation.ACCEPT | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="session.emergency">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button ng-if="!isLogged && !isReportNotLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.emergency">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button ng-if="!isLogged && isReportNotLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col center">
+                <span>{{translation.BLACKOUT_DISCLAIMER}}</span>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

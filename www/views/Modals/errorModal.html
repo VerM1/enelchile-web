@@ -1,0 +1,22 @@
+<ion-modal-view title="{{translation.ERROR | uppercase}}" class="modal-container">
+    <ion-header-bar>
+        <span class="title-page">{{modal.title}}</span>
+        <i class="emergency-color ion-ios-information input-text-icon-helper"></i>
+    </ion-header-bar>
+    <ion-content class="modal-content">
+        <div class="row modal-content-body">
+            <div class="col center">
+                <div>
+                    {{modal.content}}
+                </div>
+            </div>
+        </div>
+        <div class="row button-row">
+            <div class="col center">
+                <button class="button button-block emergency-style button-general" ng-click="closeModal()">
+                    <span>{{translation.ACCEPT | uppercase}}</span>
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

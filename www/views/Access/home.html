@@ -1,0 +1,53 @@
+<!--<ion-view class="title-page" id="home" title="{{translation.HOME | uppercase}}" hide-back-button="true" data-ng-init="onload()">-->
+<ion-view class="title-page" id="home" title="{{translation.HOME | uppercase}}" hide-back-button="true">
+    <ion-content scroll="true" padding="true">
+        <div class="row">
+            <div class="col center">
+                <img class="logo-enel" src="img/logos/Enel_Logo_Secondary_color_RGB.png" />
+            </div>
+        </div>
+        <form name="forms.homeForm" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm()">
+            <div class="row">
+                <div class="col">
+                    <div class="list">
+                        <ion-item class="item-icon-right lined-item input-text-without-icon">
+                            <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
+                            <i class="button button-clear icon color-pink ion-ios-information input-text-icon-helper" ng-click="helpModal()"></i>
+                            <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="clientNum" ng-model="clientNum" ng-blur="sendAnalytics('Inicio','Escribir número de cliente')" ng-class="{'has-errors' : forms.homeForm.clientNum.$invalid && forms.homeForm.$submitted, 'no-errors' : forms.homeForm.clientNum.$valid && forms.homeForm.$submitted}"
+                                required ng-rut rut-format="none" asset-format asset-validator>
+                            <div class="error-container last-error-container" ng-show="forms.homeForm.clientNum.$error && forms.homeForm.$submitted" ng-messages="forms.homeForm.clientNum.$error">
+                                <div ng-messages-include="views/errorList.html"></div>
+                            </div>
+                        </ion-item>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col center">
+                    <!--<button class="button-like-link" ng-click="searchClientId()" button-id="searchButton">{{translation.SEARCH_NUM_CLIENT}}</button>-->
+                    <button class="button-like-link" ng-click="searchClientId()" type="button">{{translation.SEARCH_NUM_CLIENT}}</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col center">
+                    <button class="button button-block usage-style button-general" ng-click="sendAnalytics('Inicio','Presionar pagar cuenta')" type="submit" button-id="payButton">{{translation.PAY_ACCOUNT | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button class="button button-block emergency-style button-general" type="submit" ng-click="sendAnalytics('Inicio','Presionar reportar corte')" button-id="reportButton">{{translation.REPORT_COURT | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col center ">
+                <button class="button button-block home-style button-general " ng-click="sendAnalytics('Inicio','Presionar Ingresar')" ui-sref="guest.login ">{{translation.LOGIN | uppercase}}
+                    <!--<i class="icon icon_enel_check"></i>-->
+                </button>
+                <button class="button button-block register-style button-general " ng-click="sendAnalytics('Inicio','Presionar Registro')" ui-sref="guest.register ">{{translation.REGISTER | uppercase}}
+                    <!--<i class="icon icon_enel_check"></i>-->
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

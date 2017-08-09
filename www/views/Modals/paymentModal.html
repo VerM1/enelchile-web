@@ -1,0 +1,20 @@
+<ion-modal-view title="{{translation.PAYMENT | uppercase}}" class="help-modal-container">
+    <ion-content scroll="false" padding="false">
+        <div class="row">
+            <div class="height-full-size width-full-size">
+                <form name="aForm" show="true" action="{{modal.content.url}}" target="iFrame" method="POST" onload-submit-form>
+                    <input id="val" type="hidden" name="val" value="{{modal.content.xml}}" />
+                </form>
+                <!--<iframe id="iFrame" name="iFrame" src="{{modal.content.url}}" class="width-full-size" height="450" border=0 ng-onload="loadComplete(contentLocation)"></iframe>-->
+                <iframe id="iFrame" name="iFrame" src="{{modal.content.url}}" class="width-full-size" height="450" border=0 ng-onload="loadComplete(contentLocation)"></iframe>
+            </div>
+        </div>
+        <div class="row button-row">
+            <div class="col center">
+                <button class="button button-block featured-style button-general" ng-click="closeModal()">
+                    <span>{{translation.CLOSE | uppercase}}</span>
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

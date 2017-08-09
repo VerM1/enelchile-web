@@ -1,0 +1,107 @@
+<ion-view id="tutorial" title="Tutorial">
+    <ion-content scroll="false">
+        <!--<ion-slides options="options" slider="data.slider" class="tutorial">
+            <ion-slide-page class="margin-top-30">
+                <div class="box tutoUno">
+                    <figure class="enel-brand">
+                        <img src="img/logos/Enel_Logo_Secondary_white_RGB.png" alt="Enel logo">
+                    </figure>
+                    <h3>{{translation.TUTORIAL_01_TEXT}} <br> {{translation.TUTORIAL_0101_TEXT}}:</h3>
+                    <a class="ir-a-app" ng-click="passTuto('Splash 1','Saltar Intro')" title="Ir a la aplicación">{{translation.SKIP_INTRO}}</a>
+                    <figure>
+                        <img src="img/tutorial/tuto-1-notificaciones.png" alt="Pantalla Notificaciones">
+                    </figure>
+                </div>
+            </ion-slide-page>
+            <ion-slide-page class="margin-top-30">
+                <div class="box tutoDos">
+                    <figure class="enel-brand">
+                        <img src="img/logos/Enel_Logo_Secondary_white_RGB.png" alt="Enel logo">
+                    </figure>
+                    <h3>{{translation.TUTORIAL_02_TEXT}} <br> {{translation.TUTORIAL_0202_TEXT}}:</h3>
+                    <a class="ir-a-app" ng-click="passTuto('Splash 2','Saltar Intro')" title="Ir a la aplicación">{{translation.SKIP_INTRO}}</a>
+                    <figure>
+                        <img src="img/tutorial/tuto-2-mapa.png" alt="Mapa">
+                    </figure>
+                </div>
+            </ion-slide-page>
+            <ion-slide-page class="margin-top-30">
+                <div class="box tutoTres">
+                    <figure class="enel-brand">
+                        <img src="img/logos/Enel_Logo_Secondary_white_RGB.png" alt="Enel logo">
+                    </figure>
+                    <h3>{{translation.TUTORIAL_03_TEXT}} <br> {{translation.TUTORIAL_0303_TEXT}}:</h3>
+                    <a class="ir-a-app" ng-click="passTuto('Splash 3','Saltar Intro')" title="Ir a la aplicación">{{translation.SKIP_INTRO}}</a>
+                    <figure>
+                        <img src="img/tutorial/tuto-3-facturaciones.png" alt="Facturaci&oacute;n">
+                    </figure>
+                </div>
+            </ion-slide-page>
+            <ion-slide-page class="margin-top-30">
+                <div class="box tutoCuatro">
+                    <figure class="enel-brand">
+                        <img src="img/logos/Enel_Logo_Secondary_white_RGB.png" alt="Enel logo">
+                    </figure>
+                    <h3>{{translation.TUTORIAL_04_TEXT}}</h3>
+                    <a class="ir-a-app" ng-click="passTuto('Splash 4','Saltar Intro')" ui-sref="guest.home" title="Ir a la aplicación">{{translation.SKIP_INTRO}}</a>
+                    <figure>
+                        <img src="img/tutorial/tuto-4-seguridad.png" alt="DNI" ng-click="passTuto('Splash 4','Saltar Intro');">
+                    </figure>
+                </div>
+            </ion-slide-page>
+        </ion-slides>-->
+
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" active-slide="0" pager-click="pagerClick(index)" does-continue="false" class="tutorial">
+            <ion-slide class="margin-top-30">
+                <div class="box tutoUno">
+                    <figure class="enel-brand">
+                        <img src="img/logos/Enel_Logo_Secondary_white_RGB.png" alt="Enel logo">
+                    </figure>
+                    <h3>{{translation.TUTORIAL_01_TEXT}} <br> {{translation.TUTORIAL_0101_TEXT}}:</h3>
+                    <a class="ir-a-app" ng-click="passTuto('Splash 1','Saltar Intro')" title="Ir a la aplicación">{{translation.SKIP_INTRO}}</a>
+                    <figure>
+                        <img src="img/tutorial/tuto-1-notificaciones.png" alt="Pantalla Notificaciones">
+                    </figure>
+                </div>
+            </ion-slide>
+            <ion-slide class="margin-top-30">
+                <div class="box tutoDos">
+                    <figure class="enel-brand">
+                        <img src="img/logos/Enel_Logo_Secondary_white_RGB.png" alt="Enel logo">
+                    </figure>
+                    <h3>{{translation.TUTORIAL_02_TEXT}} <br> {{translation.TUTORIAL_0202_TEXT}}:</h3>
+                    <a class="ir-a-app" ng-click="passTuto('Splash 2','Saltar Intro')" title="Ir a la aplicación">{{translation.SKIP_INTRO}}</a>
+                    <figure>
+                        <img src="img/tutorial/tuto-2-mapa.png" alt="Mapa">
+                    </figure>
+                </div>
+            </ion-slide>
+            <ion-slide class="margin-top-30">
+                <div class="box tutoTres">
+                    <figure class="enel-brand">
+                        <img src="img/logos/Enel_Logo_Secondary_white_RGB.png" alt="Enel logo">
+                    </figure>
+                    <h3>{{translation.TUTORIAL_03_TEXT}} <br> {{translation.TUTORIAL_0303_TEXT}}:</h3>
+                    <a class="ir-a-app" ng-click="passTuto('Splash 3','Saltar Intro')" title="Ir a la aplicación">{{translation.SKIP_INTRO}}</a>
+                    <figure>
+                        <img src="img/tutorial/tuto-3-facturaciones.png" alt="Facturaci&oacute;n">
+                    </figure>
+                </div>
+            </ion-slide>
+            <ion-slide class="margin-top-30">
+                <div class="box tutoCuatro">
+                    <figure class="enel-brand">
+                        <img src="img/logos/Enel_Logo_Secondary_white_RGB.png" alt="Enel logo">
+                    </figure>
+                    <h3>{{translation.TUTORIAL_04_TEXT}}</h3>
+                    <a class="ir-a-app" ng-click="passTuto('Splash 4','Saltar Intro')" ui-sref="guest.home" title="Ir a la aplicación">{{translation.SKIP_INTRO}}</a>
+                    <figure>
+                        <img src="img/tutorial/tuto-4-seguridad.png" alt="DNI" ng-click="passTuto('Splash 4','Saltar Intro');">
+                    </figure>
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+
+
+    </ion-content>
+</ion-view>

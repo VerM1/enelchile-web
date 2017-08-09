@@ -1,0 +1,113 @@
+<ion-view class="title-page" title="{{translation.PAY_YOUR_BILL | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <div class="header-top usage-style">
+            <div class="row header-subtitle-page">
+                <div class="col center position-rel">
+                    <div class="cursor"></div>
+                    <div class="header-first-row">
+                        <span>{{numeroSuministroDv}}</span>
+                    </div>
+                    <div class="header-second-row">
+                        <span>{{direccion}}</span>
+                    </div>
+                    <div class="header-radio-row">
+                        <!--<span>{{asset.NombreSuministro}}</span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="list margin-top-10 border-bottom border-color-grey-enel" name="forms.payBillForm" novalidate="" ng-submit="validateForm()">
+            <div class="row table-header usage-style color-white">
+                <div class="col-40 center">{{translation.TYPE_OF_DEBT | uppercase}}</div>
+                <div class="col-40 center">{{translation.AMOUNT | uppercase}}</div>
+                <div class="col center"></div>
+            </div>
+
+            <!-- nueva version -->
+            <div class="margin-top-20" ng-class="{'has-errors' : forms.payBillForm.payBill.$invalid && forms.payBillForm.$submitted, 'no-errors' : forms.payBillForm.payBill.$valid && forms.payBillForm.$submitted}">
+
+                <!--<div class="row margin-top-10 border-bottom border-color-grey-enel" ng-repeat="element in items">
+                    <div class="col-40 center">{{element.tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (element.tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}</div>
+                    <div class="col-40 center amount">{{element.monto | currency : '$': 0}}</div>
+                    <div class="col-20 center table-input-radio">
+                        <div class="checkbox checkbox-circle">
+                            <input type="radio" name="payBill" ng-model="payBill" class="checkbox-icon" value="{{element.monto}}" ng-click="selectItem({{element.index}})" required/>
+                        </div>
+                    </div>
+                </div>-->
+
+
+
+                <div class="row margin-top-10 border-bottom border-color-grey-enel" ng-show="showFirstElement">
+                    <div class="col-40 center">{{items[0].tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (items[0].tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}</div>
+                    <div class="col-40 center amount">{{items[0].monto | currency : '$': 0}}</div>
+                    <div class="col-20 center table-input-radio">
+                        <div class="checkbox checkbox-circle">
+                            <input type="radio" name="payBill" ng-model="payBill" class="checkbox-icon" value="{{items[0].monto}}" ng-click="selectItem(0)" ng-checked="payBill==items[0].monto" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row margin-top-10 border-bottom border-color-grey-enel" ng-show="showSecondElement">
+                    <div class="col-40 center">{{items[1].tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (items[1].tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}</div>
+                    <div class="col-40 center amount">{{items[1].monto | currency : '$': 0}}</div>
+                    <div class="col-20 center table-input-radio">
+                        <div class="checkbox checkbox-circle">
+                            <input type="radio" name="payBill" ng-model="payBill" class="checkbox-icon" value="{{items[1].monto}}" ng-click="selectItem(1)" ng-checked="payBill==items[1].monto" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row margin-top-10 border-bottom border-color-grey-enel" ng-show="showThirdElement">
+                    <div class="col-40 center">{{items[2].tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (items[2].tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}</div>
+                    <div class="col-40 center amount">{{items[2].monto | currency : '$': 0}}</div>
+                    <div class="col-20 center table-input-radio">
+                        <div class="checkbox checkbox-circle">
+                            <input type="radio" name="payBill" ng-model="payBill" class="checkbox-icon" value="{{items[2].monto}}" ng-click="selectItem(2)" ng-checked="payBill==items[2].monto" required/>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row error-container last-error-container" ng-show="forms.payBillForm.payBill.$error &&  forms.payBillForm.$submitted" ng-messages="forms.payBillForm.payBill.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </div>
+            <!-- FIN NUEVA VERSION -->
+
+            <div class="row">
+                <div class="col">
+                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                        <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
+                        <input type="email" name="email" required placeholder="{{translation.PLACEHOLDER_EMAIL}}" ng-model="email" ng-blur="sendAnalytics('Paga tu cuenta','Escribir Correo Electrónico')" ng-class="{'has-errors' : forms.payBillForm.email.$invalid && forms.payBillForm.$submitted, 'no-errors' : forms.payBillForm.email.$valid && forms.payBillForm.$submitted}"
+                            ng-maxlength="40">
+                        <div class="error-container last-error-container" ng-show="forms.payBillForm.email.$error && forms.payBillForm.$submitted" ng-messages="forms.payBillForm.email.$error">
+                            <div ng-messages-include="views/errorList.html"></div>
+                        </div>
+                    </ion-item>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block usage-style button-general" ng-click="sendAnalytics('Paga tu cuenta','Presionar Pagar')" ng-disabled="disablePayButton" type="submit">{{translation.PAY | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Paga tu cuenta','Presionar Volver')" ui-sref="session.usage">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button ng-if="!isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Paga tu cuenta','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <span>{{translation.PAY_ACCOUNT_DISCLAIMER}}</span>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

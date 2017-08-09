@@ -1,0 +1,114 @@
+<ion-view class="title-page" title="{{translation.CONTACT | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="true" active-slide="0" pager-click="pagerClick(index)" does-continue="false" class="slider">
+            <ion-slide ng-repeat="item in dataContactForm.items">
+                <div class="header-top contact-style">
+                    <div class="row header-subtitle-page">
+                        <!--<div class="col-10">
+                            <div class="cursor"></div>
+                        </div>-->
+                        <div class="col center position-rel">
+                            <div class="cursor"></div>
+                            <div class="header-first-row">
+                                <span>{{item.numeroSuministroDv}}</span>
+                            </div>
+                            <div class="header-second-row">
+                                <span>{{item.direccion}}</span>
+                            </div>
+                            <div class="header-radio-row">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+        <form name="forms.contactForm" novalidate="" ng-submit="validateForm()">
+            <ion-item class="lined-item select-text-without-icon position-rel">
+                <label class="label-input-form">{{translation.LABEL_TOPIC}}</label>
+                <select name="topic" title="{{translation.PLACEHOLDER_TOPIC}}" ng-model="topic" ng-options="item as item.label for item in typeList" ng-change="sendAnalytics('Formulario de Contacto','Seleccionar motivo '+topic )" ng-class="{'has-errors' : forms.contactForm.topic.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.topic.$valid && forms.contactForm.$submitted}"
+                    required></select>
+                <div class="error-container last-error-container" ng-show="forms.contactForm.topic.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.topic.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_RUT}}</label>
+                <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Rut')" ng-class="{'has-errors' : forms.contactForm.rut.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.rut.$valid && forms.contactForm.$submitted}"
+                    required ng-rut rut-format="none" asset-format asset-validator>
+                <div class="error-container last-error-container" ng-show="forms.contactForm.rut.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.rut.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_NAMES}}</label>
+                <input type="text" placeholder="{{translation.PLACEHOLDER_NAMES}}" name="names" ng-model="names" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Nombre')" ng-class="{'has-errors' : forms.contactForm.names.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.names.$valid && forms.contactForm.$submitted}"
+                    required>
+                <div class="error-container last-error-container" ng-show="forms.contactForm.names.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.names.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_LASTNAME}}</label>
+                <input type="text" placeholder="{{translation.PLACEHOLDER_LASTNAME}}" name="lastName" ng-model="lastName" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Apellido Paterno')" ng-class="{'has-errors' : forms.contactForm.lastName.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.lastName.$valid && forms.contactForm.$submitted}"
+                    required>
+                <div class="error-container last-error-container" ng-show="forms.contactForm.lastName.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.lastName.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_MOTHER_LASTNAME}}</label>
+                <input type="text" placeholder="{{translation.PLACEHOLDER_MOTHER_LASTNAME}}" name="motherLastName" ng-model="motherLastName" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Apellido Materno')" ng-class="{'has-errors' : forms.contactForm.motherLastName.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.motherLastName.$valid && forms.contactForm.$submitted}"
+                    required>
+                <div class="error-container last-error-container" ng-show="forms.contactForm.motherLastName.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.motherLastName.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
+                <input type="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" name="email" ng-model="email" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Correo Electrónico')" ng-class="{'has-errors' : forms.contactForm.email.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.email.$valid && forms.contactForm.$submitted}"
+                    required ng-maxlength="40">
+                <div class="error-container last-error-container" ng-show="forms.contactForm.email.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.email.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
+                <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Teléfono')" ng-class="{'has-errors' : forms.contactForm.phone.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.phone.$valid && forms.contactForm.$submitted}"
+                    required>
+                <div class="error-container last-error-container" ng-show="forms.contactForm.phone.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.phone.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
+                <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="numClient" ng-model="numClient" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Número Cliente')" ng-class="{'has-errors' : forms.contactForm.numClient.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.numClient.$valid && forms.contactForm.$submitted}"
+                    ng-rut rut-format="none" asset-format>
+                <div class="error-container last-error-container" ng-show="forms.contactForm.numClient.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.numClient.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon">
+                <label class="label-input-form">{{translation.LABEL_MESSAGE}}</label>
+                <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_MESSAGE}}" name="message" ng-model="message" ng-blur="sendAnalytics('Formulario de Contacto','Escribir detalle del requerimiento')" ng-class="{'has-errors' : forms.contactForm.message.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.message.$valid && forms.contactForm.$submitted}"
+                    required></textarea>
+                <div class="error-container last-error-container" ng-show="forms.contactForm.message.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.message.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block contact-style button-general" ng-click="sendAnalytics('Formulario de Contacto','Presionar Enviar')" type="submit">{{translation.SEND | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Formulario de Contacto','Presionar Volver')" ui-sref="session.contact">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button ng-if="!isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Formulario de Contacto','Presionar Volver')" ui-sref="guest.contact">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

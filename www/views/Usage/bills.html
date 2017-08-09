@@ -1,0 +1,14 @@
+<div class="row table-header usage-style color-white">
+    <div class="col center">{{translation.DATE | uppercase}}</div>
+    <div class="col center">{{translation.AMOUNT | uppercase}}</div>
+    <div class="col center">{{translation.DOWNLOAD | uppercase}}</div>
+</div>
+<div class="row margin-top-10 border-bottom border-color-grey-enel" ng-repeat="bill in dataUsageAssetBills.items">
+    <div class="col center amount">{{bill.fecha}}
+    </div>
+    <div class="col center">{{bill.monto | currency : '$': 0}}
+    </div>
+    <div ng-click="downloadBill($index)" class="col center usage-icon">
+        <i class="icon icon_enel_download_bill"></i>
+    </div>
+</div>

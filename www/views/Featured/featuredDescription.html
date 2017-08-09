@@ -1,0 +1,52 @@
+<ion-view class="title-page" title="{{translation.FEATURED | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <div class="position-rel border-bottom border-color-featured-style">
+            <img src="{{featuredDescription.imagen}}" class="width-full-size" />
+            <!--<i ng-click="goFeatured()" class="button-icon icon ion-close-circled featured-color close-button"></i>-->
+        </div>
+        <div class="header-top">
+            <div class="row header-subtitle-page border-bottom border-color-grey-enel">
+                <!--<div class="col-10">
+                    <div class="featured-style cursor"></div>
+                </div>-->
+                <div class="col center color-black position-rel">
+                    <div class="featured-style cursor"></div>
+                    <div class="header-first-row">
+                        <span>
+                            <div ng-bind-html="featuredDescription.titulo"></div>
+                        </span>
+                    </div>
+                    <div class="header-second-row">
+                        <span>
+                           <div ng-bind-html="featuredDescription.subtitulo"></div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-center">
+                <p>
+                    <div ng-bind-html="featuredDescription.detalle"></div>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-center">
+                <button class="button button-block featured-style button-general" ng-click="openUrl('{{featuredDescription.url}}')">{{translation.SEE_MORE | uppercase}}
+                    <!--<i class="icon icon_enel_check"></i>-->
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <!--<button class="button button-block featured-style button-general" ng-click="goFeatured()">{{translation.BACK | uppercase}}
+                    <i class="icon icon_enel_check"></i>
+                </button>-->
+                <button class="button button-block back-button button-general" ng-click="goFeatured()">{{translation.BACK | uppercase}}
+                    <!--<i class="icon icon_enel_check"></i>-->
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

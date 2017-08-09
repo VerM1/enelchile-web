@@ -1,0 +1,23 @@
+<ion-nav-bar class="bar-stable" align-title="center">
+    <ion-nav-buttons side="right">
+        <!--<button class="button button-clear">-->
+        <div class="button-clear">
+            <img src="img/logos/logo_e.png" width="25" class="logo-header" />
+        </div>
+        <!--</button>-->
+    </ion-nav-buttons>
+</ion-nav-bar>
+<ion-tabs>
+    <ion-tab icon-off="icon_enel_home" icon-on="icon_enel_home" title="{{translation.HOME}}" class="tab-home" ng-click="selectedTab(1)">
+        <ion-nav-view name="tab-home"></ion-nav-view>
+    </ion-tab>
+    <ion-tab icon-off="icon_enel_emergency" icon-on="icon_enel_emergency" title="{{translation.EMERGENCY}}" class="tab-emergency" ng-click="selectedTab(2)">
+        <ion-nav-view name="tab-emergency"></ion-nav-view>
+    </ion-tab>
+    <ion-tab icon-off="icon_enel_phone" icon-on="icon_enel_phone" title="{{translation.CONTACT}}" class="tab-contact" ng-click="selectedTab(3)">
+        <ion-nav-view name="tab-contact"></ion-nav-view>
+    </ion-tab>
+    <ion-tab icon-off="icon_enel_featured" icon-on="icon_enel_featured" title="{{translation.FEATURED}}" class="tab-featured" ng-click="selectedTab(4)">
+        <ion-nav-view name="tab-featured"></ion-nav-view>
+    </ion-tab>
+</ion-tabs>

@@ -1,0 +1,77 @@
+<ion-view class="title-page" title="{{translation.EMERGENCIES | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <div class="header-top-menu-page emergency-style">
+            <div class="row menu-page-row">
+                <!--<div class="col-10">
+                    <div class="cursor"></div>
+                </div>-->
+                <div class="col position-rel">
+                    <div class="cursor"></div>
+                    <div class="header-first-row margin-left-30">
+                        <h3>{{translation.BLACKOUT}}</h3>
+                    </div>
+                    <div class="header-second-row margin-left-30">
+                        <span>{{translation.BLACKOUT_DESCRIPTION}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block emergency-style button-general border-radius-5 border-color-grey-enel" ng-click="goToBlackOut()">{{translation.REPORT_EMERGENCY | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-top-menu-page emergency-style margin-top-10">
+            <div class="row menu-page-row">
+                <!--<div class="col-10">
+                    <div class="cursor"></div>
+                </div>-->
+                <div class="col position-rel">
+                    <div class="cursor"></div>
+                    <div class="header-first-row margin-left-30">
+                        <h3>{{translation.LIGHTING_PROBLEMS}}</h3>
+                    </div>
+                    <div class="header-second-row margin-left-30">
+                        <span>{{translation.LIGHTING_PROBLEMS_DESCRIPTION}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block emergency-style button-general border-radius-5 border-color-grey-enel" ng-click="goToLightingProblems()">{{translation.REPORT_EMERGENCY | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="header-top-menu-page emergency-style margin-top-10">
+            <div class="row menu-page-row">
+                <!--<div class="col-10">
+                    <div class="cursor"></div>
+                </div>-->
+                <div class="col position-rel">
+                    <div class="cursor"></div>
+                    <div class="header-first-row margin-left-30">
+                        <h3>{{translation.RISK_OR_ACCIDENT}}</h3>
+                    </div>
+                    <div class="header-second-row margin-left-30">
+                        <span>{{translation.RISK_OR_ACCIDENT_DESCRIPTION}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block emergency-style button-general border-radius-5 border-color-grey-enel" ng-click="goToAccidentRisk()">{{translation.REPORT_EMERGENCY | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

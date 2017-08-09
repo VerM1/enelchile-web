@@ -1,0 +1,34 @@
+<ion-nav-bar class="bar-stable" align-title="center">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear icon icon_enel_profile" ng-click="sendAnalytics('','Presionar Perfil')" ui-sref="session.profile" ng-class="{'profile-color' : isProfile}">
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <!--<button class="button button-clear">-->
+        <div class="button-clear">
+            <img src="img/logos/logo_e.png" width="25" class="logo-header" />
+        </div>
+        <!--</button>-->
+    </ion-nav-buttons>
+</ion-nav-bar>
+
+<ion-tabs>
+    <ion-tab icon-off="icon_enel_my_bills" icon-on="icon_enel_my_bills" title="{{translation.OVERVIEW}}" class="tab-usage" ng-click="selectedTab(5)">
+        <ion-nav-view name="tab-usage"></ion-nav-view>
+    </ion-tab>
+    <ion-tab icon-off="icon_enel_emergency" icon-on="icon_enel_emergency" title="{{translation.EMERGENCY}}" class="tab-emergency" ng-click="selectedTab(6)">
+        <ion-nav-view name="tab-emergency"></ion-nav-view>
+    </ion-tab>
+    <ion-tab icon-off="icon_enel_phone" icon-on="icon_enel_phone" title="{{translation.CONTACT}}" class="tab-contact" ng-click="selectedTab(7)">
+        <ion-nav-view name="tab-contact"></ion-nav-view>
+    </ion-tab>
+    <ion-tab icon-off="icon_enel_notifications" icon-on="icon_enel_notifications" title="{{translation.NOTIFICATIONS}}" class="tab-notifications" ng-click="selectedTab(8)">
+        <ion-nav-view name="tab-notifications"></ion-nav-view>
+    </ion-tab>
+    <ion-tab icon-off="icon_enel_featured" icon-on="icon_enel_featured" title="{{translation.FEATURED}}" class="tab-featured" ng-click="selectedTab(9)">
+        <ion-nav-view name="tab-featured"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="Profile" ui-sref="session.profile" class="ng-hide">
+        <ion-nav-view name="profile"></ion-nav-view>
+    </ion-tab>
+</ion-tabs>

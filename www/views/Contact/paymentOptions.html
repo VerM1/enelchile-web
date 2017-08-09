@@ -1,0 +1,69 @@
+<ion-view class="title-page" title="{{translation.OTHER_MEANS_OF_PAYMENT | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <div class="row">
+            <div class="col">
+                <ul class="list">
+                    <li class="branches-payment-item">
+                        <div class="branches-payment-item-first-column">
+                            <img src="img/logos-pagos/seccion-de-medios-de-pago1.png" />
+                        </div>
+                        <div class="branches-payment-item-second-column">
+                            <p><strong>{{translation.PAYMENT_OPTIONS_01_BRAND}}:</strong> {{translation.PAYMENT_OPTIONS_01_TEXT}}</p>
+                        </div>
+                    </li>
+                    <li class="branches-payment-item">
+                        <div class="branches-payment-item-first-column">
+                            <img src="img/logos-pagos/seccion-de-medios-de-pago2.png" />
+                        </div>
+                        <div class="branches-payment-item-second-column">
+                            <p><strong>{{translation.PAYMENT_OPTIONS_02_BRAND}}:</strong> {{translation.PAYMENT_OPTIONS_02_TEXT}}</p>
+                        </div>
+                    </li>
+                    <li class="branches-payment-item">
+                        <div class="branches-payment-item-first-column">
+                            <img src="img/logos-pagos/seccion-de-medios-de-pago3.png" />
+                        </div>
+                        <div class="branches-payment-item-second-column">
+                            <p><strong>{{translation.PAYMENT_OPTIONS_03_BRAND}}:</strong> {{translation.PAYMENT_OPTIONS_03_TEXT}}</p>
+                        </div>
+                    </li>
+                    <li class="branches-payment-item">
+                        <div class="branches-payment-item-first-column">
+                            <img src="img/logos-pagos/seccion-de-medios-de-pago4.png" />
+                        </div>
+                        <div class="branches-payment-item-second-column">
+                            <p><strong>{{translation.PAYMENT_OPTIONS_04_BRAND}}:</strong> {{translation.PAYMENT_OPTIONS_04_TEXT}}</p>
+                        </div>
+                    </li>
+                    <li class="branches-payment-item">
+                        <div class="branches-payment-item-first-column">
+                            <img src="img/logos-pagos/seccion-de-medios-de-pago5.png" />
+                        </div>
+                        <div class="branches-payment-item-second-column">
+                            <p><strong>{{translation.PAYMENT_OPTIONS_05_BRAND}}:</strong> {{translation.PAYMENT_OPTIONS_05_TEXT}}</p>
+                        </div>
+                    </li>
+                    <!--<li class="branches-payment-item">
+                        <div class="branches-payment-item-first-column">
+                            <img src="img/logos-pagos/tpe/bbva_continental.jpg" />
+                        </div>
+                        <div class="branches-payment-item-second-column">
+                            <p><strong>{{translation.PAYMENT_OPTIONS_06_BRAND}}:</strong> {{translation.PAYMENT_OPTIONS_06_TEXT}}</p>
+                        </div>
+                    </li>-->
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <!--<div class="col center">
+                <a ng-click="goBack()" class="button-icon icon ion-arrow-left-c"></a>
+            </div>-->
+            <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="goToMap()">{{translation.BACK | uppercase}}
+                <!--<i class="icon icon_enel_check"></i>-->
+            </button>
+            <button ng-if="!isLogged" class="button button-block back-button button-general" ng-click="goToMap()">{{translation.BACK | uppercase}}
+                <!--<i class="icon icon_enel_check"></i>-->
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

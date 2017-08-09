@@ -1,0 +1,88 @@
+<div class="usage-overview-page-header" ng-show="showAssetDebt">
+    <div class="usage-overview-page-header-first-item">
+        <div class="usage-overview-page-title">{{translation.USAGES}}</div>
+        <div class="usage-overview-page-text">{{dataUsageAssetDebtToShow.consumo}} kWh</div>
+    </div>
+    <div class="usage-overview-page-header-second-item">
+        <div class="usage-overview-page-title">{{translation.OUTSTADING_DEBT}}</div>
+        <div class="usage-overview-page-text">{{dataUsageAssetDebtToShow.monto | currency : '$': 0}}</div>
+    </div>
+    <div class="usage-overview-page-header-third-item">
+        <div class="usage-overview-page-title">{{translation.EXPIRATION}}</div>
+        <div class="usage-overview-page-text">{{dataUsageAssetDebtToShow.fechaVencimiento}}</div>
+    </div>
+</div>
+
+<div class="usage-overview-payment-header" ng-show="showLoadingDebt">
+    <ion-spinner name="bubbles" class="loading-icon"></ion-spinner>
+</div>
+<div class="usage-overview-payment-header" ng-show="showRetryDebt">
+    <!--<button class="button button-block background-grey button-general" ng-click="retryDebt()">{{translation.RETRY | uppercase}}</button>-->
+    <i class="icon ion-refresh reload-icon" ng-click="retryDebt()"></i>
+</div>
+<div class="row">
+    <div class="col">
+        <button class="button button-block background-pink button-general" ng-click="payBill()" ng-disabled="dataUsageAssetDebtToShow.monto == null || dataUsageAssetDebtToShow.monto == 0">{{translation.PAY_ACCOUNT | uppercase}}
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col usage-overview-page-description" ng-show="showLoadingDetail">
+        <ion-spinner name="bubbles" class="loading-icon"></ion-spinner>
+    </div>
+    <div class="col usage-overview-page-description" ng-show="showAssetDetail">
+        <div class="row">
+            <div class="col col-50 text-left">{{translation.RATE}}</div>
+            <div>:</div>
+            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.tarifa}}</div>
+            <!--<div class="col col-50 text-right" ng-show="showLoadingDetail">
+                <ion-spinner name="bubbles" class="loading-icon"></ion-spinner>
+            </div>-->
+            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+        </div>
+        <div class="row">
+            <div class="col col-50 text-left">{{translation.CUTOFF_DATE}}</div>
+            <div>:</div>
+            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.fechaCorte}}</div>
+            <!--<div class="col col-50 text-right" ng-show="showLoadingDetail">
+                <ion-spinner name="bubbles" class="loading-icon"></ion-spinner>
+            </div>-->
+            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+        </div>
+        <div class="row">
+            <div class="col col-50 text-left">{{translation.LAST_PAYMENT_AMOUNT}}</div>
+            <div>:</div>
+            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.montoUltimoPago | currency : '$': 0}}</div>
+            <!--<div class="col col-50 text-right" ng-show="showLoadingDetail">
+                <ion-spinner name="bubbles" class="loading-icon"></ion-spinner>
+            </div>-->
+            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+        </div>
+        <div class="row">
+            <div class="col col-50 text-left">{{translation.LAST_PAYMENT_DATE}}</div>
+            <div>:</div>
+            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.fechaUltimoPago}}</div>
+            <!--<div class="col col-50 text-right" ng-show="showLoadingDetail">
+                <ion-spinner name="bubbles" class="loading-icon"></ion-spinner>
+            </div>-->
+            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+        </div>
+        <div class="row">
+            <div class="col col-50 text-left">{{translation.NEXT_READING_DATE}}</div>
+            <div>:</div>
+            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.fechaProximaLectura}}</div>
+            <!--<div class="col col-50 text-right" ng-show="showLoadingDetail">
+                <ion-spinner name="bubbles" class="loading-icon"></ion-spinner>
+            </div>-->
+            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <button class="button button-block usage-style button-general" ng-click="goToInsertReading()" ng-show="showAssetDetail" ng-disabled="dataUsageAssetDetail.billingPeriod!='No'">{{translation.SEND_READING | uppercase}}</button>
+        <!--<button class="button button-block background-grey button-general" ng-click="retryDetail()" ng-show="showRetryDetail">{{translation.RETRY | uppercase}}</button>-->
+        <i class="icon ion-refresh reload-icon" ng-click="retryDetail()" ng-show="showRetryDetail"></i>
+    </div>
+</div>

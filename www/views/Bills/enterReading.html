@@ -1,0 +1,72 @@
+<ion-view class="title-page" title="{{translation.SEND_READING | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <div class="header-top usage-style">
+            <div class="row header-subtitle-page">
+                <!--<div class="col-10">
+                    <div class="cursor"></div>
+                </div>-->
+                <div class="col center position-rel">
+                    <div class="cursor"></div>
+                    <div class="header-first-row">
+                        <span>{{assetDetail.numeroSuministroDv}}</span>
+                    </div>
+                    <div class="header-second-row">
+                        <span>{{assetDetail.direccion}}</span>
+                    </div>
+                    <div class="header-radio-row">
+                        <!--<span>RADIOS BUTTONS</span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="list" name="forms.enterReadingForm" novalidate="" ng-submit="validateForm()">
+            <div class="row">
+                <div class="col">
+                    <span>{{translation.ENTER_READING_DISCLAIMER}}</span>
+                </div>
+            </div>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-show="showFields.reading">
+                <label class="label-input-form">{{translation.LABEL_READING}}</label>
+                <input type="number" placeholder="{{translation.PLACEHOLDER_READING}}" name="reading" ng-model="reading" ng-class="{'has-errors' : forms.enterReadingForm.reading.$invalid && forms.enterReadingForm.$submitted, 'no-errors' : forms.enterReadingForm.reading.$valid && forms.enterReadingForm.$submitted}"
+                    ng-required="showFields.reading">
+                <div class="error-container last-error-container" ng-show="forms.enterReadingForm.reading.$error && forms.enterReadingForm.$submitted" ng-messages="forms.enterReadingForm.reading.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-show="showFields.day">
+                <label class="label-input-form">{{translation.LABEL_READING_DAY}}</label>
+                <input type="number" placeholder="{{translation.PLACEHOLDER_READING_DAY}}" name="readingDay" ng-model="readingDay" ng-class="{'has-errors' : forms.enterReadingForm.readingDay.$invalid && forms.enterReadingForm.$submitted, 'no-errors' : forms.enterReadingForm.readingDay.$valid && forms.enterReadingForm.$submitted}"
+                    ng-required="showFields.day">
+                <div class="error-container last-error-container" ng-show="forms.enterReadingForm.readingDay.$error && forms.enterReadingForm.$submitted" ng-messages="forms.enterReadingForm.readingDay.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-show="showFields.night">
+                <label class="label-input-form">{{translation.LABEL_READING_NIGHT}}</label>
+                <input type="number" placeholder="{{translation.PLACEHOLDER_READING_NIGHT}}" name="readingNight" ng-model="readingNight" ng-class="{'has-errors' : forms.enterReadingForm.readingNight.$invalid && forms.enterReadingForm.$submitted, 'no-errors' : forms.enterReadingForm.readingNight.$valid && forms.enterReadingForm.$submitted}"
+                    ng-required="showFields.night">
+                <div class="error-container last-error-container" ng-show="forms.enterReadingForm.readingNight.$error && forms.enterReadingForm.$submitted" ng-messages="forms.enterReadingForm.readingNight.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-show="showFields.peak">
+                <label class="label-input-form">{{translation.LABEL_READING_PEAK}}</label>
+                <input type="number" placeholder="{{translation.PLACEHOLDER_READING_PEAK}}" name="readingPeak" ng-model="readingPeak" ng-class="{'has-errors' : forms.enterReadingForm.readingPeak.$invalid && forms.enterReadingForm.$submitted, 'no-errors' : forms.enterReadingForm.readingPeak.$valid && forms.enterReadingForm.$submitted}"
+                    ng-required="showFields.peak">
+                <div class="error-container last-error-container" ng-show="forms.enterReadingForm.readingPeak.$error && forms.enterReadingForm.$submitted" ng-messages="forms.enterReadingForm.readingPeak.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block usage-style button-general" type="submit">{{translation.SEND_READING | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button class="button button-block back-button button-general" ui-sref="session.usage">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,56 @@
+<ion-view id="login" class="title-page" title="{{translation.LOGIN | uppercase}}">
+    <ion-content scroll="true" padding="true">
+        <div class="row">
+            <div class="col center">
+                <img class="logo-enel" src="img/logos/Enel_Logo_Secondary_color_RGB.png" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form class="list col" name="forms.loginForm" novalidate="" ng-submit="validateForm()">
+                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                        <label class="label-input-form">{{translation.LABEL_RUT}}</label>
+                        <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-class="{'has-errors' : forms.loginForm.rut.$invalid && forms.loginForm.$submitted, 'no-errors' : forms.loginForm.rut.$valid && forms.loginForm.$submitted}" required
+                            ng-rut rut-format="none" asset-format asset-validator>
+                        <div class="error-container last-error-container" ng-show="forms.loginForm.rut.$error && forms.loginForm.$submitted" ng-messages="forms.loginForm.rut.$error">
+                            <div ng-messages-include="views/errorList.html"></div>
+                        </div>
+                    </ion-item>
+                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                        <label class="label-input-form">{{translation.LABEL_PASSWORD}}</label>
+                        <input type="password" placeholder="{{translation.PLACEHOLDER_PASSWORD}}" name="password" ng-model="password" ng-class="{'has-errors' : forms.loginForm.password.$invalid && forms.loginForm.$submitted, 'no-errors' : forms.loginForm.password.$valid && forms.loginForm.$submitted}"
+                            required ng-minlength="8" ng-maxlength="30" password-validator>
+                        <div class="error-container last-error-container" ng-show="forms.loginForm.password.$error && forms.loginForm.$submitted" ng-messages="forms.loginForm.password.$error">
+                            <div ng-messages-include="views/errorList.html"></div>
+                        </div>
+                    </ion-item>
+                    <button class="button button-block home-style button-general" type="submit">{{translation.LOGIN | uppercase}}
+                                <!--<i class="icon icon_enel_check"></i>-->
+                            </button>
+                </form>
+            </div>
+        </div>
+        <!--<div class="row padding-horizontal">
+            <div class="col center">
+                <button class="button button-block home-style button-general" ng-click="login()">{{translation.LOGIN | uppercase}}
+                    <i class="icon icon_enel_check"></i>
+        </button>
+        </div>
+        </div>-->
+        <div class="row padding-horizontal">
+            <div class="col center">
+                <button class="button button-block home-style button-general" ng-click="sendAnalytics('Ingresar','Presionar Olvidé mi contraseña')" ui-sref="guest.verification">{{translation.FORGOT_PASS | uppercase}}
+                    <!--<i class="icon icon_enel_check"></i>-->
+                </button>
+            </div>
+        </div>
+
+        <div class="row padding-horizontal">
+            <div class="col center">
+                <button class="button button-block back-button button-general" ng-click="sendAnalytics('Ingresar','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
+                    <!--<i class="icon icon_enel_check"></i>-->
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

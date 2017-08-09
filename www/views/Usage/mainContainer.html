@@ -1,0 +1,39 @@
+<!--<ion-view class="title-page" title="{{translation.USAGES | uppercase}}" data-ng-init="onload()">-->
+<ion-view class="title-page" title="{{translation.USAGES | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="{{isHorizontal ? false: true}}" active-slide="0" pager-click="pagerClick(index)" does-continue="false" class="slider">
+            <ion-slide ng-repeat="elements in dataUsageAssetList.items">
+                <div class="header-top usage-style" ng-hide="isHorizontal">
+                    <div class="row header-subtitle-page">
+                        <div class="col center position-rel">
+                            <div class="cursor"></div>
+                            <div class="header-first-row">
+                                <span>{{elements.numeroSuministroDv}}</span>
+                            </div>
+                            <div class="header-second-row">
+                                <span>{{elements.direccion}}</span>
+                            </div>
+                            <div class="header-radio-row">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabs usage-tabs">
+                    <a class="tab-item tab-item-selected" ng-class="{ 'tab-item-selected' :  tab0selected}" ng-click="changeTab(0)">{{translation.OVERVIEW | uppercase}}</a>
+                    <a class="tab-item" ng-class="{ 'tab-item-selected' :  tab1selected}" ng-click="changeTab(1)">{{translation.USAGES | uppercase}}</a>
+                    <a class="tab-item" ng-class="{ 'tab-item-selected' :  tab2selected}" ng-click="changeTab(2)">{{translation.BILLS | uppercase}}</a>
+                    <a class="tab-item" ng-class="{ 'tab-item-selected' :  tab3selected}" ng-click="changeTab(3)">{{translation.PAYMENTS | uppercase}}</a>
+                </div>
+                <ion-item class="row-no-padding">
+                    <div class="col center" ng-include="'views/Usage/overview.html'" ng-show="selectedTab == 0"></div>
+                    <div class="col center" ng-include="'views/Usage/usage.html'" ng-show="selectedTab == 1 && !isHorizontal"></div>
+                    <div class="col center" ng-include="'views/Usage/bills.html'" ng-show="selectedTab == 2 && !isHorizontal"></div>
+                    <div class="col center" ng-include="'views/Usage/payments.html'" ng-show="selectedTab == 3 && !isHorizontal"></div>
+                    <div class="col center" ng-include="'views/Usage/usageHorizontal.html'" ng-show="selectedTab == 1 && isHorizontal"></div>
+                    <div class="col center" ng-include="'views/Usage/billsHorizontal.html'" ng-show="selectedTab == 2 && isHorizontal"></div>
+                    <div class="col center" ng-include="'views/Usage/paymentsHorizontal.html'" ng-show="selectedTab == 3 && isHorizontal"></div>
+                </ion-item>
+            </ion-slide>
+        </ion-slide-box>
+    </ion-content>
+</ion-view>

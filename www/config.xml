@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget android-packageName="mobiletouch.chilectra.cuentaenlinea" id="mobiletouch.chilectra.cuentaenlinea" ios-CFBundleIdentifier="MobileTouch.Chilectra2" version="17.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <feature name="Device">
+        <param name="browser-package" value="Device" />
+    </feature>
+    <name>Enel Chile</name>
+    <description>
+        Enel es una compañía de servicios dedicada a la distribución, comercialización y buen uso de la energía eléctrica.
+    </description>
+    <author email="enel.devops.everis@gmail.com" href="http://www.everis.com/">
+      Team Everis Mobile
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <access launch-external="yes" origin="tel:*" />
+    <access launch-external="yes" origin="mailto:*" />
+    <access launch-external="yes" origin="comgooglemaps:*" />
+    <access launch-external="yes" origin="maps:*" />
+    <access launch-external="yes" origin="waze:*" />
+    <access launch-external="yes" origin="geo:*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="comgooglemaps:*" />
+    <allow-intent href="maps:*" />
+    <allow-intent href="waze:*" />
+    <allow-navigation href="*" />
+    <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="UIWebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="ShowSplashScreen" value="true" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="5000" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="android-minSdkVersion" value="19" />
+    <preference name="android-targetSdkVersion" value="23" />
+    <preference name="BackupWebStorage" value="none" />
+</widget>

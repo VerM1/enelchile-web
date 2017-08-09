@@ -1,0 +1,77 @@
+<ion-view class="title-page" title="{{translation.CONTACT | uppercase}}" enable-menu-with-back-views="false">
+    <ion-content scroll="true" padding="false">
+        <div class="header-top-menu-page contact-style">
+            <div class="row menu-page-row">
+                <!--<div class="col-10">
+                    <div class="cursor"></div>
+                </div>-->
+                <div class="col position-rel">
+                    <div class="cursor"></div>
+                    <div class="header-first-row margin-left-30">
+                        <h3>{{translation.INFORMATION_SERVICES}}</h3>
+                    </div>
+                    <div class="header-second-row margin-left-30">
+                       <span>{{translation.INFORMATION_SERVICES_DESCRIPTION}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <!--<button class="button button-block contact-style button-general border-radius-5 border-color-grey-enel" ng-href="tel: {{phoneNumber}}">{{translation.CALL | uppercase}}</button>-->
+                    <a class="button button-block contact-style button-general border-radius-5 border-color-grey-enel" ng-href="tel: {{phoneNumber}}">{{translation.CALL | uppercase}}</a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="header-top-menu-page contact-style margin-top-10">
+            <div class="row menu-page-row">
+                <!--<div class="col-10">
+                    <div class="cursor"></div>
+                </div>-->
+                <div class="col position-rel">
+                    <div class="cursor"></div>
+                    <div class="header-first-row margin-left-30">
+                        <h3>{{translation.CONTACT_FORM}}</h3>
+                    </div>
+                    <div class="header-second-row margin-left-30">
+                        <span>{{translation.CONTACT_FORM_DESCRIPTION}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block contact-style button-general border-radius-5 border-color-grey-enel" ng-click="goContactForm()">{{translation.WRITE_US | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="header-top-menu-page contact-style margin-top-10">
+            <div class="row menu-page-row">
+                <!--<div class="col-10">
+                    <div class="cursor"></div>
+                </div>-->
+                <div class="col position-rel">
+                    <div class="cursor"></div>
+                    <div class="header-first-row margin-left-30">
+                        <h3>{{translation.NEARBY_BRANCHES}}</h3>
+                    </div>
+                    <div class="header-second-row margin-left-30">
+                        <span>{{translation.NEARBY_BRANCHES_DESCRIPTION}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block contact-style button-general border-radius-5 border-color-grey-enel" ng-click="goBranchesMap()">{{translation.SEE_LOCATION | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

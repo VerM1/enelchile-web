@@ -1,0 +1,97 @@
+<ion-view class="title-page" title="{{translation.PROFILE | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <div class="header-top">
+            <div class="row header-subtitle-page">
+                <div class="col center position-rel">
+                    <div class="cursor-profile"></div>
+                    <div class="header-first-row profile-color">
+                        <span>{{userFullName | uppercase}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form name="forms.profileForm1" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm1()">
+                    <ion-item class="border-radius-10">
+                        <ion-checkbox ng-model="checkNotifications" name="checkNotifications" ng-checked="booleanNotifications">{{translation.ACTIVATE_NOTIFICATIONS}}</ion-checkbox>
+                    </ion-item>
+                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                        <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
+                        <input type="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" name="email" ng-model="email" ng-class="{'has-errors' : forms.profileForm1.email.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.email.$valid && forms.profileForm1.$submitted}"
+                            required ng-maxlength="40">
+                        <div class="error-container last-error-container" ng-show="forms.profileForm1.email.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.email.$error">
+                            <div ng-messages-include="views/errorList.html"></div>
+                        </div>
+                    </ion-item>
+
+
+
+                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                        <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
+                        <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-class="{'has-errors' : forms.profileForm1.phone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.phone.$valid && forms.profileForm1.$submitted}"
+                            required>
+                        <div class="error-container last-error-container" ng-show="forms.profileForm1.phone.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.phone.$error">
+                            <div ng-messages-include="views/errorList.html"></div>
+                        </div>
+                    </ion-item>
+
+                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                        <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
+                        <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-class="{'has-errors' : forms.profileForm1.cellphone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.cellphone.$valid && forms.profileForm1.$submitted}">
+                        <div class="error-container last-error-container" ng-show="forms.profileForm1.cellphone.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.cellphone.$error">
+                            <div ng-messages-include="views/errorList.html"></div>
+                        </div>
+                    </ion-item>
+
+                    <div class="row">
+                        <div class="col">
+                            <button class="button button-block profile-style button-general" type="submit">{{translation.SAVE | uppercase}}
+                    </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <form name="forms.profileForm2" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm2()">
+                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                        <label class="label-input-form">{{translation.LABEL_ENTER_NEW_PASS}}</label>
+                        <input type="password" placeholder="{{translation.PLACEHOLDER_ENTER_NEW_PASS}}" name="password" ng-model="password" ng-class="{'has-errors' : forms.profileForm2.password.$invalid && forms.profileForm2.$submitted, 'no-errors' : forms.profileForm2.password.$valid && forms.profileForm2.$submitted}"
+                            required ng-minlength="8" ng-maxlength="30" password-validator>
+                        <div class="error-container last-error-container" ng-show="forms.profileForm2.password.$error && forms.profileForm2.$submitted" ng-messages="forms.profileForm2.password.$error">
+                            <div ng-messages-include="views/errorList.html"></div>
+                        </div>
+                    </ion-item>
+
+                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                        <label class="label-input-form">{{translation.LABEL_REPEAT_NEW_PASS}}</label>
+                        <input type="password" placeholder="{{translation.PLACEHOLDER_REPEAT_NEW_PASS}}" name="newPassword" ng-model="newPassword" match-password="password" ng-class="{'has-errors' : forms.profileForm2.newPassword.$invalid && forms.profileForm2.$submitted, 'no-errors' : forms.profileForm2.newPassword.$valid && forms.profileForm2.$submitted}"
+                            required>
+                        <div class="error-container last-error-container" ng-show="forms.profileForm2.newPassword.$error && forms.profileForm2.$submitted" ng-messages="forms.profileForm2.newPassword.$error">
+                            <div ng-messages-include="views/errorList.html"></div>
+                        </div>
+                    </ion-item>
+                    <div class="row">
+                        <div class="col">
+                            <button class="button button-block profile-style button-general" type="submit">{{translation.SAVE | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col position-rel">
+                <button class="button button-block logout" ng-click="logout()">
+                    <span>{{translation.LOGOUT | uppercase}}</span>
+                    <i class="icon icon_enel_logout"></i>
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

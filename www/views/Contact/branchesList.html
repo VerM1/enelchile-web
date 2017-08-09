@@ -1,0 +1,51 @@
+<ion-view class="title-page" title="{{translation.BRANCHES | uppercase}}">
+    <ion-content scroll="true" padding="false" id="brancheslist">
+        <form name="branches-list-form" novalidate>
+            <div class="center branches-form-subtype">
+                <div class="element" ng-click="goToMap()">
+                    <a class="color-white">
+                        <div class="width-full-size">
+                            {{translation.MAP | uppercase}}
+                        </div>
+                    </a>
+                </div>
+                <div class="element selected-element" ng-click="goToList()">
+                    <a class="color-white">
+                        <div class="width-full-size">
+                            {{translation.LIST | uppercase}}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="list">
+                <ul class="branches-list">
+                    <li value="{{item.titulo}}" ng-click="viewDescription({{item.index}});" ng-repeat="item in branchesList.branches">
+                        <i class="ion-location branches-list-component branches-list-left-icon center contact-color"></i>
+                        <span class="branches-list-component branches-list-title">{{item.titulo | uppercase}}</span>
+                        <i class="ion-chevron-right branches-item-component branches-list-right-icon center contact-color"></i>
+                    </li>
+                    <!--<li value="002" ng-click="viewDescription(002);">
+                        <i class="ion-location branches-list-component branches-list-left-icon center contact-color"></i>
+                        <span class="branches-list-component branches-list-title">TITULO 2</span>
+                        <i class="ion-chevron-right branches-item-component branches-list-right-icon center contact-color"></i>
+                    </li>
+                    <li value="003" ng-click="viewDescription(003);">
+                        <i class="ion-location branches-list-component branches-list-left-icon center contact-color"></i>
+                        <span class="branches-list-component branches-list-title">TITULO 3</span>
+                        <i class="ion-chevron-right branches-item-component branches-list-right-icon center contact-color"></i>
+                    </li>
+                    <li value="004" ng-click="viewDescription(004);">
+                        <i class="ion-location branches-list-component branches-list-left-icon center contact-color"></i>
+                        <span class="branches-list-component branches-list-title">TITULO 4</span>
+                        <i class="ion-chevron-right branches-item-component branches-list-right-icon center contact-color"></i>
+                    </li>
+                    <li value="005" ng-click="viewDescription(005);">
+                        <i class="ion-location branches-list-component branches-list-left-icon center contact-color"></i>
+                        <span class="branches-list-component branches-list-title">TITULO 5</span>
+                        <i class="ion-chevron-right branches-item-component branches-list-right-icon center contact-color"></i>
+                    </li>-->
+                </ul>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

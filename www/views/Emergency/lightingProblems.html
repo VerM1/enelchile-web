@@ -1,0 +1,130 @@
+<ion-view class="title-page" title="{{translation.LIGHTING_PROBLEMS | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <form name="forms.lightingForm" novalidate="" ng-submit="validateForm()">
+            <ion-item class="item-icon-right lined-item select-text-without-icon">
+                <label class="label-input-form">{{translation.LABEL_TYPE_OF_PROBLEM}}</label>
+                <select name="typeOfProblem" title="{{translation.PLACEHOLDER_TYPE_OF_PROBLEM}}" ng-model="typeOfProblem" ng-change="sendAnalytics('Problemas de Alumbrado','Seleccionar tipo de problema '+typeOfProblem )" ng-options="item as item.label for item in listProblemTypes"
+                    ng-class="{'has-errors' : forms.lightingForm.typeOfProblem.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.typeOfProblem.$valid && forms.lightingForm.$submitted}" required>
+                    <!--<option value="" >{{translation.PLACEHOLDER_TYPE_OF_PROBLEM}}</option>-->
+                </select>
+                <div class="error-container last-error-container" ng-show="forms.lightingForm.typeOfProblem.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.typeOfProblem.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <div class="half-column-form">
+                <ion-item class="item-icon-right lined-item input-text-without-icon">
+                    <label class="label-input-form">{{translation.LABEL_STREET}}</label>
+                    <input type="text" name="street" placeholder="{{translation.PLACEHOLDER_STREET}}" ng-model="street" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir Calle')" ng-class="{'has-errors' : forms.lightingForm.street.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.street.$valid && forms.lightingForm.$submitted}"
+                        required>
+                    <div class="error-container last-error-container" ng-show="forms.lightingForm.street.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.street.$error">
+                        <div ng-messages-include="views/errorList.html"></div>
+                    </div>
+                </ion-item>
+            </div>
+            <div class="half-column-form">
+                <ion-item class="item-icon-right lined-item input-text-without-icon">
+                    <label class="label-input-form">{{translation.LABEL_NUMBER}}</label>
+                    <input type="number" name="number" placeholder="{{translation.PLACEHOLDER_NUMBER}}" ng-model="number" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir Número')" ng-class="{'has-errors' : forms.lightingForm.number.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.number.$valid && forms.lightingForm.$submitted}"
+                        required>
+                    <div class="error-container last-error-container" ng-show="forms.lightingForm.number.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.number.$error">
+                        <div ng-messages-include="views/errorList.html"></div>
+                    </div>
+                </ion-item>
+            </div>
+            <ion-item class="item-icon-right lined-item input-text-without-icon">
+                <label class="label-input-form">{{translation.LABEL_DEPARTAMENT}}</label>
+                <input type="number" name="departament" placeholder="{{translation.PLACEHOLDER_DEPARTAMENT}}" ng-model="departament" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir Departamento')" ng-class="{'has-errors' : forms.lightingForm.departament.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.departament.$valid && forms.lightingForm.$submitted}">
+                <!--<div class="error-container last-error-container" ng-show="forms.lightingForm.departament.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.departament.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>-->
+            </ion-item>
+            <ion-item class="item-icon-right lined-item select-text-without-icon">
+                <label class="label-input-form">{{translation.LABEL_STATE}}</label>
+                <select name="state" ng-change="sendAnalytics('Problemas de Alumbrado','Seleccionar Comuna')" title="{{translation.LABEL_STATE}}" ng-model="state" ng-options="item as item.nombreComuna for item in listStates" ng-class="{'has-errors' : forms.lightingForm.state.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.state.$valid && forms.lightingForm.$submitted}"
+                    required>
+                    <option>{{translation.LABEL_STATE}}</option>
+                </select>
+                <div class="error-container last-error-container" ng-show="forms.lightingForm.state.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.state.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+
+
+            <!--no logeado-->
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!authenticated">
+                <label class="label-input-form">{{translation.LABEL_NAME}}</label>
+                <input type="text" name="name" placeholder="{{translation.PLACEHOLDER_NAME}}" ng-model="name" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir Nombre')" ng-class="{'has-errors' : forms.lightingForm.name.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.name.$valid && forms.lightingForm.$submitted}"
+                    ng-required="{{!authenticated}}">
+                <div class="error-container last-error-container" ng-show="forms.lightingForm.name.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.name.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!authenticated">
+                <label class="label-input-form">{{translation.LABEL_LASTNAME}}</label>
+                <input type="text" name="lastname" placeholder="{{translation.PLACEHOLDER_LASTNAME}}" ng-model="lastname" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir Apellidos')" ng-class="{'has-errors' : forms.lightingForm.lastname.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.lastname.$valid && forms.lightingForm.$submitted}"
+                    ng-required="{{!authenticated}}">
+                <div class="error-container last-error-container" ng-show="forms.lightingForm.lastname.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.lastname.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!authenticated">
+                <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
+                <input type="email" name="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" ng-model="email" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir Correo Electrónico')" ng-class="{'has-errors' : forms.lightingForm.email.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.email.$valid && forms.lightingForm.$submitted}"
+                    ng-required="{{!authenticated}}" ng-maxlength="40">
+                <div class="error-container last-error-container" ng-show="forms.lightingForm.email.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.email.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <div class="half-column-form" ng-if="!authenticated">
+                <ion-item class="item-icon-right lined-item input-text-without-icon">
+                    <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
+                    <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_PHONE}}" ng-model="phone" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir teléfono principal')" ng-class="{'has-errors' : forms.lightingForm.phone.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.phone.$valid && forms.lightingForm.$submitted}"
+                        ng-required="{{!authenticated}}">
+                    <div class="error-container last-error-container" ng-show="forms.lightingForm.phone.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.phone.$error">
+                        <div ng-messages-include="views/errorList.html"></div>
+                    </div>
+                </ion-item>
+            </div>
+            <div class="half-column-form" ng-if="!authenticated">
+                <ion-item class="item-icon-right lined-item input-text-without-icon">
+                    <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
+                    <input type="number" name="cellphone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="cellphone" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir Escribir teléfono Secundario')" ng-class="{'has-errors' : forms.lightingForm.cellphone.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.cellphone.$valid && forms.lightingForm.$submitted}"
+                        ng-required="{{!authenticated}}">
+                    <div class="error-container last-error-container" ng-show="forms.lightingForm.cellphone.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.cellphone.$error">
+                        <div ng-messages-include="views/errorList.html"></div>
+                    </div>
+                </ion-item>
+            </div>
+            <div class="row margin-top-10">
+                <div class="col">
+                    <ion-item class="item-icon-right lined-item input-text-without-icon  position-rel">
+                        <label class="label-input-form">{{translation.LABEL_DESCRIBE_THE_INCIDENT}}</label>
+                        <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir detalle del requerimiento')" ng-model="description" ng-class="{'has-errors' : forms.lightingForm.description.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.description.$valid && forms.lightingForm.$submitted}"
+                            required></textarea>
+                        <div class="error-container last-error-container" ng-show="forms.lightingForm.description.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.description.$error">
+                            <div ng-messages-include="views/errorList.html"></div>
+                        </div>
+                    </ion-item>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block emergency-style button-general" ng-click="sendAnalytics('Problemas de Alumbrado','Presionar Aceptar')" type="submit">{{translation.ACCEPT | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button ng-if="authenticated" class="button button-block back-button button-general" ng-click="sendAnalytics('Problemas de Alumbrado','Presionar Volver')" ui-sref="session.emergency">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                    <button ng-if="!authenticated" class="button button-block back-button button-general" ng-click="sendAnalytics('Problemas de Alumbrado','Presionar Volver')" ui-sref="guest.emergency">{{translation.BACK | uppercase}}
+                        <!--<i class="icon icon_enel_check"></i>-->
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col center">
+                <span>{{translation.LIGHTING_PROBLEMS_DISCLAIMER}}</span>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
