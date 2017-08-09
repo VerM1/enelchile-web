@@ -1,8 +1,6 @@
-
-/*
 // modules
 var static = require( 'node-static' ),
-    port = 8080,
+    port = process.env.PORT || 3000;
     http = require( 'http' );
 
 // config
@@ -17,15 +15,3 @@ http.createServer( function ( request, response ) {
         file.serve( request, response );
     } ).resume();
 } ).listen( port );
-*/
-
-var express = require('express');
-var port = process.env.PORT || 3000;
-var app = express.createServer();
-
-app.get('/', function(request, response) {
-    //response.sendfile(__dirname + '/index.html');
-	response.sendfile('./www/index.html');
-}).configure(function() {
-    app.use('/images', express.static(__dirname + '/images'));
-}).listen(port);
