@@ -11,7 +11,7 @@
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
                         <label class="label-input-form">{{translation.LABEL_RUT}}</label>
                         <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-class="{'has-errors' : forms.loginForm.rut.$invalid && forms.loginForm.$submitted, 'no-errors' : forms.loginForm.rut.$valid && forms.loginForm.$submitted}" required
-                            ng-rut rut-format="none" asset-format asset-validator>
+                            ng-rut rut-format="none" asset-format asset-validator ng-maxlength="10">
                         <div class="error-container last-error-container" ng-show="forms.loginForm.rut.$error && forms.loginForm.$submitted" ng-messages="forms.loginForm.rut.$error">
                             <div ng-messages-include="views/errorList.html"></div>
                         </div>

@@ -146,6 +146,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         var apellidoMaterno = $scope.forms.contactForm.motherLastName.$viewValue;
         var email = $scope.forms.contactForm.email.$viewValue;
         var telefono = $scope.forms.contactForm.phone.$viewValue;
+        var movil = $scope.forms.contactForm.cellphone.$viewValue;
         if (formData) {
           formData.rut = $scope.forms.contactForm.rut.$viewValue;
           formData.name = $scope.forms.contactForm.names.$viewValue;
@@ -153,6 +154,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           formData.motherLastname = $scope.forms.contactForm.motherLastName.$viewValue;
           formData.email = $scope.forms.contactForm.email.$viewValue;
           formData.phone = $scope.forms.contactForm.phone.$viewValue;
+          formData.cellphone = $scope.forms.contactForm.cellphone.$viewValue;
 
         } else {
           formData = {
@@ -161,13 +163,14 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
             lastname: $scope.forms.contactForm.lastName.$viewValue,
             motherLastname: $scope.forms.contactForm.motherLastName.$viewValue,
             email: $scope.forms.contactForm.email.$viewValue,
-            phone: $scope.forms.contactForm.phone.$viewValue
+            phone: $scope.forms.contactForm.phone.$viewValue,
+            cellphone: $scope.forms.contactForm.cellphone.$viewValue
           };
         }
         $ionicLoading.show({
           template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
         });
-        ContactService.setContactForm(numeroSuministro, asunto, rut, nombres, apellidoPaterno, apellidoMaterno, email, telefono, descripcion).then(function(response) {
+        ContactService.setContactForm(numeroSuministro, asunto, rut, nombres, apellidoPaterno, apellidoMaterno, email, telefono, movil, descripcion).then(function(response) {
           $ionicLoading.hide();
           LocalStorageProvider.setLocalStorageItem('no_session_form_data', formData);
           var modalType = 'validation';
@@ -206,6 +209,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           $scope.forms.contactForm.motherLastName.$setViewValue(formData.motherLastname);
           $scope.forms.contactForm.email.$setViewValue(formData.email);
           $scope.forms.contactForm.phone.$setViewValue(formData.phone);
+          $scope.forms.contactForm.cellphone.$setViewValue(formData.cellphone);
           var clientnum = LocalStorageProvider.getLocalStorageItem('no_session_client_number');
           if (clientnum) {
             $scope.forms.contactForm.numClient.$setViewValue(clientnum);
@@ -217,6 +221,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           $scope.forms.contactForm.motherLastName.$viewValue = '';
           $scope.forms.contactForm.email.$viewValue = '';
           $scope.forms.contactForm.phone.$viewValue = '';
+          $scope.forms.contactForm.cellphone.$viewValue = '';
           $scope.forms.contactForm.numClient.$viewValue = '';
         }
         $scope.forms.contactForm.rut.$render();
@@ -225,6 +230,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         $scope.forms.contactForm.motherLastName.$render();
         $scope.forms.contactForm.email.$render();
         $scope.forms.contactForm.phone.$render();
+        $scope.forms.contactForm.cellphone.$render();
         $scope.forms.contactForm.numClient.$render();
 
       }

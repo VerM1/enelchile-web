@@ -1,0 +1,34 @@
+<ion-modal-view title="{{translation.ALERT | uppercase}}" class="help-modal-container">
+    <ion-header-bar>
+        <span class="title-page">{{modal.title}}</span>
+        <i class="usage-color ion-ios-information input-text-icon-helper"></i>
+    </ion-header-bar>
+    <ion-content scroll="true" overflow-scroll="true">
+        <form name="forms.addAssetForm" novalidate="" ng-submit="validateFormAddAsset()">
+            <ion-item class="item-icon-right lined-item input-text-without-icon">
+                <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
+                <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="numClient" ng-model="numClient" ng-class="{'has-errors' : forms.addAssetForm.numClient.$invalid && forms.addAssetForm.$submitted, 'no-errors' : forms.addAssetForm.numClient.$valid && forms.addAssetForm.$submitted}"
+                    required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="9">
+                <div class="error-container last-error-container" ng-show="forms.addAssetForm.numClient.$error && forms.addAssetForm.$submitted" ng-messages="forms.addAssetForm.numClient.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+
+            <ion-item class="item-icon-right lined-item input-text-without-icon">
+                <label class="label-input-form">{{translation.LABEL_NUM_LAST_SERVICE}}</label>
+                <input type="number" placeholder="{{translation.PLACEHOLDER_NUM_LAST_SERVICE}}" name="numService" ng-model="numService" ng-class="{'has-errors' : forms.addAssetForm.numService.$invalid && forms.addAssetForm.$submitted, 'no-errors' : forms.addAssetForm.numService.$valid && forms.addAssetForm.$submitted}"
+                    required ng-maxlength="10">
+                <div class="error-container last-error-container" ng-show="forms.addAssetForm.numService.$error && forms.addAssetForm.$submitted" ng-messages="forms.addAssetForm.numService.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+
+            <div class="row">
+                <button class="col button button-block usage-style button-general" type="submit">{{translation.ADD | uppercase}}
+                    </button>
+                <button class="col button button-block usage-style button-general" ng-click="closeModal()">{{translation.CLOSE | uppercase}}
+                    </button>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>

@@ -62,6 +62,7 @@ angular.module('AccessModule').controller('homeCtrl', function($scope, $state, $
               assetData.numeroSuministroDv = formatedClientNumber;
               assetData.direccion = assetDebt.direccion;
               assetData.items = response;
+              assetData.index = 0;
               DataMapService.setItem("payBillObject", assetData);
               if (!$rootScope.isLogged) {
                 LocalStorageProvider.setLocalStorageItem('no_session_client_number', formatedClientNumber);
@@ -180,7 +181,10 @@ angular.module('AccessModule').controller('homeCtrl', function($scope, $state, $
 
   //DECLARACION DEL OBJETO DE CERRADO DE MODALES
   $scope.closeModal = function() {
-    $scope.modal.hide();
+    $scope.modal.remove()
+      .then(function() {
+        $scope.modal = null;
+      });
   };
 
 

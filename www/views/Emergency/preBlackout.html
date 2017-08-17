@@ -13,7 +13,7 @@
                             <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
                             <i class="button button-clear icon color-pink ion-ios-information input-text-icon-helper" ng-click="helpModal()"></i>
                             <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="clientNum" ng-model="clientNum" ng-blur="sendAnalytics('Corte de luz - Paso 1','Escribir número de cliente')" ng-class="{'has-errors' : forms.preBlackoutForm.clientNum.$invalid && forms.preBlackoutForm.$submitted, 'no-errors' : forms.preBlackoutForm.clientNum.$valid && forms.preBlackoutForm.$submitted}"
-                                required ng-rut rut-format="none" asset-format asset-validator>
+                                required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="9">
                             <div class="error-container last-error-container" ng-show="forms.preBlackoutForm.clientNum.$error && forms.preBlackoutForm.$submitted" ng-messages="forms.preBlackoutForm.clientNum.$error">
                                 <div ng-messages-include="views/errorList.html"></div>
                             </div>

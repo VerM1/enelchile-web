@@ -142,7 +142,10 @@ angular.module('CoreModule').controller('preBlackoutCtrl', function($scope, $sta
 
   //DECLARACION DEL OBJETO DE CERRADO DE MODALES
   $scope.closeModal = function() {
-    $scope.modal.hide();
+    $scope.modal.remove()
+      .then(function() {
+        $scope.modal = null;
+      });
   };
 
 

@@ -21,8 +21,8 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
   $scope.typesOfProblems1 = {};
   $scope.typesOfProblems2 = {};
   var selectedTypeProblem = 0;
-  $scope.selected1tab = true;
-  $scope.selected2tab = false;
+  $scope.selected1tab = false;
+  $scope.selected2tab = true;
 
   function init() {
     $scope.isLogged = $rootScope.isLogged;
@@ -81,7 +81,9 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
         if (DataMapService.getItem("uniqueAsset", false)) {
           $log.info("ES UN ELEMENTO UNICO");
           $scope.dataBlackout.items = [];
-          $scope.dataBlackout.items.push(DataMapService.getItem("reportBlackoutObject", false));
+          var items = DataMapService.getItem("reportBlackoutObject", false);
+          $scope.dataBlackout.items.push(items);
+          clientNumber = items.numeroSuministro;
           $log.info("items: ", $scope.dataBlackout.items);
           $ionicSlideBoxDelegate.update();
         } else {
@@ -157,6 +159,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
           formData.lastname = $scope.forms.blackoutForm.lastnames.$viewValue;
           formData.email = $scope.forms.blackoutForm.email.$viewValue;
           formData.phone = $scope.forms.blackoutForm.phone.$viewValue;
+          formData.cellphone = $scope.forms.blackoutForm.cellphone.$viewValue;
           formData.description = $scope.forms.blackoutForm.description.$viewValue;
         }
 
@@ -167,6 +170,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
             lastnames: $scope.forms.blackoutForm.lastnames.$viewValue,
             email: $scope.forms.blackoutForm.email.$viewValue,
             phone: $scope.forms.blackoutForm.phone.$viewValue,
+            cellphone: $scope.forms.blackoutForm.cellphone.$viewValue,
             description: $scope.forms.blackoutForm.description.$viewValue
           };
         }
@@ -188,7 +192,8 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
           $scope.forms.blackoutForm.name.$modelValue,
           $scope.forms.blackoutForm.lastnames.$modelValue,
           $scope.forms.blackoutForm.email.$modelValue,
-          $scope.forms.blackoutForm.phone.$modelValue
+          $scope.forms.blackoutForm.phone.$modelValue,
+          $scope.forms.blackoutForm.cellphone.$modelValue
         ).then(callbackSuccess, callbackError);
       }
     } else {
@@ -206,6 +211,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
           formData.lastname = $scope.forms.blackoutForm.lastnames.$viewValue;
           formData.email = $scope.forms.blackoutForm.email.$viewValue;
           formData.phone = $scope.forms.blackoutForm.phone.$viewValue;
+          formData.cellphone = $scope.forms.blackoutForm.cellphone.$viewValue;
         } else {
           $log.debug("está autenticado: no se guardará data en LS");
         }
@@ -216,7 +222,8 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
             name: $scope.forms.blackoutForm.name.$viewValue,
             lastnames: $scope.forms.blackoutForm.lastnames.$viewValue,
             email: $scope.forms.blackoutForm.email.$viewValue,
-            phone: $scope.forms.blackoutForm.phone.$viewValue
+            phone: $scope.forms.blackoutForm.phone.$viewValue,
+            cellphone: $scope.forms.blackoutForm.cellphone.$viewValue
           };
         } else {
           $log.debug("está autenticado: no se guardará data en LS");
@@ -228,8 +235,8 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
     } else {
       $log.debug("no existe aun el formulario");
     }
-    $scope.selected1tab = true;
-    $scope.selected2tab = false;
+    $scope.selected1tab = false;
+    $scope.selected2tab = true;
   }
 
 

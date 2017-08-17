@@ -1,4 +1,4 @@
-angular.module('BillsModule').controller('payBillCtrl', function($scope, $state, DataMapService, $log, AnalyticsService, $rootScope, $ionicLoading, BillsService, PopupService, ENDPOINTS, $sce, UTILS_CONFIG) {
+angular.module('BillsModule').controller('payBillCtrl', function($scope, $state, DataMapService, $log, AnalyticsService, $rootScope, $ionicLoading, BillsService, PopupService, ENDPOINTS, $sce, UTILS_CONFIG, LocalStorageProvider) {
 
   // $scope.checkedItem = false;
   // $scope.showPreviousAmount = false;
@@ -14,7 +14,7 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
   $scope.showThirdElement = false;
   $scope.showSecondElement = false;
   $scope.showFirstElement = false;
-
+  var index = 0;
 
   function init() {
     $scope.isLogged = $rootScope.isLogged;
@@ -22,38 +22,17 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
     $scope.numeroSuministroDv = "";
     $scope.direccion = "";
     $scope.items = [];
-    // DataMapService.getItem("payBillObject");
-    // $log.debug("$scope.items: ", $scope.items);
+
     try {
       var assetObject = DataMapService.getItem("payBillObject");
       $log.debug("payBillObjects: ", assetObject);
       if (assetObject) {
-        // $scope.items.direccion = assetObject.direccion;
-        // $scope.items.estadoSuministro = assetObject.estadoSuministro;
-        // $scope.items.idSuministro = assetObject.idSuministro;
-        // $scope.items.montoDeudaAnterior = assetObject.montoDeudaAnterior;
-        // $scope.items.montoUltimaBoleta = assetObject.montoUltimaBoleta;
-        // $scope.items.nombreSuministro = assetObject.nombreSuministro;
-        // $scope.items.numeroSuministro = assetObject.numeroSuministro;
-
-        // if (parseInt($scope.items.montoUltimaBoleta, 10) > 0) {
-        //     $scope.checkedItem = true;
-        //     $scope.showRecentAmount = true;
-        //     $scope.disablePayButton = false;
-        // }
-        // if (parseInt($scope.items.montoDeudaAnterior, 10) > 0) {
-        //     $scope.showPreviousAmount = true;
-        //     $scope.disablePayButton = false;
-        // }
         $scope.numeroSuministro = assetObject.numeroSuministro;
         $scope.numeroSuministroDv = assetObject.numeroSuministroDv;
         $scope.direccion = assetObject.direccion;
         $scope.items = assetObject.items;
+        index = assetObject.index;
         $log.info("largo array: ", $scope.items.length);
-        // var asd = [];
-        // asd.push($scope.items[0]);
-        // $scope.items = asd;
-        // $log.info("nuevo largo array: ", $scope.items);
         if ($scope.items[2]) {
           $scope.payBill = assetObject.items[2].monto;
           $scope.selectedDebt = assetObject.items[2];
@@ -95,20 +74,21 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
       request.email = $scope.forms.payBillForm.email.$viewValue;
       request.expirationDate = $scope.selectedDebt.fechaVencimiento;
       request.issueDate = $scope.selectedDebt.fechaEmision;
-      request.onClickDate = moment().format("DD/MM/YYYY HH:mm:ss");;
+      request.onClickDate = moment().format("DD/MM/YYYY HH:mm:ss");
       request.barcode = $scope.selectedDebt.codigoBarra;
       request.rut = "11111111-1";
       request.name = "Nombre";
-      request.lastName = "Nombre";
-
       if ($scope.isLogged) {
-        request.rut = "11111111-1";
-        request.name = "Nombre";
-        request.lastName = "Nombre";
+        if (LocalStorageProvider.getLocalStorageItem("USER_DATA", false)) {
+          var userData = LocalStorageProvider.getLocalStorageItem("USER_DATA", false)
+          request.rut = userData.rut;
+          request.name = userData.nombre;
+        }
       }
       $ionicLoading.show({
         template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
       });
+      $scope.selectedTrxId = $scope.selectedDebt.trxId;
       BillsService.generateXmlPayment(request).then(function(response) {
         $ionicLoading.hide();
         $log.info("conversion exitosa de XML");
@@ -118,10 +98,16 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
         modalContent.url = $sce.trustAsResourceUrl(ENDPOINTS.ENDPOINTS_PAYMENT);
         modalContent.xml = response;
         PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
-          // $scope.modal.hide();
           $scope.modal.remove()
             .then(function() {
               $scope.modal = null;
+              if ($scope.isLogged) {
+                LocalStorageProvider.removeLocalStorageItem("asset_debt_" + index);
+                LocalStorageProvider.removeLocalStorageItem("asset_detail_" + index);
+                $state.go("session.usage");
+              } else {
+                $state.go("guest.home");
+              }
             });
         });
       }, function(err) {
@@ -130,7 +116,15 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
         var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
         var modalContent = err;
         PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
-          $scope.modal.hide();
+          $scope.modal.remove()
+            .then(function() {
+              $scope.modal = null;
+              if ($scope.isLogged) {
+                $state.go("session.usage");
+              } else {
+                $state.go("guest.home");
+              }
+            });
         });
       });
     } else {
@@ -145,6 +139,87 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
     $scope.selectedDebt = $scope.items[index];
     // $log.info("valor de debt: ", $scope.selectedDebt);
   }
+
+
+
+  $scope.generateTemplateBill = function(typeModal, url) {
+    var trxidDecode = $scope.selectedTrxId;
+    var urlAux = url.split("?")[1];
+    urlAux = decodeURIComponent(urlAux);
+    var responseParameters = (urlAux).split("&");
+    var parameterMap = [];
+    for (var i = 0; i < 2; i++) {
+      parameterMap[responseParameters[i].split("=")[0]] = responseParameters[i].split("=")[1];
+    }
+    if (parameterMap.idTransaccion !== undefined && parameterMap.idTransaccion !== null) {
+      var base64 = parameterMap.idTransaccion;
+      var words = CryptoJS.enc.Base64.parse(base64);
+      trxidDecode = CryptoJS.enc.Utf8.stringify(words);
+    } else {
+      $log.error("Imposible to finde trxid");
+    }
+
+
+    $scope.modal.remove()
+      .then(function() {
+        $scope.modal = null;
+      });
+    $ionicLoading.show({
+      template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
+    });
+
+    BillsService.generateTemplateBill(trxidDecode).then(function(response) {
+      $ionicLoading.hide();
+      $log.info("generacion exitosa de template de la boleta");
+      var modalType = typeModal;
+      var modalTitle = "";
+      var modalContent = "";
+      if (typeModal == "successPayment") {
+        modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
+        modalContent = {};
+        modalContent.numeroCliente = $scope.numeroSuministroDv;
+        modalContent.monto = $scope.selectedDebt.monto;
+        modalContent.direccion = $scope.direccion;
+        modalContent.numeroTransaccion = response.IdTransaccionComercial;
+        modalContent.canalPago = response.nombreBanco;
+        modalContent.fecha = response.fechaOnClick;
+        modalContent.mensaje = response.mensaje;
+        modalContent.rrss = UTILS_CONFIG.PAYMENT_RRSS_IMAGE;
+      } else {
+        modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+        modalContent = response.mensaje;
+      }
+
+      PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
+        $scope.modal.remove()
+          .then(function() {
+            $scope.modal = null;
+            if ($scope.isLogged) {
+              $state.go("session.usage");
+            } else {
+              $state.go("guest.home");
+            }
+          });
+      });
+    }, function(err) {
+      $ionicLoading.hide();
+      var modalType = 'error';
+      var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+      var modalContent = err;
+      PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
+        $scope.modal.remove()
+          .then(function() {
+            $scope.modal = null;
+            if ($scope.isLogged) {
+              $state.go("session.usage");
+            } else {
+              $state.go("guest.home");
+            }
+          });
+      });
+    });
+  }
+
 
   // $scope.selectItem = function(debt) {
   //     $log.info("valor de debt: ", debt);

@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'enel_icons';
-    src: url('../fonts/enel_icons.eot?7922nc');
-    src: url('../fonts/enel_icons.eot?7922nc#iefix') format('embedded-opentype'), url('../fonts/enel_icons.ttf?7922nc') format('truetype'), url('../fonts/enel_icons.woff?7922nc') format('woff'), url('../fonts/enel_icons.svg?7922nc#enel_icons') format('svg');
+    src: url('../fonts/enel_icons.eot?6mqqdv');
+    src: url('../fonts/enel_icons.eot?6mqqdv#iefix') format('embedded-opentype'), url('../fonts/enel_icons.ttf?6mqqdv') format('truetype'), url('../fonts/enel_icons.woff?6mqqdv') format('woff'), url('../fonts/enel_icons.svg?6mqqdv#enel_icons') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -41,94 +41,106 @@
     content: "\e904";
 }
 
-.icon_enel_download_bill:before {
+.icon_enel_close:before {
     content: "\e905";
 }
 
-.icon_enel_email:before {
+.icon_enel_download_bill:before {
     content: "\e906";
 }
 
-.icon_enel_emergency:before {
+.icon_enel_email:before {
     content: "\e907";
 }
 
-.icon_enel_featured:before {
+.icon_enel_emergency:before {
     content: "\e908";
 }
 
-.icon_enel_form:before {
+.icon_enel_featured:before {
     content: "\e909";
 }
 
-.icon_enel_help:before {
+.icon_enel_form:before {
     content: "\e90a";
 }
 
-.icon_enel_home:before {
+.icon_enel_help:before {
     content: "\e90b";
 }
 
-.icon_enel_house:before {
+.icon_enel_home:before {
     content: "\e90c";
 }
 
-.icon_enel_lighting:before {
+.icon_enel_house:before {
     content: "\e90d";
 }
 
-.icon_enel_location:before {
+.icon_enel_launcher:before {
     content: "\e90e";
 }
 
-.icon_enel_logout:before {
+.icon_enel_lighting:before {
     content: "\e90f";
 }
 
-.icon_enel_my_bills:before {
+.icon_enel_location:before {
     content: "\e910";
 }
 
-.icon_enel_neighborhood:before {
+.icon_enel_logout:before {
     content: "\e911";
 }
 
-.icon_enel_notifications:before {
+.icon_enel_my_bills:before {
     content: "\e912";
 }
 
-.icon_enel_payment:before {
+.icon_enel_neighborhood:before {
     content: "\e913";
 }
 
-.icon_enel_payment_options:before {
+.icon_enel_notifications:before {
     content: "\e914";
 }
 
-.icon_enel_phone:before {
+.icon_enel_payment:before {
     content: "\e915";
 }
 
-.icon_enel_profile:before {
+.icon_enel_payment_options:before {
     content: "\e916";
 }
 
-.icon_enel_reading_day:before {
+.icon_enel_phone:before {
     content: "\e917";
 }
 
-.icon_enel_reading_night:before {
+.icon_enel_profile:before {
     content: "\e918";
 }
 
-.icon_enel_reading_peak:before {
+.icon_enel_reading_day:before {
     content: "\e919";
 }
 
-.icon_enel_risk:before {
+.icon_enel_reading_night:before {
     content: "\e91a";
 }
 
-.icon_enel_search:before {
+.icon_enel_reading_peak:before {
     content: "\e91b";
+}
+
+.icon_enel_risk:before {
+    content: "\e91c";
+}
+
+.icon_enel_rotate:before {
+    content: "\e91d";
+}
+
+.icon_enel_search:before {
+    content: "\e91e";
 }

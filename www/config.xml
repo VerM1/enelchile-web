@@ -35,6 +35,7 @@
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="AutoHideSplashScreen" value="true" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="FadeSplashScreen" value="true" />
     <preference name="android-minSdkVersion" value="19" />
     <preference name="android-targetSdkVersion" value="23" />

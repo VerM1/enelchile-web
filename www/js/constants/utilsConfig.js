@@ -36,9 +36,10 @@ angular.module("appenel").value("UTILS_CONFIG", {
   PAYMENT_PAYMENTTYPE_1: "DV",
   PAYMENT_PAYMENTTYPE_2: "UD",
   PAYMENT_PAYMENTTYPE_3: "DA",
+  PAYMENT_RRSS_IMAGE: '<img src="img/dummy/rrss.png" alt="help" class="width-full-size"/>',
 
   /*  CONTACT_MODULE */
-  CONTACT_PHONE_NUMER: '+56226960000',
+  CONTACT_PHONE_NUMER: '6006960000',
   CONTACT_CODE_BRANCHES: "01",
   CONTACT_CODE_PAYMENT_PLACES: "02",
 
@@ -57,6 +58,13 @@ angular.module("appenel").value("UTILS_CONFIG", {
 
 
   /*  IMAGES_APP */
-  IMAGE_ASSET_MODAL_HELP: '<img src="img/help/enel_help.png" alt="help" class="width-full-size" />'
+  IMAGE_ASSET_MODAL_HELP: '<img src="img/help/enel_help.png" alt="help" class="width-full-size" />',
+
+  /*  ENCRYPTION KEY CRYPTO-JS */
+  ENABLE_ENCRYPTION_LOCALSTORAGE: false,
+  SECRET_KEY_ENCRYPTION: 'Everis2017-',
+
+  /*  SECRET KEY TESTFAIRY */
+  TESTFAIRY_SECRET_KEY: '5bd10c0da3a67fda56ea3218175f260b96f49d0b'
 
 });

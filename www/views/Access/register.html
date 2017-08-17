@@ -4,7 +4,7 @@
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_RUT}}</label>
                 <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-blur="sendAnalytics('Registro','Escribir Rut')" ng-class="{'has-errors' : forms.registerForm.rut.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.rut.$valid && forms.registerForm.$submitted}"
-                    required ng-rut rut-format="none" asset-format asset-validator>
+                    required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="10">
                 <div class="error-container last-error-container" ng-show="forms.registerForm.rut.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.rut.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
@@ -35,7 +35,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
-                <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-blur="sendAnalytics('Registro','Escribir teléfono principal')" ng-class="{'has-errors' : forms.registerForm.phone.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.phone.$valid && forms.registerForm.$submitted}"
+                <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Registro','Escribir teléfono principal')" ng-class="{'has-errors' : forms.registerForm.phone.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.phone.$valid && forms.registerForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.registerForm.phone.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.phone.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -43,7 +43,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
-                <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-blur="sendAnalytics('Registro','Escribir teléfono secundario')" ng-class="{'has-errors' : forms.registerForm.cellphone.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.cellphone.$valid && forms.registerForm.$submitted}">
+                <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Registro','Escribir teléfono secundario')" ng-class="{'has-errors' : forms.registerForm.cellphone.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.cellphone.$valid && forms.registerForm.$submitted}">
                 <div class="error-container last-error-container" ng-show="forms.registerForm.cellphone.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.cellphone.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
@@ -59,7 +59,7 @@
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
                 <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="numClient" ng-model="numClient" ng-blur="sendAnalytics('Registro','Escribir número de cliente')" ng-class="{'has-errors' : forms.registerForm.numClient.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.numClient.$valid && forms.registerForm.$submitted}"
-                    required ng-rut rut-format="none" asset-format asset-validator>
+                    required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="9">
                 <div class="error-container last-error-container" ng-show="forms.registerForm.numClient.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.numClient.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>

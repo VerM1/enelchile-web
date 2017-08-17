@@ -19,6 +19,7 @@
             var items = [];
             if (respuesta.data != null && respuesta.data.length > 0) {
               angular.forEach(respuesta.data, function(value, key) {
+                // if (value.nroDocumento != null && value.nroDocumento.toString() != "0" && value.nroDocumento.toString() != "-1") {
                 $log.info(key + ' : ', value);
                 var data = {};
                 data.index = key;
@@ -37,6 +38,10 @@
                 data.consumo = value.consumo;
                 data.codigoBarra = value.codigoBarra;
                 items.push(data);
+                // } else {
+                //   $log.debug("el elemento ya fue pagado, no se incluira en la lista");
+                // }
+
               });
             }
             defer.resolve(items);
@@ -242,7 +247,9 @@
           $log.info('Get User Session: ', respuesta);
           if (respuesta.code.toString() == "200") {
             var obj = {};
-            var loginData = {};
+            //   var loginData = {};
+            obj.rut = userNumber;
+            obj.password = password;
             obj.userId = respuesta.data.userId;
             obj.telefonoMovil = respuesta.data.telefonoMovil;
             obj.telefonoFijo = respuesta.data.telefonoFijo;
@@ -254,17 +261,17 @@
             obj.contactId = respuesta.data.contactId;
             obj.apellidoPaterno = respuesta.data.apellidoPaterno;
             obj.apellidoMaterno = respuesta.data.apellidoMaterno;
-            loginData.userNumber = userNumber;
-            loginData.password = password;
-            LocalStorageProvider.setLocalStorageItem("access_token", obj.sessionId);
+            //   loginData.userNumber = userNumber;
+            //   loginData.password = password;
+            // LocalStorageProvider.setLocalStorageItem("access_token", obj.sessionId);
             // LocalStorageProvider.setLocalStorageItem("contact_id", obj.contactId);
-            LocalStorageProvider.setLocalStorageItem("user_data", obj);
-            LocalStorageProvider.setLocalStorageItem("login_data", loginData);
+            LocalStorageProvider.setLocalStorageItem("USER_DATA", obj);
+            //   LocalStorageProvider.setLocalStorageItem("login_data", loginData);
             SALESFORCE_CONFIG.accessToken = obj.sessionId;
             SALESFORCE_CONFIG.loginURL = ENDPOINTS.ENDPOINTS_SALESFORCE;
             SALESFORCE_CONFIG.proxyURL = ENDPOINTS.ENDPOINTS_SALESFORCE;
             LocalStorageProvider.setLocalStorageItem("SALESFORCE_CONFIG", SALESFORCE_CONFIG);
-            obj.SALESFORCE_CONFIG = SALESFORCE_CONFIG;
+            //   obj.SALESFORCE_CONFIG = SALESFORCE_CONFIG;
             force.init(SALESFORCE_CONFIG);
             // $log.info("obj: ", SALESFORCE_CONFIG);
             defer.resolve(obj);
@@ -349,9 +356,10 @@
         try {
           force.discardToken();
           var exception = [];
-          exception.push("Object_branches");
+          // exception.push("Object_branches");
+          exception.push("branches");
           exception.push("no_session_client_number");
-          exception.push("passTuto");
+          exception.push("pass_tuto");
           LocalStorageProvider.removeLocalStorageItemExcept(exception);
           SALESFORCE_CONFIG.accessToken = '';
           // SALESFORCE_CONFIG.refreshToken = '';

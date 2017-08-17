@@ -1,6 +1,6 @@
 <ion-view class="title-page" title="{{translation.BRANCHES | uppercase}}" enable-menu-with-back-views="false">
     <ion-content scroll="true" padding="false" id="branchesmap">
-        <form name="branches-map-form" novalidate>
+        <form name="branches-map-form" ng-submit="searchElementOnMap(search)" novalidate>
             <div class="center branches-form-subtype">
                 <div class="element selected-element" ng-click="goToMap()">
                     <a class="color-white">
@@ -19,8 +19,8 @@
             </div>
             <div class="branches-map-container">
                 <div class="branches-map-search-box contact-color">
-                    <input id="input-search-map" class="controls" ng-model="search" ng-blur="sendAnalytics('Sucursales Cercanas','Escribir dirección')" type="text" placeholder="{{translation.SEARCH_PLACE}}">
-                    <i class="ion-search" id="input-search-map-icon" ng-click="searchElementOnMap(search)"></i>
+                    <input id="input-search-map" class="controls" ng-model="search" ng-blur="sendAnalytics('Sucursales Cercanas','Escribir dirección')" type="search" placeholder="{{translation.SEARCH_PLACE}}">
+                    <i class="icon icon_enel_search" id="input-search-map-icon" ng-click="searchElementOnMap(search)"></i>
                 </div>
                 <div id="map" data-tap-disabled="true">
                 </div>

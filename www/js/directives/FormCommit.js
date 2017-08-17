@@ -4,6 +4,9 @@
 
 angular.module('appenel').directive('onloadSubmitForm', function($timeout) {
     return {
+        scope: {
+            callBack: '&iframeOnload'
+        },
         link: function(scope, element, attrs) {
             console.log("scope: ", scope);
             console.log("element: ", element);

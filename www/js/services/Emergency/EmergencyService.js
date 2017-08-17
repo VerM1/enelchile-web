@@ -2,18 +2,19 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
 
   pub = {};
   //PUBLIC SERVICES
-  pub.emergencyLightCut = function(numeroSuministro, siniestro, tipoDeProblema, nombre, apellidos, email, telefono) {
+  pub.emergencyLightCut = function(numeroSuministro, siniestro, tipoDeProblema, nombre, apellidos, email, telefono, telefonoMovil) {
     var defer = $q.defer();
     var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_EXTERNAL_EMERGENCY_BLACKOUT;
     var data = {
       bean: {
         numeroSuministro: numeroSuministro,
         tipoDeProblema: tipoDeProblema,
-        siniestro: siniestro,
+        descripcion: siniestro,
         nombre: nombre,
         apellidos: apellidos,
         email: email,
-        telefono: telefono
+        telefonoPrimario: telefono,
+        telefonoSecundario: telefonoMovil
       }
     };
     var params = {};
@@ -66,8 +67,8 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
         nombre: nombre,
         apellidos: apellidos,
         email: email,
-        telefonoFijo: telefonoFijo,
-        telefonoSegundario: telefonoMovil,
+        telefonoPrimario: telefonoFijo,
+        telefonoSecundario: telefonoMovil,
         siniestro: siniestro
       }
 
@@ -124,8 +125,8 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
         nombre: nombre,
         apellidos: apellidos,
         email: email,
-        telefonoFijo: telefonoFijo,
-        telefonoSegundario: telefonoMovil,
+        telefonoPrimario: telefonoFijo,
+        telefonoSecundario: telefonoMovil,
         siniestro: siniestro
       }
 

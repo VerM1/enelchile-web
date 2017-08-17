@@ -26,7 +26,9 @@
             <ion-item class="lined-item select-text-without-icon position-rel">
                 <label class="label-input-form">{{translation.LABEL_TOPIC}}</label>
                 <select name="topic" title="{{translation.PLACEHOLDER_TOPIC}}" ng-model="topic" ng-options="item as item.label for item in typeList" ng-change="sendAnalytics('Formulario de Contacto','Seleccionar motivo '+topic )" ng-class="{'has-errors' : forms.contactForm.topic.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.topic.$valid && forms.contactForm.$submitted}"
-                    required></select>
+                    required>
+                    <option value="" disabled selected>{{translation.PLACEHOLDER_SELECT}}</option>
+                </select>
                 <div class="error-container last-error-container" ng-show="forms.contactForm.topic.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.topic.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
@@ -35,7 +37,7 @@
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
                 <label class="label-input-form">{{translation.LABEL_RUT}}</label>
                 <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Rut')" ng-class="{'has-errors' : forms.contactForm.rut.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.rut.$valid && forms.contactForm.$submitted}"
-                    required ng-rut rut-format="none" asset-format asset-validator>
+                    required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="10">
                 <div class="error-container last-error-container" ng-show="forms.contactForm.rut.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.rut.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
@@ -74,16 +76,24 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
                 <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
-                <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Teléfono')" ng-class="{'has-errors' : forms.contactForm.phone.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.phone.$valid && forms.contactForm.$submitted}"
+                <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Teléfono')" ng-class="{'has-errors' : forms.contactForm.phone.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.phone.$valid && forms.contactForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.contactForm.phone.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.phone.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
+                <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Teléfono')" ng-class="{'has-errors' : forms.contactForm.cellphone.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.cellphone.$valid && forms.contactForm.$submitted}"
+                    required>
+                <div class="error-container last-error-container" ng-show="forms.contactForm.cellphone.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.cellphone.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
                 <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
                 <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="numClient" ng-model="numClient" ng-blur="sendAnalytics('Formulario de Contacto','Escribir Número Cliente')" ng-class="{'has-errors' : forms.contactForm.numClient.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.numClient.$valid && forms.contactForm.$submitted}"
-                    ng-rut rut-format="none" asset-format>
+                    ng-rut rut-format="none" asset-format ng-maxlength="9">
                 <div class="error-container last-error-container" ng-show="forms.contactForm.numClient.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.numClient.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>

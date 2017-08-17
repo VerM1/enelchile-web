@@ -2,6 +2,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
 
   //NAVIGATION TABS
   //$scope.contactId = $rootScope.contactId;
+  $scope.forms = {};
   $scope.orientation;
   $scope.selectedTab = 0;
   $scope.tab0selected = true;
@@ -16,6 +17,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
   $scope.flagChangeTab = 0;
   $scope.tabAnt = 'Resumen - Resumen';
   $scope.orientaAnt = 0;
+  $scope.showRotateIcon = $rootScope.showRotateIcon;
 
   //MÉTODO ANALYTICS
   $scope.sendAnalytics = function(categoria, accion) {
@@ -223,6 +225,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
           $scope.dataUsageAssetUsage.items = response.items;
           $scope.dataUsageAssetUsage.graphlabels = response.graphlabels;
           $scope.dataUsageAssetUsage.graphdata = response.graphdata;
+          $scope.dataUsageAssetUsage.dataset = response.dataset;
           $scope.dataUsageAssetUsage.options = response.options;
           $ionicSlideBoxDelegate.update();
           $ionicLoading.hide();
@@ -272,6 +275,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
           $scope.dataUsageAssetBills.items = response.items;
           $scope.dataUsageAssetBills.graphlabels = response.graphlabels;
           $scope.dataUsageAssetBills.graphdata = response.graphdata;
+          $scope.dataUsageAssetBills.dataset = response.dataset;
           $scope.dataUsageAssetBills.options = response.options;
           $ionicSlideBoxDelegate.update();
           $ionicLoading.hide();
@@ -299,11 +303,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
     }
   }
 
-  //Download Bill
-  $scope.downloadBill = function(index) {
-    AnalyticsService.evento($rootScope.tabActualAnalytics, 'Presionar descargar boleta documento ' + (index + 1)); //Analytics
 
-  }
 
   //PAYMENTS ASSET 
   $scope.dataUsageAssetPayments = {};
@@ -326,8 +326,8 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
           $scope.dataUsageAssetPayments.items = response.items;
           $scope.dataUsageAssetPayments.graphlabels = response.graphlabels;
           $scope.dataUsageAssetPayments.graphdata = response.graphdata;
+          $scope.dataUsageAssetPayments.dataset = response.dataset;
           $scope.dataUsageAssetPayments.options = response.options;
-          $scope.dataUsageAssetPayments.datasets = response.datasets;
           $ionicSlideBoxDelegate.update();
           $ionicLoading.hide();
         },
@@ -382,6 +382,51 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
     getAssetDetail($scope.selectedIdex);
   }
 
+  //Download Bill
+  $scope.downloadBill = function(index, boleta, fecha) {
+    AnalyticsService.evento($rootScope.tabActualAnalytics, 'Presionar descargar boleta documento ' + (index + 1)); //Analytics
+
+    var length = $scope.dataUsageAssetList.items.length;
+    var lengthAssetBills = $scope.dataUsageAssetBills.items.length;
+    if (length > 0 && lengthAssetBills > 0) {
+      var assetId = $scope.dataUsageAssetList.items[index].numeroSuministro;
+      $ionicLoading.show({
+        template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
+      });
+
+      var bill = boleta;
+      var email = "";
+      if (LocalStorageProvider.getLocalStorageItem("USER_DATA")) {
+        var userData = LocalStorageProvider.getLocalStorageItem("USER_DATA");
+        email = userData.email;
+      }
+      var dateAux = fecha.split("/");
+      var month = dateAux[1];
+
+      UsageService.getBillByDate(assetId, bill, email, month).then(function(response) {
+          $ionicLoading.hide();
+          window.open(response.url, '_system');
+        },
+        function(err) {
+          $log.error('Error Get Bill By Date:: ', err);
+          $ionicLoading.hide();
+          var modalType = 'error';
+          var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+          var modalContent = err.message;
+          PopupService.openModal(modalType, modalTitle, modalContent, $scope);
+        });
+    } else {
+      $log.error("Imposible to get bill by date with that AssetId");
+      $ionicLoading.hide();
+      var modalType = 'error';
+      var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+      var modalContent = $rootScope.translation.NO_DATA;
+      PopupService.openModal(modalType, modalTitle, modalContent, $scope);
+    }
+
+  }
+
+
   //PAGO DE CUENTA
   $scope.payBill = function() {
     AnalyticsService.evento($rootScope.tabActualAnalytics, 'Presionar pagar cuenta'); //Analytics
@@ -395,6 +440,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       assetData.numeroSuministroDv = $scope.selectedAssetNumberDv;
       assetData.direccion = $scope.selectedAssetAddress;
       assetData.items = $scope.dataUsageAssetDebt.items;
+      assetData.index = $scope.selectedIdex;
       DataMapService.setItem("payBillObject", assetData);
       $state.go("session.payBill");
     } else {
@@ -476,6 +522,11 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       // _reverseData();
       $scope.isHorizontal = false;
     }
+    $rootScope.showRotateIcon = false;
+    if (!LocalStorageProvider.getLocalStorageItem('show_rotate_icon')) {
+      LocalStorageProvider.setLocalStorageItem('show_rotate_icon', "true")
+    }
+    $scope.showRotateIcon = false;
     $log.debug("current state: " + $state.current.name);
     $route.reload();
   };
@@ -496,6 +547,21 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
     //$state.go('guest.home')
   };
 
+  $scope.addAsset = function() {
+    $log.debug("add_asset");
+    var modalType = 'addAsset';
+    var modalTitle = $rootScope.translation.ADD_ASSET_MODAL_TITLE;
+    var modalContent = "";
+    PopupService.openModal(modalType, modalTitle, modalContent, $scope);
+  }
+
+  $scope.validateFormAddAsset = function() {
+    if ($scope.forms.addAssetForm.$valid) {
+      $log.info("modal form valido");
+    } else {
+      $log.info("modal form invalido");
+    }
+  }
 
   var cleanAll = function() {
     $scope.dataUsageAssetDetail = {};

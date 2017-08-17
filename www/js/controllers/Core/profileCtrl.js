@@ -14,7 +14,19 @@ angular.module('CoreModule').controller('profileCtrl', function($scope, $state, 
         template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
       });
       ProfileService.updateUserData(checkNotifications, email, cellphone, phone)
-        .then(callbackSuccess, callbackError);
+        .then(function(success) {
+          var userData = LocalStorageProvider.getLocalStorageItem('user_data');
+          if (checkNotifications == true) {
+            userData.activarNotificaciones = "si";
+          } else {
+            userData.activarNotificaciones = "no";
+          }
+          userData.email = email;
+          userData.telefonoFijo = phone;
+          userData.telefonoMovil = cellphone;
+          LocalStorageProvider.setLocalStorageItem('user_data', userData);
+          callbackSuccess(success);
+        }, callbackError);
     } else {
       $log.debug("formulario incorrecto");
     }
@@ -32,9 +44,11 @@ angular.module('CoreModule').controller('profileCtrl', function($scope, $state, 
           template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
         });
         ProfileService.changePassword(password, verifiPassword).then(function(success) {
-          var loginData = LocalStorageProvider.getLocalStorageItem('login_data');
-          loginData.password = password;
-          LocalStorageProvider.setLocalStorageItem('login_data', loginData);
+          if (LocalStorageProvider.getLocalStorageItem('user_data')) {
+            var userData = LocalStorageProvider.getLocalStorageItem('user_data');
+            userData.password = password;
+            LocalStorageProvider.setLocalStorageItem('user_data', userData);
+          }
           callbackSuccess(success);
         }, callbackError);
 
@@ -69,8 +83,8 @@ angular.module('CoreModule').controller('profileCtrl', function($scope, $state, 
 
   function resetForm() {
     $log.debug("reseteando Profile");
-    if (LocalStorageProvider.getLocalStorageItem("user_data")) {
-      var obj = LocalStorageProvider.getLocalStorageItem("user_data");
+    if (LocalStorageProvider.getLocalStorageItem("USER_DATA")) {
+      var obj = LocalStorageProvider.getLocalStorageItem("USER_DATA");
       if (obj.activarNotificaciones === "si") {
         $scope.booleanNotifications = true;
       }
@@ -114,11 +128,12 @@ angular.module('CoreModule').controller('profileCtrl', function($scope, $state, 
   $scope.clearUserData = function() {
     AccessService.getLogout();
     $state.go('guest.home')
-    $scope.modal.hide();
+    $scope.modal.remove();
   };
 
   $scope.closeModal = function() {
-    $scope.modal.hide();
+    $scope.modal.remove();
+    $state.go("session.usage");
   };
 
 

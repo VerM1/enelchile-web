@@ -1,0 +1,91 @@
+<ion-modal-view title="{{translation.PAYMENT | uppercase}}" class="help-modal-container">
+    <ion-content scroll="true" padding="false">
+        <div class="width-full-size position-rel">
+            <div class="row button-row-iframe position-rel">
+                <div class="col">
+                    <button ng-click="closeModal()" class="center">
+                        <i class="icon icon_enel_close"></i><br>  
+                        <span>{{translation.CLOSE | uppercase}}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="width-full-size position-rel payment-voucher">
+                <div class="row width-full-size">
+                    <div class="col center">
+                        <img src="img/logos/Enel_Logo_Secondary_color_RGB.png" width="100" class="payment-voucher-logo" alt="Enel Payment Voucher logo ">
+                    </div>
+                </div>
+                <div class="row width-full-size">
+                    <div class="center position-rel payment-voucher-header">
+                        <div class="cursor"></div>
+                        <div class="header-row">
+                            <span>{{translation.PAYMENT_VOUCHER | uppercase}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="dear-user">{{translation.DEAR_USER}}: {{translation.PAYMENT_SUCCESS_CONFIRMATION_TEXT}}</p>
+                        <!--<span class="dear-user">{{translation.PAYMENT_SUCCESS_CONFIRMATION_TEXT}}</span>-->
+                    </div>
+                </div>
+                <div class="row position-rel">
+                    <div class="col content-bill">
+                        <div class="half-column-form">
+                            <ion-item class="item-icon-right lined-item ">
+                                <label class="label-input-form">{{translation.LABEL_PAYMENT_NUM_CLIENT}}</label>
+                                <input type="text" ng-value="modal.content.numeroCliente" disabled>
+                            </ion-item>
+                        </div>
+                        <div class="half-column-form">
+                            <ion-item class="item-icon-right lined-item">
+                                <label class="label-input-form">{{translation.AMOUNT}}</label>
+                                <input type="text" ng-value="modal.content.monto" disabled>
+                            </ion-item>
+                        </div>
+                        <ion-item class="item-icon-right lined-item">
+                            <label class="label-input-form">{{translation.ADDRESS}}</label>
+                            <input type="text" ng-value="modal.content.direccion" disabled>
+                        </ion-item>
+                        <div class="half-column-form">
+                            <ion-item class="item-icon-right lined-item">
+                                <label class="label-input-form">{{translation.TRANSACTION_ID}}</label>
+                                <input type="text" ng-value="modal.content.numeroTransaccion" disabled>
+                            </ion-item>
+                        </div>
+                        <div class="half-column-form">
+                            <ion-item class="item-icon-right lined-item">
+                                <label class="label-input-form">{{translation.PAYMENT_CHANNEL}}</label>
+                                <input type="text" ng-value="modal.content.canalPago" disabled>
+                            </ion-item>
+                        </div>
+                        <div class="half-column-form">
+                            <ion-item class="item-icon-right lined-item">
+                                <label class="label-input-form">{{translation.DATE}}</label>
+                                <input type="text" ng-value="modal.content.fecha" disabled>
+                            </ion-item>
+                        </div>
+                        <ion-item class="col item-icon-right lined-item position-rel">
+                            <label class="label-input-form">{{translation.LABEL_PAYMENT_MESSAGE}}</label>
+                            <textarea class="form-textarea center" ng-model="modal.content.mensaje" ng-value="modal.content.mensaje" disabled></textarea>
+                        </ion-item>
+                    </div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col left">
+                        <p class="border-bottom border-color-grey-enel">{{translation.PAYMENT_SUCCESS_KEPT_BILL}}</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col left">
+                        <p>{{translation.PAYMENT_SUCCESS_ALL_CHANNELS_TEXT}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div ng-bind-html="modal.content.rrss"></div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

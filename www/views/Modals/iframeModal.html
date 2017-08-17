@@ -1,19 +1,22 @@
 <ion-modal-view title="{{translation.HELP | uppercase}}" class="help-modal-container">
-    <ion-content scroll="false" padding="false">
-            <div class="row height-full-size width-full-size" >
-                    <embed class="iframe"
-                            ng-src="{{modal.content}}" data-tap-disabled="true"
-                            ng-onload="loadComplete(contentLocation)"
-                            frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" ></embed>
-
-                </div>
-
-        <div class="row button-row">
-            <div class="col center">
-                <button class="button button-block featured-style button-general" ng-click="closeModal()">
-                    <span>{{translation.CLOSE | uppercase}}</span>
-                </button>
-            </div>
+    <ion-header-bar>
+        <div class="button-row-iframe" ng-click="closeModal()">
+            <i class="icon icon_enel_close"></i><br>
+            <span>{{translation.CLOSE | uppercase}}</span>
         </div>
+    </ion-header-bar>
+    <ion-content scroll="false" padding="false" class="overflow-scroll-iframe">
+        <!--<div class="row button-row-iframe position-rel">
+            <div class="col">
+                <button ng-click="closeModal()" class="center">
+                        <i class="icon icon_enel_close"></i><br>                        
+                        <span>{{translation.CLOSE | uppercase}}</span>
+                    </button>
+            </div>
+        </div>-->
+        <!--<div class="height-full-size width-full-size">-->
+        <!--<embed class="iframe" ng-src="{{modal.content}}" data-tap-disabled="true" ng-onload="loadComplete(contentLocation)" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></embed>-->
+        <iframe id="iFrame" name="iFrame" src="{{modal.content}}" class="width-full-size height-full-size" data-tap-disabled="true" frameborder="0" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" iframeurlload></iframe>
+        <!--</div>-->
     </ion-content>
 </ion-modal-view>

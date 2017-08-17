@@ -45,25 +45,21 @@
                 </div>
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
-                <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
-                <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="phone" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir teléfono')" ng-class="{'has-errors' : forms.blackoutForm.phone.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.phone.$valid && forms.blackoutForm.$submitted}"
+                <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
+                <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_PHONE}}" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir teléfono primario')" ng-class="{'has-errors' : forms.blackoutForm.phone.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.phone.$valid && forms.blackoutForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.blackoutForm.phone.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.phone.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
             </ion-item>
-            <div class="center margin-top-10 blackout-form-emergency-subtype">
-                <div class="element" ng-class="{'selected-element': selected1tab}" ng-click="selectedProblem(typesOfProblems1.value)">
-                    <a class="color-white">
-                        <div class="width-full-size">
-                            <i class="icon icon_enel_house"></i>
-                        </div>
-                        <div class="width-full-size">
-                            <!--{{translation.BLACKOUT_AT_HOME}}-->
-                            {{typesOfProblems1.label | uppercase}}
-                        </div>
-                    </a>
+            <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
+                <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
+                <input type="number" name="cellphone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir teléfono secundario')" ng-class="{'has-errors' : forms.blackoutForm.cellphone.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.cellphone.$valid && forms.blackoutForm.$submitted}">
+                <div class="error-container last-error-container" ng-show="forms.blackoutForm.cellphone.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.cellphone.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
                 </div>
+            </ion-item>
+            <div class="center margin-top-10 blackout-form-emergency-subtype">
                 <div class="element" ng-class="{'selected-element': selected2tab}" ng-click="selectedProblem(typesOfProblems2.value)">
                     <a class="color-white">
                         <div class="width-full-size">
@@ -72,6 +68,17 @@
                         <div class="width-full-size">
                             <!--{{translation.BLACKOUT_AT_NEIGHBORHOOD}}-->
                             {{typesOfProblems2.label | uppercase}}
+                        </div>
+                    </a>
+                </div>
+                <div class="element" ng-class="{'selected-element': selected1tab}" ng-click="selectedProblem(typesOfProblems1.value)">
+                    <a class="color-white">
+                        <div class="width-full-size">
+                            <i class="icon icon_enel_house"></i>
+                        </div>
+                        <div class="width-full-size">
+                            <!--{{translation.BLACKOUT_AT_HOME}}-->
+                            {{typesOfProblems1.label | uppercase}}
                         </div>
                     </a>
                 </div>
@@ -95,7 +102,7 @@
                     <button ng-if="!isLogged && !isReportNotLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.emergency">{{translation.BACK | uppercase}}
                         <!--<i class="icon icon_enel_check"></i>-->
                     </button>
-                    <button ng-if="!isLogged && isReportNotLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
+                    <button ng-if="!isLogged && isReportNotLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.preBlackout">{{translation.BACK | uppercase}}
                         <!--<i class="icon icon_enel_check"></i>-->
                     </button>
                 </div>

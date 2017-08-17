@@ -186,11 +186,11 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
       } else {
         $scope.forms.accidentForm.street.$setViewValue('');
       }
-      if (address.comuna) {
-        // $scope.selectedState = getSelectedObject(address.comuna);
-        $scope.forms.accidentForm.state.$modelValue = getSelectedObject(address.comuna);
+      if (address.comuna && address.comuna != null && address.comuna != "") {
+        $scope.selectedState = getSelectedObject(address.comuna.trim());
+        // $scope.forms.accidentForm.state.$modelValue = getSelectedObject(address.comuna.trim());
       } else {
-        // $scope.selectedState = {}
+        $scope.selectedState = {}
       }
     } else {
       $scope.forms.accidentForm.number.$setViewValue('');

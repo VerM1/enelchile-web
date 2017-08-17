@@ -32,6 +32,7 @@ angular.module("appenel").constant("translation_es", {
   "CONSULT": "Consultar",
   "SEE_MORE": "Ver Más",
   "CLOSE": "Cerrar",
+  "ADD": "Añadir",
   'HELP': 'Ayuda',
   'DATE': 'Fecha',
   'TYPE': 'Tipo',
@@ -40,6 +41,11 @@ angular.module("appenel").constant("translation_es", {
   'NO_DATA': 'No hay datos',
   "RETRY": "Reintentar",
   "NO_ACTIVE_DEBT": "El suministro no tiene una deuda activa",
+  "LOGIN_VIRTUAL_BRANCH": "Acceder a sucursal virtual",
+  "REGISTER_VIRTUAL_BRANCH": "Registro en sucursal virtual",
+  "ADDRESS": "Dirección",
+  "PHONE_PRIMARY": "Teléfono Primario",
+  "PHONE_SECONDARY": "Teléfono Secundario",
 
 
   /*  APP VERSION   */
@@ -56,11 +62,13 @@ angular.module("appenel").constant("translation_es", {
   "SEARCH_NUM_CLIENT": "Buscar N° cliente",
   "CHECK_OR_PAY_ACCOUNT": "Pagar cuenta",
   "REPORT_COURT": "Reportar corte",
+  "WITHOUT_LIGHT": "Reportar corte de luz",
 
   /*	LOGIN 	*/
   "FORGOT_PASS": "Olvidé mi contraseña",
 
   /*	LOGOUT 	*/
+  "LOGOUT_PROCEED": "Se procederá a cerrar la sesión",
   "SEE_YOU_SOON": "Hasta pronto",
   "THANKS_YOR_VISITING_US": "Gracias por visitarnos",
 
@@ -91,6 +99,7 @@ angular.module("appenel").constant("translation_es", {
   "LABEL_NUM_LAST_SERVICE": "Ingresar N° de última boleta emitida",
   "LABEL_PASSWORD": "Ingresar Contraseña",
   "LABEL_PASSWORD_CONFIRM": "Favor confirmar contraseña",
+  "PLACEHOLDER_SELECT": "Seleccionar",
   "PLACEHOLDER_RUT": "Ej: 12345678-9",
   "PLACEHOLDER_NAME": "Nombre",
   "PLACEHOLDER_NAMES": "Nombres",
@@ -102,7 +111,7 @@ angular.module("appenel").constant("translation_es", {
   "PLACEHOLDER_EMAIL": "Ej: usuario@correo.com",
   "PLACEHOLDER_ALIAS": "Alias",
   "PLACEHOLDER_ALIAS_ASSET": "Alias Suministro",
-  "PLACEHOLDER_NUM_LAST_SERVICE": "Ej: 987654321",
+  "PLACEHOLDER_NUM_LAST_SERVICE": "Ej: 1234567890",
   "PLACEHOLDER_PASSWORD": "Contraseña",
   "PLACEHOLDER_PASSWORD_CONFIRM": "Confirmar contraseña",
   "ACCEPT_TERMS": "Acepto términos y condiciones",
@@ -114,12 +123,13 @@ angular.module("appenel").constant("translation_es", {
   "ACTIVATE_ACCOUNT": "Activar Cuenta",
   "LABEL_INSERT_CODE": "Ingresar código",
   "PLACEHOLDER_INSERT_CODE": "Código",
+  "LABEL_DESCRIBE_INSERT_CODE": "En unos instantes llegará a tu correo electrónico un código de validación, por favor ingrésalo",
 
 
   /*	VERIFICATION	*/
   "PASSWORD_RECOVERY": "Recuperar Clave",
   "RECOVERY_PASS_TEXT": "Para recuperar tu clave, primero debes validar tu cuenta con un código de seguridad, luego podrás cambiar tu clave.",
-  "SEND_ME_CODE": "Enviar código",
+  "SEND_ME_CODE": "Solicitar Recuperar clave",
   "GENERATE_NEW_CODE": "Generar un nuevo código",
   "LABEL_ENTER_USER": "Ingresar usuario (rut)",
   "LABEL_ENTER_CODE": "Ingresar código",
@@ -179,17 +189,26 @@ angular.module("appenel").constant("translation_es", {
   "PAYMENTTYPE_1": "Deuda Vigente",
   "PAYMENTTYPE_2": "Último Documento",
   "PAYMENTTYPE_3": "Documento Anterior",
+  "PAYMENT_VOUCHER": "Comprobante de Pago",
+  "DEAR_USER": "Estimado usuario",
+  "TRANSACTION_ID": "Número de Transacción",
+  "PAYMENT_CHANNEL": "Canal de Pago",
+  "PAYMENT_SUCCESS_CONFIRMATION_TEXT": "Confirmamos la realización del pago electrónico",
+  "PAYMENT_SUCCESS_KEPT_BILL": "Recomendamos conservar una copia de este comprobante",
+  "PAYMENT_SUCCESS_ALL_CHANNELS_TEXT": "Ponemos todos los canales de atención a su disposición",
+  "LABEL_PAYMENT_NUM_CLIENT": "N° de cliente",
+  "LABEL_PAYMENT_MESSAGE": "Observaciones",
 
   /*  EMERGENCY  MENU */
   "EMERGENCIES": "Emergencias",
   "BLACKOUT": "Corte de Luz",
-  "BLACKOUT_DESCRIPTION": "Descripción de corte de luz",
+  "BLACKOUT_DESCRIPTION": "Para informar si en tu domicilio o barrio están sin luz, presiona aquí.",
   "BLACKOUT_DISCLAIMER": "Disclaimer corte de luz",
   "LIGHTING_PROBLEMS": "Alumbrado público",
-  "LIGHTING_PROBLEMS_DESCRIPTION": "Descripción de problemas de alumbrado",
+  "LIGHTING_PROBLEMS_DESCRIPTION": "Si deseas reportar algúna anormalidad de alumnado público de tu barrio (por ejemplo, una o más luminarias apagadas) presiona aquí.",
   "LIGHTING_PROBLEMS_DISCLAIMER": "Disclaimer problemas de alumbrado",
   "RISK_OR_ACCIDENT": "Riesgo o Accidente",
-  "RISK_OR_ACCIDENT_DESCRIPTION": "Descripción de riesgo o accidente",
+  "RISK_OR_ACCIDENT_DESCRIPTION": "Para reportar situaciones riesgo eléctico como: domicilio electrizado, cables cortados, poste chocado o inclinado. Presiona aquí.",
   "RISK_OR_ACCIDENT_DISCLAIMER": "Disclaimer riesgo o accidente",
   "REPORT_EMERGENCY": "Reportar Emergencia",
 
@@ -279,6 +298,7 @@ angular.module("appenel").constant("translation_es", {
   "EDIT_ALIAS": "Editar Alias",
   "NEW_ALIAS_EDITION_PLACEHOLDER": "Ingresar nuevo alias para el suministro",
 
+
   /*  NOTIFICATIONS   */
   "NOTIFICATIONS": "Notificaciones",
 
@@ -330,12 +350,12 @@ angular.module("appenel").constant("translation_es", {
   "VALIDATION_MIN_LENGTH": "El campo ingresado es demasiado corto",
   "VALIDATION_MAX_LENGTH": "El campo ingresado es demasiado largo",
   "VALIDATION_EMAIL": "Formato de email incorrecto",
-  "VALIDATION_NUMBER": "Este campo sólo acepta números",
+  "VALIDATION_NUMBER": "Ingresar sólo números",
   "VALIDATION_RUT": "Formato del campo no es válido",
   "VALIDATION_PASS_MATCH": "Las contraseñas no coinciden",
-  "VALIDATION_TWO_NUMBERS": "Debe tener al menos dos numeros",
+  "VALIDATION_TWO_NUMBERS": "Debe tener al menos dos números",
   "VALIDATION_START_NUMBERS": "Debe comenzar con un número",
-  "VALIDATION_PASSWORD_FORMAT": "Debe tener números, letras mayusculas y minusculas y al menos un caracter especial",
+  "VALIDATION_PASSWORD_FORMAT": "Debe tener números, letras mayúsculas y minúsculas",
 
   /*  MODALS  */
   "LOADING": "Cargando...",
@@ -344,12 +364,13 @@ angular.module("appenel").constant("translation_es", {
   "HELPER_MODAL_TITLE": "Información",
   "VALIDATION_MODAL_TITLE": "Validación",
   "SUCCESS_MODAL_TITLE": "Éxito.",
+  "ADD_ASSET_MODAL_TITLE": "Añadir suministro",
 
   /*  CASES */
   "SUCCESS_CASE_ENTERED_WITH_NUMBER": "Su caso ha sido ingresado con el número ",
   "ERROR_CASE_ENTERED_WITH_NUMBER": "Su caso no ha podido ser ingresado.",
   "SUCCESS_PROFILE_CHANGE": "Su perfil ha sido modificado correctamente",
-  "ERROR_VALIDATION_CODE": "Su codigo es incorrecto.",
+  "ERROR_VALIDATION_CODE": "Su código es incorrecto.",
   "ERROR_RUT": "Rut incorrecto",
   "SUCCESS_CODE_SENT": "Un código de validación ha sido enviado a su correo electrónico",
   "SUCCESS_USER_VALIDATED": "Su cuenta ha sido validada. Ya puede ingresar a la aplicación"

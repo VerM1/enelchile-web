@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <form class="list margin-top-10 border-bottom border-color-grey-enel" name="forms.payBillForm" novalidate="" ng-submit="validateForm()">
+        <form class="list margin-top-10" name="forms.payBillForm" novalidate="" ng-submit="validateForm()">
             <div class="row table-header usage-style color-white">
                 <div class="col-40 center">{{translation.TYPE_OF_DEBT | uppercase}}</div>
                 <div class="col-40 center">{{translation.AMOUNT | uppercase}}</div>
@@ -24,7 +24,7 @@
             </div>
 
             <!-- nueva version -->
-            <div class="margin-top-20" ng-class="{'has-errors' : forms.payBillForm.payBill.$invalid && forms.payBillForm.$submitted, 'no-errors' : forms.payBillForm.payBill.$valid && forms.payBillForm.$submitted}">
+            <div class="" ng-class="{'has-errors' : forms.payBillForm.payBill.$invalid && forms.payBillForm.$submitted, 'no-errors' : forms.payBillForm.payBill.$valid && forms.payBillForm.$submitted}">
 
                 <!--<div class="row margin-top-10 border-bottom border-color-grey-enel" ng-repeat="element in items">
                     <div class="col-40 center">{{element.tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (element.tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}</div>
@@ -38,35 +38,63 @@
 
 
 
-                <div class="row margin-top-10 border-bottom border-color-grey-enel" ng-show="showFirstElement">
-                    <div class="col-40 center">{{items[0].tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (items[0].tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}</div>
-                    <div class="col-40 center amount">{{items[0].monto | currency : '$': 0}}</div>
-                    <div class="col-20 center table-input-radio">
+                <div class="row " ng-show="showFirstElement">
+                    <div class="col-40 center padding-top-10">
+                        <span>
+                        {{items[0].tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (items[0].tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}
+                        </span>
+                    </div>
+                    <div class="col-40 center amount padding-top-10">
+                        <span>
+                        {{items[0].monto | currency : '$': 0}}
+                        </span>
+                    </div>
+                    <div class="col-20 center table-input-radio padding-top-5">
                         <div class="checkbox checkbox-circle">
                             <input type="radio" name="payBill" ng-model="payBill" class="checkbox-icon" value="{{items[0].monto}}" ng-click="selectItem(0)" ng-checked="payBill==items[0].monto" required/>
                         </div>
                     </div>
                 </div>
+                <div class="border-bottom border-color-grey-enel width-full-size" ng-show="showFirstElement"></div>
 
-                <div class="row margin-top-10 border-bottom border-color-grey-enel" ng-show="showSecondElement">
-                    <div class="col-40 center">{{items[1].tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (items[1].tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}</div>
-                    <div class="col-40 center amount">{{items[1].monto | currency : '$': 0}}</div>
-                    <div class="col-20 center table-input-radio">
+                <div class="row" ng-show="showSecondElement">
+                    <div class="col-40 center padding-top-10">
+                        <span>
+                        {{items[1].tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (items[1].tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}
+                        </span>
+                    </div>
+                    <div class="col-40 center amount padding-top-10">
+                        <span>
+                        {{items[1].monto | currency : '$': 0}}
+                        </span>
+                    </div>
+                    <div class="col-20 center table-input-radio padding-top-5">
                         <div class="checkbox checkbox-circle">
                             <input type="radio" name="payBill" ng-model="payBill" class="checkbox-icon" value="{{items[1].monto}}" ng-click="selectItem(1)" ng-checked="payBill==items[1].monto" required/>
                         </div>
                     </div>
                 </div>
+                <div class="border-bottom border-color-grey-enel width-full-size" ng-show="showSecondElement"></div>
 
-                <div class="row margin-top-10 border-bottom border-color-grey-enel" ng-show="showThirdElement">
-                    <div class="col-40 center">{{items[2].tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (items[2].tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}</div>
-                    <div class="col-40 center amount">{{items[2].monto | currency : '$': 0}}</div>
-                    <div class="col-20 center table-input-radio">
+                <div class="row" ng-show="showThirdElement">
+                    <div class="col-40 center padding-top-10">
+                        <span>
+                        {{items[2].tipoDeuda == paymentType_1 ? translation.PAYMENTTYPE_1: (items[2].tipoDeuda == paymentType_2 ? translation.PAYMENTTYPE_2 : translation.PAYMENTTYPE_3)}}
+                        </span>
+                    </div>
+
+                    <div class="col-40 center amount padding-top-10">
+                        <span>
+                        {{items[2].monto | currency : '$': 0}}
+                        </span>
+                    </div>
+                    <div class="col-20 center table-input-radio padding-top-5">
                         <div class="checkbox checkbox-circle">
                             <input type="radio" name="payBill" ng-model="payBill" class="checkbox-icon" value="{{items[2].monto}}" ng-click="selectItem(2)" ng-checked="payBill==items[2].monto" required/>
                         </div>
                     </div>
                 </div>
+                <div class="border-bottom border-color-grey-enel width-full-size" ng-show="showThirdElement"></div>
 
 
 

@@ -14,8 +14,8 @@ angular.module('CoreModule').provider('ConnectionProvider', function() {
   return {
     // $get: ['$rootScope', '$http', 'UtilsService', '$log', '$q', 'ENDPOINTS',
     //   function($rootScope, $http, UtilsService, $log, $q, ENDPOINTS) {
-    $get: ['$rootScope', '$http', '$log', '$q', 'ENDPOINTS', 'LocalStorageProvider', 'SALESFORCE_CONFIG',
-      function($rootScope, $http, $log, $q, ENDPOINTS, LocalStorageProvider, SALESFORCE_CONFIG) {
+    $get: ['$rootScope', '$http', '$log', '$q', 'ENDPOINTS', 'LocalStorageProvider', 'SALESFORCE_CONFIG', '$state', 'PopupService',
+      function($rootScope, $http, $log, $q, ENDPOINTS, LocalStorageProvider, SALESFORCE_CONFIG, $state, PopupService) {
 
         var doRequest = function(endpoint, params, data, headers, success, failure, method) {
           var id = _.uniqueId();
@@ -168,18 +168,44 @@ angular.module('CoreModule').provider('ConnectionProvider', function() {
         function _recoverySessionId() {
           var defer = $q.defer();
           var obj = {};
-          if (LocalStorageProvider.getLocalStorageItem("login_data")) {
-            var loginData = LocalStorageProvider.getLocalStorageItem("login_data");
-            var userNumber = loginData.userNumber;
-            var password = loginData.password;
+          if (LocalStorageProvider.getLocalStorageItem("USER_DATA")) {
+            var userData = LocalStorageProvider.getLocalStorageItem("USER_DATA");
+            var userNumber = userData.rut;
+            var password = userData.password;
             _refreshSFTokens(userNumber, password).then(
               function(response) {
                 defer.resolve();
               },
               function(err) {
-                obj.error = err.code;
-                obj.message = err.message;
-                defer.reject(obj);
+                if (err.code && err.code === "400") {
+                  obj.error = err.code;
+                  obj.message = err.message;
+                  defer.reject(obj);
+                  var modalType = 'error';
+                  var modalTitle = $rootScope.translation.ERROR_MODAL_TITLE;
+                  var modalContent = err.message + ". " + $rootScope.translation.LOGOUT_PROCEED;
+                  PopupService.openModal(modalType, modalTitle, modalContent, $rootScope, function() {
+                    $rootScope.modal.remove()
+                      .then(function() {
+                        $rootScope.modal = null;
+                        try {
+                          force.discardToken();
+                          var exception = [];
+                          exception.push("branches");
+                          exception.push("no_session_client_number");
+                          exception.push("pass_tuto");
+                          LocalStorageProvider.removeLocalStorageItemExcept(exception);
+                          SALESFORCE_CONFIG.accessToken = '';
+                          // SALESFORCE_CONFIG.refreshToken = '';
+                          $rootScope.isLogged = false;
+                          $state.go("guest.home");
+                        } catch (err) {
+                          $log.error("err: ", err);
+                          $state.go("guest.home");
+                        }
+                      });
+                  });
+                }
               });
           } else {
             var obj = {};
@@ -207,21 +233,24 @@ angular.module('CoreModule').provider('ConnectionProvider', function() {
           sendPost(url, params, data, headers, function(respuesta) {
             $log.info('Get User Session: ', respuesta);
             if (respuesta.code.toString() == "200") {
-              var loginData = {};
-              obj.userId = respuesta.data.userId;
+              if (LocalStorageProvider.getLocalStorageItem("USER_DATA")) {
+                obj = LocalStorageProvider.getLocalStorageItem("USER_DATA")
+              }
+              // var loginData = {};
+              // obj.userId = respuesta.data.userId;
               obj.sessionId = respuesta.data.sessionId;
-              obj.contactId = respuesta.data.contactId;
-              loginData.userNumber = userNumber;
-              loginData.password = password;
-              LocalStorageProvider.setLocalStorageItem("access_token", obj.sessionId);
-              LocalStorageProvider.setLocalStorageItem("contact_id", obj.contactId);
-              LocalStorageProvider.setLocalStorageItem("user_data", obj);
-              LocalStorageProvider.setLocalStorageItem("login_data", loginData);
+              // obj.contactId = respuesta.data.contactId;
+              // loginData.userNumber = userNumber;
+              // loginData.password = password;
+              // LocalStorageProvider.setLocalStorageItem("access_token", obj.sessionId);
+              // LocalStorageProvider.setLocalStorageItem("contact_id", obj.contactId);
+              LocalStorageProvider.setLocalStorageItem("USER_DATA", obj);
+              // LocalStorageProvider.setLocalStorageItem("login_data", loginData);
               SALESFORCE_CONFIG.accessToken = obj.sessionId;
               SALESFORCE_CONFIG.loginURL = ENDPOINTS.ENDPOINTS_SALESFORCE;
               SALESFORCE_CONFIG.proxyURL = ENDPOINTS.ENDPOINTS_SALESFORCE;
               LocalStorageProvider.setLocalStorageItem("SALESFORCE_CONFIG", SALESFORCE_CONFIG);
-              obj.SALESFORCE_CONFIG = SALESFORCE_CONFIG;
+              // obj.SALESFORCE_CONFIG = SALESFORCE_CONFIG;
               force.init(SALESFORCE_CONFIG);
               defer.resolve(obj);
             } else {

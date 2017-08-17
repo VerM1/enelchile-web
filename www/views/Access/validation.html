@@ -7,6 +7,11 @@
         </div>
         <form name="forms.activateAccount" novalidate="" ng-submit="validateForm()">
             <div class="row margin-top-20">
+                <ion-item class="item-icon-right lined-item " style="white-space: normal; text-align: justify;">
+                    <label class="label">{{translation.LABEL_DESCRIBE_INSERT_CODE}}</label>
+                </ion-item>
+            </div>
+            <div class="row">
                 <ion-item class="item-icon-right lined-item input-text-without-icon  width-full-size">
                     <label class="label-input-form">{{translation.LABEL_INSERT_CODE}}</label>
                     <input type="number" placeholder="{{translation.PLACEHOLDER_INSERT_CODE}}" name="insertCode" ng-model="insertCode" ng-class="{'has-errors' : forms.activateAccount.insertCode.$invalid && forms.activateAccount.$submitted, 'no-errors' : forms.activateAccount.insertCode.$valid && forms.activateAccount.$submitted}"

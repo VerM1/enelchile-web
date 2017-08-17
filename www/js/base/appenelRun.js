@@ -11,16 +11,8 @@ angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state,
   $rootScope.isLogged = false;
   $log.debug("$rootScope.isLogged: " + $rootScope.isLogged);
   $rootScope.isMovilDevice = false;
+  $rootScope.showRotateIcon = true;
 
-  if (window.cordova) {
-    $log.debug("dispositivo movil");
-    SALESFORCE_CONFIG.oauthCallbackURL = 'http://localhost/oauthcallback.html';
-    isMovilDevice = true;
-  } else {
-    $log.debug("web");
-    SALESFORCE_CONFIG.oauthCallbackURL = 'http://localhost:8100/oauthcallback.html';
-    isMovilDevice = false;
-  }
   SALESFORCE_CONFIG.loginURL = ENDPOINTS.ENDPOINTS_SALESFORCE;
   SALESFORCE_CONFIG.proxyURL = ENDPOINTS.ENDPOINTS_SALESFORCE;
 
@@ -32,8 +24,8 @@ angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state,
 
   $ionicPlatform.ready(function() {
     try {
-      TestFairy.begin("5bd10c0da3a67fda56ea3218175f260b96f49d0b");
-      $log.debug('TestFairy initialized. API Key::5bd10c0da3a67fda56ea3218175f260b96f49d0b');
+      TestFairy.begin(UTILS_CONFIG.TESTFAIRY_SECRET_KEY);
+      $log.debug('TestFairy initialized. API Key::', UTILS_CONFIG.TESTFAIRY_SECRET_KEY);
     } catch (e) {
       $log.debug("TestFairy is not defined for this Platform")
     }
@@ -44,7 +36,6 @@ angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state,
       cordova.plugins.Keyboard.disableScroll(false);
     }
     if ($window.StatusBar) {
-      // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
 
@@ -60,10 +51,14 @@ angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state,
       });
     }
 
+    if (LocalStorageProvider.getLocalStorageItem('show_rotate_icon')) {
+      $rootScope.showRotateIcon = false;
+    }
+
 
     //REDIRECCIONAMIENTO A LA PAGINA HOME o CONSUMOS SEGUN SESIóN
     $log.debug("autenticated: ", force.isAuthenticated());
-    if (LocalStorageProvider.getLocalStorageItem('passTuto')) {
+    if (LocalStorageProvider.getLocalStorageItem('pass_tuto')) {
       if (force.isAuthenticated()) {
         $rootScope.isLogged = true;
         $state.go("session.usage");
@@ -71,9 +66,7 @@ angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state,
         $rootScope.isLogged = false;
         $state.go("guest.home");
       }
-      // $state.go("landing");
     } else {
-      // LocalStorageProvider.setLocalStorageItem('passTuto', false);
       $state.go("tutorial");
     }
   });
@@ -82,18 +75,18 @@ angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state,
   $ionicPlatform.on("pause", function(event) {
     $log.debug("Pause Fired");
     var exception = [];
-    exception.push("Object_branches");
+    exception.push("branches");
     exception.push("no_session_client_number");
-    exception.push("passTuto");
+    exception.push("pass_tuto");
+    exception.push("show_rotate_icon");
     if (force.isAuthenticated()) {
       $rootScope.isLogged = true;
-      // exception.push("contact_id");
-      exception.push("access_token");
-      exception.push("Object_SALESFORCE_CONFIG");
-      exception.push("Object_user_data");
-      exception.push("Object_login_data");
+      // exception.push("access_token");
+      exception.push("SALESFORCE_CONFIG");
+      exception.push("USER_DATA");
+      // exception.push("login_data");
       LocalStorageProvider.removeLocalStorageItemExcept(exception);
-      LocalStorageProvider.setLocalStorageItem('passTuto', true);
+      LocalStorageProvider.setLocalStorageItem('pass_tuto', "true");
     } else {
       LocalStorageProvider.removeLocalStorageItemExcept(exception);
     }
@@ -105,20 +98,13 @@ angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state,
       $rootScope.isLogged = true;
       SALESFORCE_CONFIG.loginURL = ENDPOINTS.ENDPOINTS_SALESFORCE;
       SALESFORCE_CONFIG.proxyURL = ENDPOINTS.ENDPOINTS_SALESFORCE;
-      SALESFORCE_CONFIG.accessToken = LocalStorageProvider.getLocalStorageItem("access_token", false);
-      LocalStorageProvider.setLocalStorageItem("SALESFORCE_CONFIG", SALESFORCE_CONFIG);
-      force.init(LocalStorageProvider.getLocalStorageItem("SALESFORCE_CONFIG", false));
-      //$state.go("session.usage");
+      if (LocalStorageProvider.getLocalStorageItem("USER_DATA", false)) {
+        var userData = LocalStorageProvider.getLocalStorageItem("USER_DATA", false);
+        SALESFORCE_CONFIG.accessToken = userData.sessionId;
+        LocalStorageProvider.setLocalStorageItem("SALESFORCE_CONFIG", SALESFORCE_CONFIG);
+      }
+      force.init(SALESFORCE_CONFIG);
     }
-    // else {
-    //   $rootScope.isLogged = false;
-    //   if (LocalStorageProvider.getLocalStorageItem('passTuto')) {
-    //     $state.go("guest.home");
-    //   } else {
-    //     $state.go("tutorial");
-    //   }
-    // }
-    // $state.go("landing");
   });
 
 })

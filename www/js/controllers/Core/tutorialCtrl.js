@@ -9,7 +9,7 @@ angular.module('CoreModule').controller('tutorialCtrl', function($scope, $log, A
 
   $scope.passTuto = function(categoria, accion) {
     $scope.sendAnalytics(categoria, accion);
-    LocalStorageProvider.setLocalStorageItem('passTuto', true);
+    LocalStorageProvider.setLocalStorageItem('pass_tuto', "true");
     $state.go("guest.home");
   }
 

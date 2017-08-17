@@ -230,4 +230,111 @@ angular.module('appenel')
   }])
   .config(['$ionicConfigProvider', function($ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('bottom'); // other values: top
+  }])
+  .config(['ChartJsProvider', function(ChartJsProvider) {
+    Chart.defaults.global.colors = [{
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      },
+      {
+        backgroundColor: 'rgba(5,85,250,1)',
+        pointBackgroundColor: 'rgba(5,85,250,1)',
+        pointHoverBackgroundColor: 'rgba(5,85,250,1)',
+        borderColor: 'rgba(0,0,0,0)',
+        pointBorderColor: '#fff',
+        pointHoverBorderColor: 'rgba(5,85,250,1)'
+      }
+    ]
   }]);

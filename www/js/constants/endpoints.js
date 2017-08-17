@@ -1,7 +1,7 @@
 angular.module("appenel").value("ENDPOINTS", {
   SETUP: {
-    TIMEOUT: 30000,
-    TIMEOUT_SESSION: 30000,
+    TIMEOUT: 60000,
+    TIMEOUT_SESSION: 60000,
     APP_NAME: '',
     API_KEY: '',
     CLIENT_SECRET: '',
@@ -10,14 +10,16 @@ angular.module("appenel").value("ENDPOINTS", {
   },
 
   /* URLS BASE SALESFORCE*/
-  ENDPOINTS_SALESFORCE: 'https://pceveris-enel-mobile.cs44.force.com/communitytest', //PC-EVERIS
+  // ENDPOINTS_SALESFORCE: 'https://pceveris-enel-mobile.cs44.force.com/communitytest', //PC-EVERIS
   //   ENDPOINTS_SALESFORCE: 'https://uat-emerpedev-atchchuat-enellatam.cs52.force.com/AppEnel', //UAT
   //ENDPOINTS_SALESFORCE: 'https://preprod-enelcommunity.cs52.force.com/AppEnel', //UAT
+  ENDPOINTS_SALESFORCE: 'https://enelsud.force.com/Appenel', //PROD
 
   /*  URLS BASE EXTERNAL */
-  ENDPOINTS_BASE_EXTERNAL: 'https://pceveris-servicerest.cs44.force.com', //PC-EVERIS
+  // ENDPOINTS_BASE_EXTERNAL: 'https://pceveris-servicerest.cs44.force.com', //PC-EVERIS
   //   ENDPOINTS_BASE_EXTERNAL: 'https://uat-enellatam.cs52.force.com', //UAT
   //ENDPOINTS_BASE_EXTERNAL: 'https://preprod-preprod-enellatam.cs52.force.com', //UAT
+  ENDPOINTS_BASE_EXTERNAL: 'https://enelsudsite.secure.force.com', //PROD.
 
 
   /* SERVICIOS CON AUTENTICACION*/
@@ -36,6 +38,7 @@ angular.module("appenel").value("ENDPOINTS", {
   ENDPOINTS_EDIT_USER: '/services/apexrest/EditUserAuth/',
   ENDPOINTS_PASSWORD_CHANGE: '/services/apexrest/ChangeOwnPasswordsAuth/',
   ENDPOINTS_ASSET_PROOF_OF_DEBT: '/services/apexrest/ProofOfDebtAuth',
+  ENDPOINTS_GET_BILL_BY_DATE: '/services/apexrest/CopyReceiptAuth', //PC-EVERIS 
 
   /*  SERVICIOS DE ACCESO EXTERNO*/
   ENDPOINTS_GET_USER_SESSION: '/services/apexrest/GetSessionInfo', //PC-EVERIS
@@ -59,14 +62,16 @@ angular.module("appenel").value("ENDPOINTS", {
   ENDPOINTS_EXTERNAL_ACTIVATE_ACCOUNT: '/services/apexrest/ActivateAccount', //PC-EVERIS,
   ENDPOINTS_GET_ASSET_PROOF_OF_DEBT: '/services/apexrest/ProofOfDebt', //PC-EVERIS 
 
+
   /*  OTROS ENLACES   */
-  ENDPOINTS_EXTERNAL_SEARCH_CLIENTID: 'https://www.enel-digital.cl/numero-cliente',
+  ENDPOINTS_EXTERNAL_SEARCH_CLIENTID: 'http://www.enel-digital.cl/numero-cliente',
 
   /* PAGOS */
 
-  // ENDPOINTS_PAYMENT:'https://prewebpay3g.enel.com/BdPwsAndroid/AndroidServicios.asmx?wsdl',
-  //   ENDPOINTS_PAYMENT: 'https://prewebpay3g.enel.com/bdp/TraductorPage.aspx',
+  // ENDPOINTS_PAYMENT: 'https://prewebpay3g.enel.com/bdp/TraductorPage.aspx',
   ENDPOINTS_PAYMENT: 'https://webpay3g.enel.com/bdp/TraductorPage.aspx',
+  ENDPOINTS_PAYMENT_SUCCESS: 'TraductorSalidaPage.aspx?exito=true',
+  ENDPOINTS_PAYMENT_ERROR: 'TraductorSalidaPage.aspx?exito=false',
 
   /*  ANALYTICS  */
   ENDPOINTS_ANALYTICS: 'https://www.google-analytics.com/collect'

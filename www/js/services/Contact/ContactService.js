@@ -75,7 +75,7 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
 
 
 
-  var setContactForm = function(numeroSuministro, asunto, rut, nombres, apellidoPaterno, apellidoMaterno, email, telefono, descripcion) {
+  var setContactForm = function(numeroSuministro, asunto, rut, nombres, apellidoPaterno, apellidoMaterno, email, telefono, movil, descripcion) {
     var defer = $q.defer();
     var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_EXTERNAL_SETCONTACT;
     var data = {
@@ -87,8 +87,9 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
         apellidoPaterno: apellidoPaterno,
         apellidoMaterno: apellidoMaterno,
         email: email,
-        telefono: telefono,
-        descripcion: descripcion
+        telefonoPrimario: telefono,
+        telefonoSecundario: movil,
+        descripción: descripcion
       }
     };
     var params = {};
@@ -193,7 +194,7 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
     }, function(results, status) {
       if (status === 'OK') {
         if (results[1]) {
-          defer.resolve(results[1].formatted_address);
+          defer.resolve(results[0].formatted_address);
         } else {
           $log.error("No results found");
         }

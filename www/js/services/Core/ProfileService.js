@@ -23,12 +23,12 @@
           $ionicLoading.hide();
           if (respuesta.code.toString() == "200") {
             $log.info("updateUserData: ", respuesta.message);
-            var userData = LocalStorageProvider.getLocalStorageItem("user_data");
+            var userData = LocalStorageProvider.getLocalStorageItem("USER_DATA");
             userData.email = email;
             userData.telefonoMovil = cellphone;
             userData.telefonoFijo = phone;
             userData.activarNotificaciones = checkNotifications;
-            LocalStorageProvider.setLocalStorageItem("user_data", userData);
+            LocalStorageProvider.setLocalStorageItem("USER_DATA", userData);
             defer.resolve(respuesta.message);
           } else {
             $log.error('Error changePassword: ', respuesta.message);

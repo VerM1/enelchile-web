@@ -14,10 +14,10 @@
             <div class="col">
                 <form name="forms.profileForm1" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm1()">
                     <ion-item class="border-radius-10">
-                        <ion-checkbox ng-model="checkNotifications" name="checkNotifications" ng-checked="booleanNotifications">{{translation.ACTIVATE_NOTIFICATIONS}}</ion-checkbox>
+                        <ion-checkbox ng-model="checkNotifications" name="checkNotifications" ng-checked="booleanNotifications" class="profile-check-notifications">{{translation.ACTIVATE_NOTIFICATIONS}}</ion-checkbox>
                     </ion-item>
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
-                        <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
+                        <label class="label-input-form">{{translation.EMAIL}}</label>
                         <input type="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" name="email" ng-model="email" ng-class="{'has-errors' : forms.profileForm1.email.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.email.$valid && forms.profileForm1.$submitted}"
                             required ng-maxlength="40">
                         <div class="error-container last-error-container" ng-show="forms.profileForm1.email.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.email.$error">
@@ -28,8 +28,8 @@
 
 
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
-                        <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
-                        <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-class="{'has-errors' : forms.profileForm1.phone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.phone.$valid && forms.profileForm1.$submitted}"
+                        <label class="label-input-form">{{translation.PHONE_PRIMARY}}</label>
+                        <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-class="{'has-errors' : forms.profileForm1.phone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.phone.$valid && forms.profileForm1.$submitted}"
                             required>
                         <div class="error-container last-error-container" ng-show="forms.profileForm1.phone.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.phone.$error">
                             <div ng-messages-include="views/errorList.html"></div>
@@ -37,8 +37,8 @@
                     </ion-item>
 
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
-                        <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
-                        <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-class="{'has-errors' : forms.profileForm1.cellphone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.cellphone.$valid && forms.profileForm1.$submitted}">
+                        <label class="label-input-form">{{translation.PHONE_SECONDARY}}</label>
+                        <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-class="{'has-errors' : forms.profileForm1.cellphone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.cellphone.$valid && forms.profileForm1.$submitted}">
                         <div class="error-container last-error-container" ng-show="forms.profileForm1.cellphone.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.cellphone.$error">
                             <div ng-messages-include="views/errorList.html"></div>
                         </div>

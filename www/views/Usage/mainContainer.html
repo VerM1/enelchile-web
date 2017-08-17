@@ -1,6 +1,7 @@
 <!--<ion-view class="title-page" title="{{translation.USAGES | uppercase}}" data-ng-init="onload()">-->
 <ion-view class="title-page" title="{{translation.USAGES | uppercase}}">
     <ion-content scroll="true" padding="false">
+        <img src="img/logos/rotate_app.gif" alt="launcher" class="rotate-icon" ng-show="showRotateIcon" />
         <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="{{isHorizontal ? false: true}}" active-slide="0" pager-click="pagerClick(index)" does-continue="false" class="slider">
             <ion-slide ng-repeat="elements in dataUsageAssetList.items">
                 <div class="header-top usage-style" ng-hide="isHorizontal">
@@ -36,4 +37,5 @@
             </ion-slide>
         </ion-slide-box>
     </ion-content>
+    <!-- <i class="icon ion-android-add-circle add-new-asset" ng-click="addAsset()"></i> -->
 </ion-view>

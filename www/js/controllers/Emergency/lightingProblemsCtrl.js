@@ -1,9 +1,10 @@
-angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope, $log, LocalStorageProvider, $rootScope, UtilsService, EmergencyService, $ionicModal, $state, $ionicLoading, $cordovaGeolocation, ContactService, AnalyticsService, PopupService, UTILS_CONFIG) {
+angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope, $log, LocalStorageProvider, $rootScope, UtilsService, EmergencyService, $ionicModal, $state, $ionicLoading, $cordovaGeolocation, ContactService, AnalyticsService, PopupService, UTILS_CONFIG, $timeout) {
 
   var address;
   $scope.authenticated;
   $scope.listStates = [];
   $scope.listProblemTypes = [];
+  $scope.selectedState = {};
   var formatAddress = function(addr) {
     var splitted = addr.split(',');
     var addrformat = {
@@ -149,7 +150,6 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
           $scope.forms.lightingForm.street.$modelValue,
           $scope.forms.lightingForm.number.$modelValue,
           $scope.forms.lightingForm.departament.$modelValue,
-          // $scope.selectedState.codigoComuna
           $scope.forms.lightingForm.state.$viewValue.codigoComuna,
           $scope.forms.lightingForm.description.$modelValue
         ).then(callbackSuccess, callbackError);
@@ -159,7 +159,6 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
           $scope.forms.lightingForm.street.$modelValue,
           $scope.forms.lightingForm.number.$modelValue,
           $scope.forms.lightingForm.departament.$modelValue,
-          // $scope.selectedState.codigoComuna,
           $scope.forms.lightingForm.state.$viewValue.codigoComuna,
           $scope.forms.lightingForm.name.$viewValue,
           $scope.forms.lightingForm.lastname.$viewValue,
@@ -189,11 +188,11 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
       } else {
         $scope.forms.lightingForm.street.$setViewValue('');
       }
-      if (address.comuna) {
-        // $scope.selectedState = getSelectedObject(address.comuna);
-        $scope.forms.lightingForm.state.$modelValue = getSelectedObject(address.comuna);
+      if (address.comuna && address.comuna != null && address.comuna != "") {
+        $scope.selectedState = getSelectedObject(address.comuna.trim());
+        // $scope.forms.lightingForm.state.$setViewValue($scope.selectedState.nombreComuna);
       } else {
-        // $scope.selectedState = {}
+        $scope.selectedState = {}
       }
     } else {
       $scope.forms.lightingForm.number.$setViewValue('');

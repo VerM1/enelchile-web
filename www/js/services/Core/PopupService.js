@@ -46,22 +46,21 @@ angular.module('CoreModule').service('PopupService', function($ionicModal, $ioni
         $ionicLoading.show({
           template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
         });
-        scope.loadComplete = function(contentLocation) {
-          $ionicLoading.hide();
-        };
+        // scope.loadComplete = function(contentLocation) {
+        //   $ionicLoading.hide();
+        // };
         scope.modal.show();
       } else if (modalType === 'payment') {
         $ionicLoading.show({
           template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
         });
-        scope.loadComplete = function(contentLocation) {
-          console.log("contentLocation: ", contentLocation);
-          console.log("contentLocation: ", contentLocation.href);
-          if (contentLocation.href != ENDPOINTS.ENDPOINTS_PAYMENT) {
-            scope.modal.hide();
-          }
-          $ionicLoading.hide();
-        };
+        // scope.loadComplete = function(contentLocation) {
+        //   console.log("contentLocation: ", contentLocation);
+        //   if (contentLocation.href != ENDPOINTS.ENDPOINTS_PAYMENT) {
+        //     scope.modal.hide();
+        //   }
+        //   $ionicLoading.hide();
+        // };
         scope.modal.show();
       } else {
         scope.modal.show();

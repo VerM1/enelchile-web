@@ -1,7 +1,76 @@
-angular.module('CoreModule').controller('branchesDescriptionCtrl', function($scope, $state, $window, UtilsService, DataMapService, $log) {
+angular.module('CoreModule').controller('branchesDescriptionCtrl', function($scope, $state, $window, UtilsService, DataMapService, $log, ENDPOINTS) {
 
-  $scope.branchesDescription = DataMapService.getItem('branches_detail', false);
-  $log.debug("aux: ", $scope.branchesDescription);
+  function init() {
+    $scope.branchesDescription = {};
+    $scope.showHtmlImage = false;
+    $scope.showHtmlPaymentHour = false;
+    $scope.showHtmlSpecialHour = false;
+    $scope.showHtmlOpeningHour = false;
+    $scope.showHtmlDetail = false;
+    try {
+      if (DataMapService.getItem('branches_detail', false)) {
+        $scope.branchesDescription = DataMapService.getItem('branches_detail', false);
+        $log.debug("branchesDescription: ", $scope.branchesDescription);
+        if ($scope.branchesDescription.imagen.match("<")) {
+          $scope.branchesDescription.imagen = replaceAll($scope.branchesDescription.imagen, "\\", "\"\"");
+          $scope.branchesDescription.imagen = replaceAll($scope.branchesDescription.imagen, "amp;", "");
+          $scope.branchesDescription.imagen = replaceAll($scope.branchesDescription.imagen, "href=\"/", "href=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.branchesDescription.imagen = replaceAll($scope.branchesDescription.imagen, "src=\"/", "src=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.showHtmlImage = true;
+          $log.info("new image: ", $scope.branchesDescription.imagen);
+        }
+        if ($scope.branchesDescription.horario_pago.match("<")) {
+          $scope.branchesDescription.horario_pago = replaceAll($scope.branchesDescription.horario_pago, "\\", "\"\"");
+          $scope.branchesDescription.horario_pago = replaceAll($scope.branchesDescription.horario_pago, "amp;", "\"\"");
+          $scope.branchesDescription.horario_pago = replaceAll($scope.branchesDescription.horario_pago, "href=\"/", "href=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.branchesDescription.horario_pago = replaceAll($scope.branchesDescription.horario_pago, "src=\"/", "src=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.showHtmlPaymentHour = true;
+          $log.info("new horario_pago: ", $scope.branchesDescription.horario_pago);
+        }
+        if ($scope.branchesDescription.horario_especial.match("<")) {
+          $scope.branchesDescription.horario_especial = replaceAll($scope.branchesDescription.horario_especial, "\\", "\"\"");
+          $scope.branchesDescription.horario_especial = replaceAll($scope.branchesDescription.horario_especial, "amp;", "\"\"");
+          $scope.branchesDescription.horario_especial = replaceAll($scope.branchesDescription.horario_especial, "href=\"/", "href=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.branchesDescription.horario_especial = replaceAll($scope.branchesDescription.horario_especial, "src=\"/", "src=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.showHtmlSpecialHour = true;
+          $log.info("new horario_especial: ", $scope.branchesDescription.horario_especial);
+        }
+        if ($scope.branchesDescription.horario_apertura.match("<")) {
+          $scope.branchesDescription.horario_apertura = replaceAll($scope.branchesDescription.horario_apertura, "\\", "\"\"");
+          $scope.branchesDescription.horario_apertura = replaceAll($scope.branchesDescription.horario_apertura, "amp;", "\"\"");
+          $scope.branchesDescription.horario_apertura = replaceAll($scope.branchesDescription.horario_apertura, "href=\"/", "href=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.branchesDescription.horario_apertura = replaceAll($scope.branchesDescription.horario_apertura, "src=\"/", "src=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.showHtmlOpeningHour = true;
+          $log.info("new horario_apertura: ", $scope.branchesDescription.horario_apertura);
+        }
+        if ($scope.branchesDescription.detalle.match("<")) {
+          $scope.branchesDescription.detalle = replaceAll($scope.branchesDescription.detalle, "\\", "\"\"");
+          $scope.branchesDescription.detalle = replaceAll($scope.branchesDescription.detalle, "amp;", "\"\"");
+          $scope.branchesDescription.detalle = replaceAll($scope.branchesDescription.detalle, "href=\"/", "href=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.branchesDescription.detalle = replaceAll($scope.branchesDescription.detalle, "src=\"/", "src=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
+          $scope.showHtmlDetail = true;
+          $log.info("new detalle: ", $scope.branchesDescription.detalle);
+        }
+      } else {
+        $log.error("Error to get branches_detail");
+      }
+
+    } catch (exception) {
+      $log.error("Error to get branches_detail: ", exception);
+    }
+
+  }
+
+
+  function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+  }
+
+  function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  }
+
+
 
   $scope.goBack = function() {
     if (DataMapService.getItem('branches_detail', false)) {
@@ -21,5 +90,13 @@ angular.module('CoreModule').controller('branchesDescriptionCtrl', function($sco
     }
     window.open(geoString, '_system');
   }
+
+
+  //LOCATIONCHANGESUCCESS
+  $scope.$on('$locationChangeSuccess', function(ev, n) {
+    if (n.indexOf('session/branchesDescription') > -1 || n.indexOf('guest/branchesDescription') > -1) {
+      init();
+    }
+  });
 
 });

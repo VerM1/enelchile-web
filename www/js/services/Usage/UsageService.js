@@ -157,24 +157,28 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var items = [];
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
-              $log.info(key + ' : ', value);
-              var data = {};
-              data.index = key;
-              data.trxId = value.trxId;
-              data.tipoDocumento = value.tipoDocumento;
-              data.tipoDeuda = value.tipoDeuda;
-              data.publicidad = value.publicidad;
-              data.nroDocumento = value.nroDocumento;
-              data.nombre = value.nombre;
-              data.monto = value.monto;
-              data.mensaje = value.mensaje;
-              data.fechaVencimiento = value.fechaVencimiento;
-              data.fechaEmision = value.fechaEmision;
-              data.estado = value.estado;
-              data.direccion = value.direccion;
-              data.consumo = value.consumo;
-              data.codigoBarra = value.codigoBarra;
-              items.push(data);
+              if (value.nroDocumento != null && value.nroDocumento.toString() != "0" && value.nroDocumento.toString() != "-1") {
+                $log.info(key + ' : ', value);
+                var data = {};
+                data.index = key;
+                data.trxId = value.trxId;
+                data.tipoDocumento = value.tipoDocumento;
+                data.tipoDeuda = value.tipoDeuda;
+                data.publicidad = value.publicidad;
+                data.nroDocumento = value.nroDocumento;
+                data.nombre = value.nombre;
+                data.monto = value.monto;
+                data.mensaje = value.mensaje;
+                data.fechaVencimiento = value.fechaVencimiento;
+                data.fechaEmision = value.fechaEmision;
+                data.estado = value.estado;
+                data.direccion = value.direccion;
+                data.consumo = value.consumo;
+                data.codigoBarra = value.codigoBarra;
+                items.push(data);
+              } else {
+                $log.debug("el elemento ya fue pagado, no se incluira en la lista");
+              }
             });
           }
           LocalStorageProvider.setLocalStorageItem('asset_debt_' + index, items);
@@ -306,6 +310,10 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var items = [];
           var graphlabels = [];
           var graphdata = [];
+          var graphdataset = [];
+          var options = {};
+          var pointBackgroundColor = []
+          var borderColor = []
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
               $log.info(key + ' : ', value);
@@ -322,12 +330,22 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               items.push(data);
               graphlabels.push(data.fechaLectura);
               graphdata.push(data.consumoEnergia);
+              pointBackgroundColor.push('rgba(5,85,250,1)');
+              borderColor.push('rgba(5,85,250,1)');
             });
           }
           response.items = items;
           response.graphlabels = graphlabels.reverse();
           response.graphdata = graphdata.reverse();
-          var options = {
+          var ds = {
+            label: 'Consumos',
+            data: graphdata,
+            pointBackgroundColor: pointBackgroundColor,
+            borderColor: borderColor,
+          }
+          graphdataset.push(ds);
+          response.dataset = graphdataset;
+          options = {
             scales: {
               xAxes: [{
                 display: false
@@ -388,6 +406,10 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var items = [];
           var graphlabels = [];
           var graphdata = [];
+          var graphdataset = [];
+          var options = {};
+          var pointBackgroundColor = []
+          var borderColor = []
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
               $log.info(key + ' : ', value);
@@ -395,15 +417,30 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               data.index = key;
               data.monto = value.monto;
               data.fecha = value.fecha;
+              if (value.boleta != null && value.boleta != "") {
+                data.boleta = value.boleta;
+              } else {
+                data.boleta = 0;
+              }
               items.push(data);
               graphlabels.push(data.fecha);
               graphdata.push(data.monto);
+              pointBackgroundColor.push('rgba(5,85,250,1)');
+              borderColor.push('rgba(5,85,250,1)');
             });
           }
           response.items = items;
           response.graphlabels = graphlabels.reverse();
           response.graphdata = graphdata.reverse();
-          var options = {
+          var ds = {
+            label: 'Boletas',
+            data: graphdata,
+            pointBackgroundColor: pointBackgroundColor,
+            borderColor: borderColor,
+          }
+          graphdataset.push(ds);
+          response.dataset = graphdataset;
+          options = {
             scales: {
               xAxes: [{
                 display: false
@@ -463,7 +500,10 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var items = [];
           var graphlabels = [];
           var graphdata = [];
-          var datasets = [];
+          var graphdataset = [];
+          var options = {};
+          var pointBackgroundColor = []
+          var borderColor = []
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
               $log.info(key + ' : ', value);
@@ -472,26 +512,25 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               data.tipoPago = value.tipoPago;
               data.monto = value.monto;
               data.fechaPago = value.fechaPago;
-              var colorGraph = {
-                backgroundColor: [
-                  'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                  'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-              };
               items.push(data);
               graphlabels.push(data.fechaPago);
               graphdata.push(data.monto);
-              datasets.push(colorGraph);
+              pointBackgroundColor.push('rgba(5,85,250,1)');
+              borderColor.push('rgba(5,85,250,1)');
             });
           }
           response.items = items;
           response.graphlabels = graphlabels.reverse();
           response.graphdata = graphdata.reverse();
-          response.datasets = datasets.reverse();
-          var options = {
+          var ds = {
+            label: 'Pagos',
+            data: graphdata,
+            pointBackgroundColor: pointBackgroundColor,
+            borderColor: borderColor,
+          }
+          graphdataset.push(ds);
+          response.dataset = graphdataset;
+          options = {
             scales: {
               xAxes: [{
                 display: false
@@ -527,6 +566,61 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
         defer.reject(obj);
       });
     }
+    return defer.promise;
+  }
+
+  pub.getBillByDate = function(assetId, bill, email, month) {
+    var defer = $q.defer();
+    var obj = {};
+    obj.path = ENDPOINTS.ENDPOINTS_GET_BILL_BY_DATE;
+    obj.method = 'GET';
+    obj.contentType = 'application/json';
+    obj.params = { 
+      numeroSuministro: assetId,
+      boleta: bill,
+      email: email,
+      mes: month
+    };
+    obj.data = '';
+
+    SalesforceProvider.request(obj).then(function(respuesta) {
+      if (respuesta.code.toString() == "200") {
+        var data = {};
+        if (respuesta.data != null && respuesta.data != '') {
+          data.url = respuesta.data.URLBoleta;
+          data.numeroSuministroDv = respuesta.data.numero;
+          data.email = respuesta.data.email;
+          data.detalle = respuesta.data.descripcionResultado;
+          data.codigo = respuesta.data.codigoResultado;
+          data.boleta = respuesta.data.boleta;
+        }
+        defer.resolve(data);
+      } else {
+        $log.error('Error Get Bill By Date: ', respuesta.message);
+        var obj = {};
+        obj.code = respuesta.code;
+        obj.message = respuesta.message;
+        defer.reject(obj);
+      }
+    }, function(err) {
+      $log.error('Error Get Bill By Date: ', err);
+      var obj = {};
+      if (err[0]) {
+        obj.code = err[0].errorCode;
+        obj.message = err[0].message;
+      } else if (err.code) {
+        obj.code = err.code;
+        obj.message = err.message;
+      } else if (err.data) {
+        obj.code = err.data.status;
+        obj.message = err.data.msg;
+      } else {
+        obj.code = "400";
+        obj.message = err;
+      }
+      defer.reject(obj);
+    });
+
     return defer.promise;
   }
 

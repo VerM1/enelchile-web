@@ -18,7 +18,5 @@ angular.module('appenel', [
   'ui.router',
   'ngMessages',
   'platanus.rut',
-  'chart.js',
-  'ngOnload',
-  'base64'
+  'chart.js'
 ])
