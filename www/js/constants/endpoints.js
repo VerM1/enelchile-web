@@ -64,7 +64,7 @@ angular.module("appenel").value("ENDPOINTS", {
 
 
   /*  OTROS ENLACES   */
-  ENDPOINTS_EXTERNAL_SEARCH_CLIENTID: 'http://www.enel-digital.cl/numero-cliente',
+  ENDPOINTS_EXTERNAL_SEARCH_CLIENTID: 'https://www.enel-digital.cl/numero-cliente',
 
   /* PAGOS */
 
