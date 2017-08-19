@@ -15,16 +15,19 @@ angular.module('CoreModule').controller('profileCtrl', function($scope, $state, 
       });
       ProfileService.updateUserData(checkNotifications, email, cellphone, phone)
         .then(function(success) {
-          var userData = LocalStorageProvider.getLocalStorageItem('user_data');
-          if (checkNotifications == true) {
-            userData.activarNotificaciones = "si";
-          } else {
-            userData.activarNotificaciones = "no";
+          var userData = LocalStorageProvider.getLocalStorageItem('USER_DATA');
+          if (userData) {
+            if (checkNotifications == true) {
+              userData.activarNotificaciones = "si";
+            } else {
+              userData.activarNotificaciones = "no";
+            }
           }
+
           userData.email = email;
           userData.telefonoFijo = phone;
           userData.telefonoMovil = cellphone;
-          LocalStorageProvider.setLocalStorageItem('user_data', userData);
+          LocalStorageProvider.setLocalStorageItem('USER_DATA', userData);
           callbackSuccess(success);
         }, callbackError);
     } else {
@@ -44,10 +47,10 @@ angular.module('CoreModule').controller('profileCtrl', function($scope, $state, 
           template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
         });
         ProfileService.changePassword(password, verifiPassword).then(function(success) {
-          if (LocalStorageProvider.getLocalStorageItem('user_data')) {
-            var userData = LocalStorageProvider.getLocalStorageItem('user_data');
+          if (LocalStorageProvider.getLocalStorageItem('USER_DATA')) {
+            var userData = LocalStorageProvider.getLocalStorageItem('USER_DATA');
             userData.password = password;
-            LocalStorageProvider.setLocalStorageItem('user_data', userData);
+            LocalStorageProvider.setLocalStorageItem('USER_DATA', userData);
           }
           callbackSuccess(success);
         }, callbackError);

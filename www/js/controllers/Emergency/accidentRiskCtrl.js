@@ -24,6 +24,15 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
     AnalyticsService.evento(categoria, accion); //Llamada a Analytics
   };
 
+  var getAddress = function(calle) {
+    var myA = calle.split(/(\d+)/);
+    if (myA[0]) {
+      return myA[0].trim();
+    } else {
+      return "";
+    }
+  };
+
   var getNumber = function(calle) {
     const regex = / (\d+)/;
     var arr = regex.exec(calle);
@@ -32,8 +41,6 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
     } else {
       return "";
     }
-
-
   };
 
   var getSelectedObject = function(stateName) {
@@ -176,7 +183,12 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
     // $scope.forms.accidentForm.typeOfProblem.$setViewValue(01);
     if (address) {
       if (address.calle) {
-        $scope.forms.accidentForm.street.$setViewValue(address.calle);
+        var calle = getAddress(address.calle);
+        if (calle) {
+          $scope.forms.accidentForm.street.$setViewValue(calle);
+        } else {
+          $scope.forms.accidentForm.street.$setViewValue('');
+        }
         var numero = getNumber(address.calle);
         if (numero) {
           $scope.forms.accidentForm.number.$setViewValue(numero);

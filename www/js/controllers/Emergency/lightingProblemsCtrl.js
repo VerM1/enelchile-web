@@ -29,6 +29,15 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     alert(frase);
   };
 
+  var getAddress = function(calle) {
+    var myA = calle.split(/(\d+)/);
+    if (myA[0]) {
+      return myA[0].trim();
+    } else {
+      return "";
+    }
+  };
+
   var getNumber = function(calle) {
     const regex = / (\d+)/;
     var arr = regex.exec(calle);
@@ -37,8 +46,6 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     } else {
       return "";
     }
-
-
   };
 
   var getSelectedObject = function(stateName) {
@@ -178,7 +185,12 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     // $scope.forms.lightingForm.typeOfProblem.$setViewValue(01);
     if (address) {
       if (address.calle) {
-        $scope.forms.lightingForm.street.$setViewValue(address.calle);
+        var calle = getAddress(address.calle);
+        if (calle) {
+          $scope.forms.lightingForm.street.$setViewValue(calle);
+        } else {
+          $scope.forms.lightingForm.street.$setViewValue('');
+        }
         var numero = getNumber(address.calle);
         if (numero) {
           $scope.forms.lightingForm.number.$setViewValue(numero);

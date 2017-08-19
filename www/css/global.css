@@ -426,6 +426,11 @@ h3 {
     height: 50% !important;
 }
 
+.full-size {
+    height: 100%;
+    width: 100%;
+}
+
 .padding-top-5 {
     padding-top: 5px !important;
 }
@@ -1364,7 +1369,7 @@ h3 {
     margin: auto;
     border: 1px solid #888;
     width: 80%;
-    height: 300px;
+    height: 200px;
     min-height: 110px !important;
     top: 20%;
     left: 10%;
@@ -1406,7 +1411,7 @@ h3 {
 }
 
 .modal-container .modal-content .modal-content-body {
-    height: 200px;
+    height: 90px;
     overflow-y: scroll;
     text-align: center;
     font-size: 16px;
@@ -1512,11 +1517,6 @@ h3 {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    position: absolute;
 }
 
 
@@ -1567,8 +1567,6 @@ h3 {
 
 
 /*  BEGIN PAYMENT BILL MODAL  */
-
-.payment-voucher {}
 
 .payment-voucher .title {
     border: 2px solid #FF5A0F;
@@ -1645,3 +1643,15 @@ h3 {
 
 
 /*  END ADD ASSET   */
+
+
+/*  BEGIN SEARCH_CLIENT    */
+
+@media (max-width: 951px) and (min-width: 320px) {
+    .buscador {
+        width: 100%;
+    }
+}
+
+
+/*  END SEARCH_CLIENT   */
