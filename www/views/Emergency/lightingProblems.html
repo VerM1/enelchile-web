@@ -40,7 +40,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item select-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_STATE}}</label>
-                <select name="state" ng-change="sendAnalytics('Problemas de Alumbrado','Seleccionar Comuna')" title="{{translation.LABEL_STATE}}" ng-model="selectedState" ng-options="item as item.nombreComuna for item in listStates" ng-class="{'has-errors' : forms.lightingForm.state.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.state.$valid && forms.lightingForm.$submitted}"
+                <select name="state" ng-change="sendAnalytics('Problemas de Alumbrado','Seleccionar Comuna')" title="{{translation.LABEL_STATE}}" ng-model="selectedState" ng-options="item as item.nombreComuna for item in listStates | orderBy:'nombreComuna'" ng-class="{'has-errors' : forms.lightingForm.state.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.state.$valid && forms.lightingForm.$submitted}"
                     required>
                     <option>{{translation.LABEL_STATE}}</option>
                 </select>
@@ -78,7 +78,8 @@
             <div class="half-column-form" ng-if="!authenticated">
                 <ion-item class="item-icon-right lined-item input-text-without-icon">
                     <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
-                    <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_PHONE}}" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir teléfono principal')" ng-class="{'has-errors' : forms.lightingForm.phone.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.phone.$valid && forms.lightingForm.$submitted}">
+                    <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_PHONE}}" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir teléfono principal')" ng-class="{'has-errors' : forms.lightingForm.phone.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.phone.$valid && forms.lightingForm.$submitted}"
+                        ng-required="{{!authenticated}}">
                     <div class="error-container last-error-container" ng-show="forms.lightingForm.phone.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.phone.$error">
                         <div ng-messages-include="views/errorList.html"></div>
                     </div>
@@ -87,8 +88,7 @@
             <div class="half-column-form" ng-if="!authenticated">
                 <ion-item class="item-icon-right lined-item input-text-without-icon">
                     <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
-                    <input type="number" name="cellphone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir Escribir teléfono Secundario')" ng-class="{'has-errors' : forms.lightingForm.cellphone.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.cellphone.$valid && forms.lightingForm.$submitted}"
-                        ng-required="{{!authenticated}}">
+                    <input type="number" name="cellphone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Problemas de Alumbrado','Escribir Escribir teléfono Secundario')" ng-class="{'has-errors' : forms.lightingForm.cellphone.$invalid && forms.lightingForm.$submitted, 'no-errors' : forms.lightingForm.cellphone.$valid && forms.lightingForm.$submitted}">
                     <div class="error-container last-error-container" ng-show="forms.lightingForm.cellphone.$error && forms.lightingForm.$submitted" ng-messages="forms.lightingForm.cellphone.$error">
                         <div ng-messages-include="views/errorList.html"></div>
                     </div>

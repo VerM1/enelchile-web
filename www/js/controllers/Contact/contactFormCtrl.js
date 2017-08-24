@@ -85,7 +85,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           } else {
             $log.error("No data");
             $ionicLoading.hide();
-            var modalType = 'error';
+            var modalType = 'info';
             var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
             var modalContent = $rootScope.translation.NO_DATA;
             PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -95,6 +95,9 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           $log.error('Error to get Asset List: ', err);
           $ionicLoading.hide();
           var modalType = 'error';
+          if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+            modalType = 'info';
+          }
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = err.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -121,7 +124,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         });
         ContactService.setContactFormAuth(numeroSuministro, asunto, descripcion).then(function(response) {
           $ionicLoading.hide();
-          var modalType = 'validation';
+          var modalType = 'success';
           var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
           var modalContent = 'Su contacto ha sido ingresado con el numero: ' + response.caseNumber;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
@@ -132,6 +135,9 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         }, function(err) {
           $ionicLoading.hide();
           var modalType = 'error';
+          if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+            modalType = 'info';
+          }
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = $rootScope.translation.ERROR_FIND_GEOCODE + err.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
@@ -173,9 +179,9 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         ContactService.setContactForm(numeroSuministro, asunto, rut, nombres, apellidoPaterno, apellidoMaterno, email, telefono, movil, descripcion).then(function(response) {
           $ionicLoading.hide();
           LocalStorageProvider.setLocalStorageItem('no_session_form_data', formData);
-          var modalType = 'validation';
+          var modalType = 'success';
           var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-          var modalContent = 'Su contacto ha sido ingresado con el numero: ' + response.caseNumber;
+          var modalContent = $rootScope.translation.SUCCESS_CONTACT_ENTERED_WITH_NUMBER + ": " + response.caseNumber;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
             $state.go("guest.contact");
             $scope.modal.hide();
@@ -184,8 +190,11 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         }, function(err) {
           $ionicLoading.hide();
           var modalType = 'error';
+          if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+            modalType = 'info';
+          }
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-          var modalContent = 'Su contacto no ha podido ser ingresado:  ' + err.message;
+          var modalContent = $rootScope.translation.ERROR_CONTACT_ENTERED_WITH_NUMBER + ": " + err.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
             $scope.modal.hide();
           });
@@ -222,7 +231,12 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           $scope.forms.contactForm.email.$viewValue = '';
           $scope.forms.contactForm.phone.$viewValue = '';
           $scope.forms.contactForm.cellphone.$viewValue = '';
-          $scope.forms.contactForm.numClient.$viewValue = '';
+          var clientnum = LocalStorageProvider.getLocalStorageItem('no_session_client_number');
+          if (clientnum) {
+            $scope.forms.contactForm.numClient.$setViewValue(clientnum);
+          } else {
+            $scope.forms.contactForm.numClient.$viewValue = '';
+          }
         }
         $scope.forms.contactForm.rut.$render();
         $scope.forms.contactForm.names.$render();

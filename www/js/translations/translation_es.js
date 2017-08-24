@@ -4,7 +4,7 @@ angular.module("appenel").constant("translation_es", {
   "LOGIN": "Ingresar",
   "LOGIN_FACEBOOK": "Ingresar con Facebook",
   "LOGOUT": "Cerrar Sesión",
-  "LOGOUT_DESCRIPTION": "Cerrar Sesión descripción...",
+  "LOGOUT_DESCRIPTION": "¿Deseas cerrar tu sesión?",
   "WELCOME": "Bienvenido",
   "ACCEPT": "Aceptar",
   "CANCEL": "Cancelar",
@@ -38,14 +38,17 @@ angular.module("appenel").constant("translation_es", {
   'TYPE': 'Tipo',
   'DOWNLOAD': 'Descargar',
   'INFO': 'Información',
-  'NO_DATA': 'No hay datos',
-  "RETRY": "Reintentar",
-  "NO_ACTIVE_DEBT": "El suministro no tiene una deuda activa",
-  "LOGIN_VIRTUAL_BRANCH": "Acceder a sucursal virtual",
-  "REGISTER_VIRTUAL_BRANCH": "Registro en sucursal virtual",
   "ADDRESS": "Dirección",
+  "RETRY": "Reintentar",
+  "SUCCESS": "Éxito",
+  "ERROR": "Error",
+  "INFO": "Información",
   "PHONE_PRIMARY": "Teléfono Primario",
   "PHONE_SECONDARY": "Teléfono Secundario",
+  "LOGIN_VIRTUAL_BRANCH": "Acceder a sucursal virtual",
+  "REGISTER_VIRTUAL_BRANCH": "Registro en sucursal virtual",
+
+
 
 
   /*  APP VERSION   */
@@ -129,7 +132,7 @@ angular.module("appenel").constant("translation_es", {
   /*	VERIFICATION	*/
   "PASSWORD_RECOVERY": "Recuperar Clave",
   "RECOVERY_PASS_TEXT": "Para recuperar tu clave, primero debes validar tu cuenta con un código de seguridad, luego podrás cambiar tu clave.",
-  "SEND_ME_CODE": "Solicitar Recuperar clave",
+  "SEND_ME_CODE": "Recuperar clave",
   "GENERATE_NEW_CODE": "Generar un nuevo código",
   "LABEL_ENTER_USER": "Ingresar usuario (rut)",
   "LABEL_ENTER_CODE": "Ingresar código",
@@ -165,7 +168,7 @@ angular.module("appenel").constant("translation_es", {
   /*  END USAGE   */
 
   /*  ENTER READING   */
-  "ENTER_READING_DISCLAIMER": "Disclaimer ingreso de lectura...",
+  "ENTER_READING_DISCLAIMER": "Si nuestro lector no pudo realizar el registro de tu medidor por problemas de acceso al equipo de medida, podrás ingresar la lectura de tu medidor hasta las 12 horas del día siguiente a la fecha de entregar el servicio.",
   "LABEL_ENTER_READING": "Ingresar Lectura",
   "LABEL_READING": "Lectura",
   "LABEL_READING_DAY": "Ingresar lectura día",
@@ -179,7 +182,7 @@ angular.module("appenel").constant("translation_es", {
 
 
   /*  PAY BILL   */
-  "PAY_ACCOUNT_DISCLAIMER": "Disclaimer paga tu cuenta...",
+  "PAY_ACCOUNT_DISCLAIMER": "Una vez realizado el pago, enviaremos un comprobante de tu transacción al correo electrónico indicado.",
   "PAY_YOUR_BILL": "Paga tu cuenta",
   "PAY": "Pagar",
   "TYPE_OF_DEBT": "Tipo de Deuda",
@@ -203,13 +206,13 @@ angular.module("appenel").constant("translation_es", {
   "EMERGENCIES": "Emergencias",
   "BLACKOUT": "Corte de Luz",
   "BLACKOUT_DESCRIPTION": "Para informar si en tu domicilio o barrio están sin luz, presiona aquí.",
-  "BLACKOUT_DISCLAIMER": "Disclaimer corte de luz",
+  "BLACKOUT_DISCLAIMER": "En caso de que la falla sea en la instalación interior, la visita de los técnicos de emergencia podría tener un costo asociado.",
   "LIGHTING_PROBLEMS": "Alumbrado público",
   "LIGHTING_PROBLEMS_DESCRIPTION": "Si deseas reportar algúna anormalidad de alumnado público de tu barrio (por ejemplo, una o más luminarias apagadas) presiona aquí.",
-  "LIGHTING_PROBLEMS_DISCLAIMER": "Disclaimer problemas de alumbrado",
+  "LIGHTING_PROBLEMS_DISCLAIMER": "Si tu comuna no aparezca en la lista disponible, debes reportar el problema de alumbrado directamente al municipio.",
   "RISK_OR_ACCIDENT": "Riesgo o Accidente",
   "RISK_OR_ACCIDENT_DESCRIPTION": "Para reportar situaciones riesgo eléctico como: domicilio electrizado, cables cortados, poste chocado o inclinado. Presiona aquí.",
-  "RISK_OR_ACCIDENT_DISCLAIMER": "Disclaimer riesgo o accidente",
+  "RISK_OR_ACCIDENT_DISCLAIMER": "En caso de que la falla sea en la instalación interior, la visita de los técnicos de emergencia podría tener un costo asociado.",
   "REPORT_EMERGENCY": "Reportar Emergencia",
 
   /*  EMERGENCY - BLACKOUT  */
@@ -234,14 +237,14 @@ angular.module("appenel").constant("translation_es", {
   /*	CONTACT	*/
   "CONTACT": "Contacto",
   "INFORMATION_SERVICES": "Fonoservicio",
-  "INFORMATION_SERVICES_DESCRIPTION": "Fonoservicio descripción...",
+  "INFORMATION_SERVICES_DESCRIPTION": "Nuestro servicio de atención telefónica 24x7, para contactarnos presiona llamar.",
   "CALL": "Llamar",
   "CONTACT_FORM": "Formulario de contacto",
-  "CONTACT_FORM_DESCRIPTION": "Formulario de contacto descripción...",
-  "WRITE_US": "Escríbenos",
+  "CONTACT_FORM_DESCRIPTION": "Atención escrita a un click.",
+  "WRITE_US": "Contactar",
   "NEARBY_BRANCHES": "Sucursales y lugares de pago",
-  "NEARBY_BRANCHES_DESCRIPTION": "Sucursales y lugares de pago descripción...",
-  "SEE_LOCATION": "Ver Ubicación",
+  "NEARBY_BRANCHES_DESCRIPTION": "Si desea acceder a la información de nuestras sucursales y lugares donde puedes pagar tu cuenta.",
+  "SEE_LOCATION": "Ver información",
 
   /*	CONTACT - CONTACT FORM	*/
   "LABEL_TOPIC": "Seleccionar asunto",
@@ -338,7 +341,13 @@ angular.module("appenel").constant("translation_es", {
   "ERROR": "Error",
   "SERVICES_ERROR": "En estos momentos no es posible procesar la solicitud, por favor inténtalo más tarde.",
   "OTHER_ERROR": "No fue posible procesar la solicitud, por favor intenta más tarde.",
+  'NO_DATA': 'No hay datos',
+  "NO_ACTIVE_DEBT": "El suministro no tiene una deuda activa",
   "SEARCH_USER_ERROR": "Error al buscar usuario. Verifica e intenta nuevamente.",
+  "NOT_POSSIBLE_GET_USER": "No es posible obtener el usuario",
+  "NOT_POSSIBLE_GET_USER_ID": "No es posible obtener el ID del usuario",
+  "NOT_POSSIBLE_GET_USER_RUT": "No es posible obtener el RUT del usuario",
+  "NOT_POSSIBLE_FIND_OBJECT": "No es posible encotrar el objeto",
 
 
   /*  DUMMY DATA */
@@ -361,7 +370,8 @@ angular.module("appenel").constant("translation_es", {
   "LOADING": "Cargando...",
   "ERROR_MODAL_TITLE": "Error",
   "ATTENTION_MODAL_TITLE": "Atención",
-  "HELPER_MODAL_TITLE": "Información",
+  "HELPER_MODAL_TITLE": "Ayuda",
+  "INFO_MODAL_TITLE": "Información",
   "VALIDATION_MODAL_TITLE": "Validación",
   "SUCCESS_MODAL_TITLE": "Éxito.",
   "ADD_ASSET_MODAL_TITLE": "Añadir suministro",
@@ -373,5 +383,8 @@ angular.module("appenel").constant("translation_es", {
   "ERROR_VALIDATION_CODE": "Su código es incorrecto.",
   "ERROR_RUT": "Rut incorrecto",
   "SUCCESS_CODE_SENT": "Un código de validación ha sido enviado a su correo electrónico",
-  "SUCCESS_USER_VALIDATED": "Su cuenta ha sido validada. Ya puede ingresar a la aplicación"
+  "SUCCESS_USER_VALIDATED": "Su cuenta ha sido validada. Ya puede ingresar a la aplicación",
+  "YOUR_READING_CODE_IS": "El código de su lectura es el ",
+  "SUCCESS_CONTACT_ENTERED_WITH_NUMBER": "Su contacto ha sido ingresado con el numero",
+  "ERROR_CONTACT_ENTERED_WITH_NUMBER": "Su contacto no ha podido ser ingresado"
 });

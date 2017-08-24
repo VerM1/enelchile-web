@@ -113,8 +113,11 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
       }, function(err) {
         $ionicLoading.hide();
         var modalType = 'error';
+        if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+          modalType = 'info';
+        }
         var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-        var modalContent = err;
+        var modalContent = err.message;
         PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
           $scope.modal.remove()
             .then(function() {
@@ -204,8 +207,11 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
     }, function(err) {
       $ionicLoading.hide();
       var modalType = 'error';
+      if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+        modalType = 'info';
+      }
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-      var modalContent = err;
+      var modalContent = err.message;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
         $scope.modal.remove()
           .then(function() {

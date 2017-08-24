@@ -21,8 +21,8 @@ angular.module('AccessModule').controller('verificationCtrl', function($state, $
 
       AccessService.requestPasswordChangeCode(formatedRutNumber).then(function(success) {
         $ionicLoading.hide();
-        var modalType = 'info';
-        var modalTitle = $rootScope.translation.HELPER_MODAL_TITLE;
+        var modalType = 'success';
+        var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
         var message = $rootScope.translation.SUCCESS_CODE_SENT;
         PopupService.openModal(modalType, modalTitle, message, $scope, function() {
           DataMapService.setItem('verification_step_1_rut', formatedRutNumber);
@@ -31,6 +31,9 @@ angular.module('AccessModule').controller('verificationCtrl', function($state, $
         });
       }, function(err) {
         var modalType = 'error';
+        if (err.code && err.code == UTILS_CONFIG.ERROR_INFO_CODE) {
+          modalType = 'info';
+        }
         var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
         var modalContent = err.message;
         PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {

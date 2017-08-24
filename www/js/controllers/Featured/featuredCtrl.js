@@ -13,6 +13,9 @@ angular.module('FeaturedModule').controller('featuredCtrl', function($scope, $ro
       $log.error("Error: ", err);
       $ionicLoading.hide();
       var modalType = 'error';
+      if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+        modalType = 'info';
+      }
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = err.message;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope);

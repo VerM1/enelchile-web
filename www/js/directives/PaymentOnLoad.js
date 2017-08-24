@@ -24,6 +24,7 @@ angular.module('appenel')
                     // }
 
                     if (element[0].contentDocument) {
+                        $ionicLoading.hide();
                         var url = element[0].contentDocument.URL;
                         if (url.includes(ENDPOINTS.ENDPOINTS_PAYMENT_SUCCESS)) {
                             scope.generateTemplateBill("successPayment", url);
@@ -31,7 +32,6 @@ angular.module('appenel')
                         if (url.includes(ENDPOINTS.ENDPOINTS_PAYMENT_ERROR)) {
                             scope.generateTemplateBill("info", url);
                         }
-                        $ionicLoading.hide();
                     } else {
                         $ionicLoading.hide();
                     }

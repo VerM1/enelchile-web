@@ -30,21 +30,24 @@ angular.module('BillsModule').controller('enterReadingCtrl', function($scope, $s
     BillsService.setEnterReading($scope.assetDetail.numeroSuministro, params.reading, params.day, params.night, params.peak).then(function(success) {
       $ionicLoading.hide();
       if (success.data) {
-        // var textReturn = 'El codigo de su lectura es el ' + success.data.caseId;
-        // $scope.openModal('info', 'Ingreso Lectura', textReturn);
         $log.info("success: ", success);
-        var modalType = 'info';
+        var modalType = 'success';
         var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-        var modalContent = 'El codigo de su lectura es el ' + success.data.caseNumber;
+        var modalContent = $rootScope.translation.YOUR_READING_CODE_IS + success.data.caseNumber;
         PopupService.openModal(modalType, modalTitle, modalContent, $scope);
-
-
       } else {
         $log.error('no data');
+        var modalType = 'info';
+        var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+        var modalContent = $rootScope.translation.NO_DATA;
+        PopupService.openModal(modalType, modalTitle, modalContent, $scope);
       }
     }, function(err) {
       $ionicLoading.hide();
       var modalType = 'error';
+      if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+        modalType = 'info';
+      }
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = err.message;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope);

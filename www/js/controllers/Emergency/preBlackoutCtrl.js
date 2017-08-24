@@ -77,7 +77,7 @@ angular.module('CoreModule').controller('preBlackoutCtrl', function($scope, $sta
           AccessService.getCommercialData(clientNum).then(function(response) {
             $log.info("no tiene corte");
             $ionicLoading.hide();
-            DataMapService.setItem("uniqueAsset", true);
+            DataMapService.setItem("uniqueAsset", "preBlackout");
             var data = {};
             data.index = 0;
             data.direccion = response.direccion;
@@ -94,6 +94,9 @@ angular.module('CoreModule').controller('preBlackoutCtrl', function($scope, $sta
             $log.error("Error: ", err);
             $ionicLoading.hide();
             var modalType = 'error';
+            if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+              modalType = 'info';
+            }
             var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
             var modalContent = err.message;
             PopupService.openModal(modalType, modalTitle, modalContent, $scope);

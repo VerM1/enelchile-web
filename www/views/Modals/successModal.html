@@ -1,4 +1,4 @@
-<ion-modal-view title="{{translation.ERROR | uppercase}}" class="modal-container">
+<ion-modal-view title="{{translation.SUCCESS | uppercase}}" class="modal-container">
     <ion-header-bar>
         <span class="title-page">{{modal.title}}</span>
     </ion-header-bar>
@@ -12,7 +12,7 @@
         </div>
         <div class="row button-row">
             <div class="col center">
-                <button class="button button-block emergency-style button-general" ng-click="closeModal()">
+                <button class="button button-block notification-style button-general" ng-click="closeModal()">
                     <span>{{translation.ACCEPT | uppercase}}</span>
                 </button>
             </div>

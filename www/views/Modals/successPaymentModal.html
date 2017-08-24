@@ -1,14 +1,12 @@
 <ion-modal-view title="{{translation.PAYMENT | uppercase}}" class="help-modal-container">
+    <ion-header-bar>
+        <div class="button-row-iframe" ng-click="closeModal()">
+            <i class="icon icon_enel_close"></i><br>
+            <span>{{translation.CLOSE | uppercase}}</span>
+        </div>
+    </ion-header-bar>
     <ion-content scroll="true" padding="false">
         <div class="width-full-size position-rel">
-            <div class="row button-row-iframe position-rel">
-                <div class="col">
-                    <button ng-click="closeModal()" class="center">
-                        <i class="icon icon_enel_close"></i><br>  
-                        <span>{{translation.CLOSE | uppercase}}</span>
-                    </button>
-                </div>
-            </div>
             <div class="width-full-size position-rel payment-voucher">
                 <div class="row width-full-size">
                     <div class="col center">
@@ -26,7 +24,6 @@
                 <div class="row">
                     <div class="col">
                         <p class="dear-user">{{translation.DEAR_USER}}: {{translation.PAYMENT_SUCCESS_CONFIRMATION_TEXT}}</p>
-                        <!--<span class="dear-user">{{translation.PAYMENT_SUCCESS_CONFIRMATION_TEXT}}</span>-->
                     </div>
                 </div>
                 <div class="row position-rel">

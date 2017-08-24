@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state, $window, SALESFORCE_CONFIG, translation_es, LocalStorageProvider, ContactService, $location, $route, UTILS_CONFIG, ENDPOINTS) {
+angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state, $window, SALESFORCE_CONFIG, translation_es, LocalStorageProvider, ContactService, $location, $route, UTILS_CONFIG, ENDPOINTS, $cordovaPush) {
 
   $rootScope.translation = translation_es;
   $rootScope.isLogged = false;
@@ -20,6 +20,45 @@ angular.module('appenel').run(function($rootScope, $log, $ionicPlatform, $state,
     force.init(LocalStorageProvider.getLocalStorageItem("SALESFORCE_CONFIG", false));
   } else {
     force.init(SALESFORCE_CONFIG);
+  }
+
+  //PUSH NOTIFICATIONS
+  try {
+    var push = PushNotification.init({
+      android: {
+        senderID: "840516435761",
+        icon: "notification_push"
+      },
+      browser: {
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+      },
+      ios: {
+        alert: "true",
+        badge: "true",
+        sound: "true"
+      }
+    });
+
+    push.on('registration', function(data) {
+      console.log("registrationId: " + data.registrationId);
+      // UtilsService.setLocalStorageItem("pushID", data.registrationId);
+    });
+
+    push.on('notification', function(data) {
+      console.log("se recibio una notificación: " + data);
+      //alert(data.message) 
+      // data.title,
+      // data.count,
+      // data.sound,
+      // data.image,
+      // data.additionalData
+    });
+
+    push.on('error', function(e) {
+      console.log(e.message)
+    });
+  } catch (e) {
+    console.log("Error al set PushID.");
   }
 
   $ionicPlatform.ready(function() {

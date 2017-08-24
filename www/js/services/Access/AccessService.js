@@ -19,29 +19,28 @@
             var items = [];
             if (respuesta.data != null && respuesta.data.length > 0) {
               angular.forEach(respuesta.data, function(value, key) {
-                // if (value.nroDocumento != null && value.nroDocumento.toString() != "0" && value.nroDocumento.toString() != "-1") {
-                $log.info(key + ' : ', value);
-                var data = {};
-                data.index = key;
-                data.trxId = value.trxId;
-                data.tipoDocumento = value.tipoDocumento;
-                data.tipoDeuda = value.tipoDeuda;
-                data.publicidad = value.publicidad;
-                data.nroDocumento = value.nroDocumento;
-                data.nombre = value.nombre;
-                data.monto = value.monto;
-                data.mensaje = value.mensaje;
-                data.fechaVencimiento = value.fechaVencimiento;
-                data.fechaEmision = value.fechaEmision;
-                data.estado = value.estado;
-                data.direccion = value.direccion;
-                data.consumo = value.consumo;
-                data.codigoBarra = value.codigoBarra;
-                items.push(data);
-                // } else {
-                //   $log.debug("el elemento ya fue pagado, no se incluira en la lista");
-                // }
-
+                if (value.nroDocumento != null && value.nroDocumento.toString() != "0" && value.nroDocumento.toString() != "-1") {
+                  $log.info(key + ' : ', value);
+                  var data = {};
+                  data.index = key;
+                  data.trxId = value.trxId;
+                  data.tipoDocumento = value.tipoDocumento;
+                  data.tipoDeuda = value.tipoDeuda;
+                  data.publicidad = value.publicidad;
+                  data.nroDocumento = value.nroDocumento;
+                  data.nombre = value.nombre;
+                  data.monto = value.monto;
+                  data.mensaje = value.mensaje;
+                  data.fechaVencimiento = value.fechaVencimiento;
+                  data.fechaEmision = value.fechaEmision;
+                  data.estado = value.estado;
+                  data.direccion = value.direccion;
+                  data.consumo = value.consumo;
+                  data.codigoBarra = value.codigoBarra;
+                  items.push(data);
+                } else {
+                  $log.debug("el elemento ya fue pagado, no se incluira en la lista");
+                }
               });
             }
             defer.resolve(items);
@@ -189,7 +188,7 @@
       //     });
       //   } else {
       //     force.login(function(response) {
-      //       var callbackResponse = LocalStorageProvider.getLocalStorageItem('user_data').split("#")[1];
+      //       var callbackResponse = LocalStorageProvider.getLocalStorageItem('USER_DATA').split("#")[1];
       //       callbackResponse = decodeURIComponent(callbackResponse);
       //       var responseParameters = (callbackResponse).split("&");
       //       var parameterMap = [];

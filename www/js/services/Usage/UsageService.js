@@ -312,8 +312,8 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var graphdata = [];
           var graphdataset = [];
           var options = {};
-          var pointBackgroundColor = []
-          var borderColor = []
+          var pointBackgroundColor = [];
+          var borderColor = [];
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
               $log.info(key + ' : ', value);
@@ -353,8 +353,8 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
             }
           }
           response.options = options;
-          LocalStorageProvider.setLocalStorageItem('asset_usages_' + index, items);
-          defer.resolve(items);
+          LocalStorageProvider.setLocalStorageItem('asset_usages_' + index, response);
+          defer.resolve(response);
         } else {
           $log.error('Error AssetUsage: ', respuesta.message);
           var obj = {};
@@ -408,8 +408,8 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var graphdata = [];
           var graphdataset = [];
           var options = {};
-          var pointBackgroundColor = []
-          var borderColor = []
+          var pointBackgroundColor = [];
+          var borderColor = [];
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
               $log.info(key + ' : ', value);
@@ -502,8 +502,11 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var graphdata = [];
           var graphdataset = [];
           var options = {};
-          var pointBackgroundColor = []
-          var borderColor = []
+          var pointBackgroundColor = [];
+          var borderColor = [];
+          var montoAux = 0;
+          var mesAux = 0;
+          var fechaAux = "";
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
               $log.info(key + ' : ', value);
@@ -513,15 +516,44 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               data.monto = value.monto;
               data.fechaPago = value.fechaPago;
               items.push(data);
-              graphlabels.push(data.fechaPago);
-              graphdata.push(data.monto);
-              pointBackgroundColor.push('rgba(5,85,250,1)');
-              borderColor.push('rgba(5,85,250,1)');
             });
+            var respuestaDataGraph = respuesta.data.reverse();
+            for (var i = 0; i < respuestaDataGraph.length; i++) {
+              $log.info(i + ' : ', respuestaDataGraph[i]);
+              var fechaSplit = respuestaDataGraph[i].fechaPago.split("/");
+              var mesSplit = fechaSplit[1];
+              if (mesAux == mesSplit) {
+                montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
+                if ((i + 1) === respuestaDataGraph.length) {
+                  graphlabels.push(respuestaDataGraph[i].fechaPago);
+                  graphdata.push(montoAux);
+                }
+              } else if (mesAux != mesSplit && i != 0) {
+                graphlabels.push(respuestaDataGraph[i - 1].fechaPago);
+                graphdata.push(montoAux);
+                montoAux = 0;
+                montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
+                mesAux = mesSplit;
+                fechaAux = respuestaDataGraph[i].fechaPago;
+                if ((i + 1) === respuestaDataGraph.length) {
+                  graphlabels.push(respuestaDataGraph[i].fechaPago);
+                  graphdata.push(montoAux);
+                }
+              } else {
+                montoAux = 0;
+                montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
+                mesAux = mesSplit;
+                fechaAux = respuestaDataGraph[i].fechaPago;
+              }
+            }
+
+
           }
           response.items = items;
-          response.graphlabels = graphlabels.reverse();
-          response.graphdata = graphdata.reverse();
+          response.graphlabels = graphlabels;
+          response.graphdata = graphdata;
+          $log.info("response.graphlabels: ", response.graphlabels);
+          $log.info("response.graphdata: ", response.graphdata);
           var ds = {
             label: 'Pagos',
             data: graphdata,

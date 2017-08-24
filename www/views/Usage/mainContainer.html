@@ -1,7 +1,7 @@
 <!--<ion-view class="title-page" title="{{translation.USAGES | uppercase}}" data-ng-init="onload()">-->
-<ion-view class="title-page" title="{{translation.USAGES | uppercase}}">
+<ion-view class="title-page" title="{{selectedTab==0 ? translation.OVERVIEW : (selectedTab==1 ? translation.USAGES : (selectedTab==2 ? translation.BILLS :  (selectedTab==3 ? translation.PAYMENTS :translation.USAGES ))) | uppercase}}">
     <ion-content scroll="true" padding="false">
-        <img src="img/logos/rotate_app.gif" alt="launcher" class="rotate-icon" ng-show="showRotateIcon" />
+        <img src="img/logos/rotate_app.gif" alt="launcher" class="rotate-icon" ng-show="showRotateIcon && selectedTab != 0" />
         <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="{{isHorizontal ? false: true}}" active-slide="0" pager-click="pagerClick(index)" does-continue="false" class="slider">
             <ion-slide ng-repeat="elements in dataUsageAssetList.items">
                 <div class="header-top usage-style" ng-hide="isHorizontal">

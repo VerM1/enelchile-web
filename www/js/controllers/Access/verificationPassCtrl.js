@@ -22,13 +22,16 @@ angular.module('AccessModule').controller('verificationPassCtrl', function($stat
       template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
     });
     AccessService.changePasswordNoAuth(rut, newPass, repeatNewPass, code).then(function(success) {
-      PopupService.openModal('info', $rootScope.translation.SUCCESS_MODAL_TITLE, $rootScope.translation.SUCCESS_PROFILE_CHANGE, $scope, function() {
+      PopupService.openModal('success', $rootScope.translation.SUCCESS_MODAL_TITLE, $rootScope.translation.SUCCESS_PROFILE_CHANGE, $scope, function() {
         $state.go("guest.login");
         $scope.modal.hide();
       });
     }, function(err) {
       $ionicLoading.hide();
       var modalType = 'error';
+      if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+        modalType = 'info';
+      }
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = err.message;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
@@ -44,9 +47,9 @@ angular.module('AccessModule').controller('verificationPassCtrl', function($stat
       userId = DataMapService.getItem('verification_step_1_rut', false);
     } catch (e) {
       $log.debug("no es posible obtener user_id");
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-      var modalContent = "no es posible obtener user_id";
+      var modalContent = $rootScope.translation.NOT_POSSIBLE_GET_USER;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
         $scope.modal.hide();
       });
@@ -59,14 +62,17 @@ angular.module('AccessModule').controller('verificationPassCtrl', function($stat
     var formatedRutNumber = userId;
     AccessService.requestPasswordChangeCode(formatedRutNumber).then(function(success) {
       $ionicLoading.hide();
-      var modalType = 'info';
-      var modalTitle = $rootScope.translation.HELPER_MODAL_TITLE;
+      var modalType = 'success';
+      var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
       var message = $rootScope.translation.SUCCESS_CODE_SENT;
       PopupService.openModal(modalType, modalTitle, message, $scope, function() {
         $scope.modal.hide();
       });
     }, function(err) {
       var modalType = 'error';
+      if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+        modalType = 'info';
+      }
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = err.message;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {

@@ -18,9 +18,9 @@ angular.module('AccessModule').controller('validationCtrl', function($state, $sc
     } catch (e) {
       // $ionicLoading.hide();
       $log.debug("no es posible obtener user_id");
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-      var modalContent = "no es posible obtener user_id";
+      var modalContent = $rootScope.translation.NOT_POSSIBLE_GET_USER;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
         $scope.modal.hide();
       });
@@ -33,7 +33,7 @@ angular.module('AccessModule').controller('validationCtrl', function($state, $sc
     AccessService.validateUser(userId, $scope.forms.activateAccount.insertCode.$viewValue).then(function(success) {
       $ionicLoading.hide();
       $log.info(success);
-      var modalType = 'info';
+      var modalType = 'success';
       var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
       var modalContent = $rootScope.translation.SUCCESS_USER_VALIDATED;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
@@ -43,6 +43,9 @@ angular.module('AccessModule').controller('validationCtrl', function($state, $sc
     }, function(err) {
       $ionicLoading.hide();
       var modalType = 'error';
+      if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+        modalType = 'info';
+      }
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = err.message;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
@@ -59,9 +62,9 @@ angular.module('AccessModule').controller('validationCtrl', function($state, $sc
       userId = DataMapService.getItem('verification_step_1_rut', false);
     } catch (e) {
       $log.debug("no es posible obtener rut_id");
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-      var modalContent = "no es posible obtener rut_id";
+      var modalContent = $rootScope.translation.NOT_POSSIBLE_GET_USER_RUT;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
         $scope.modal.hide();
       });
@@ -73,14 +76,17 @@ angular.module('AccessModule').controller('validationCtrl', function($state, $sc
     var formatedRutNumber = DataMapService.getItem('verification_step_1_rut');
     AccessService.requestPasswordChangeCode(formatedRutNumber).then(function(success) {
       $ionicLoading.hide();
-      var modalType = 'info';
-      var modalTitle = $rootScope.translation.HELPER_MODAL_TITLE;
+      var modalType = 'success';
+      var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
       var message = $rootScope.translation.SUCCESS_CODE_SENT;
       PopupService.openModal(modalType, modalTitle, message, $scope, function() {
         $scope.modal.hide();
       });
     }, function(err) {
       var modalType = 'error';
+      if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+        modalType = 'info';
+      }
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = err.message;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {

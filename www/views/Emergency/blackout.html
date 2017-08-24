@@ -94,16 +94,13 @@
             <div class="row">
                 <div class="col">
                     <button class="button button-block emergency-style button-general" id="accept-button" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Aceptar')" type="submit">{{translation.ACCEPT | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
                     </button>
                     <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="session.emergency">{{translation.BACK | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
                     </button>
-                    <button ng-if="!isLogged && !isReportNotLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.emergency">{{translation.BACK | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
+
+                    <button ng-if="!isLogged && backHref==='home'" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
                     </button>
-                    <button ng-if="!isLogged && isReportNotLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.preBlackout">{{translation.BACK | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
+                    <button ng-if="!isLogged && backHref==='preBlackout'" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.preBlackout">{{translation.BACK | uppercase}}
                     </button>
                 </div>
             </div>

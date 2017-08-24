@@ -1,6 +1,14 @@
 angular.module('CoreModule').controller('footerCtrl', function($scope, $state, $log, AnalyticsService, $rootScope) {
   $scope.isProfile = false;
+  $scope.isLogged = $rootScope.isLogged;
 
+  $scope.logoActionButton = function() {
+    if ($scope.isLogged) {
+      $state.go("session.usage");
+    } else {
+      $state.go("guest.home");
+    }
+  }
 
   //MÉTODO ANALYTICS
   $scope.sendAnalytics = function(categoria, accion) {

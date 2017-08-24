@@ -3,11 +3,11 @@
     <div class="col center">{{translation.ACTUAL_READING | uppercase}}</div>
     <div class="col center">{{translation.USAGE_MONTH | uppercase}}</div>
 </div>
-<div class="row margin-top-10 border-bottom border-color-grey-enel" ng-repeat="usage in usageList">
+<div class="row margin-top-10 border-bottom border-color-grey-enel" ng-repeat="usage in dataUsageAssetUsage.items">
     <div class="col center amount">{{usage.fechaLectura}}
     </div>
     <div class="col center">{{usage.consumoEnergia}} kWh
     </div>
-    <div class="col center">--
+    <div class="col center font-size-12 bolder">-
     </div>
 </div>

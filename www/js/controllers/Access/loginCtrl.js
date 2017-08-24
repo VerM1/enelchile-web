@@ -52,12 +52,15 @@ angular.module('AccessModule').controller('loginCtrl', function($scope, $state, 
           // $rootScope.contactId = response.contactId;
           $state.go("session.usage");
         },
-        function(error) {
-          $log.error(error);
+        function(err) {
+          $log.error(err);
           $ionicLoading.hide();
           var modalType = 'error';
+          if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+            modalType = 'info';
+          }
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-          var modalContent = error.message;
+          var modalContent = err.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope);
         });
     } else {

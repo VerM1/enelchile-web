@@ -119,13 +119,36 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
       timeout: 10000,
       enableHighAccuracy: true
     };
-    $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
-      var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      $log.debug("posicion: ", position.coords.latitude, "/", position.coords.longitude);
-      $scope.map.setCenter(latLng);
-    }, function(error) {
-      $log.debug("Could not get location");
-    });
+
+    if (cordova.plugins && cordova.plugins.diagnostic) {
+      cordova.plugins.diagnostic.isLocationEnabled(function(enabled) {
+        console.log("Location is " + (enabled ? "enabled" : "not enabled"));
+        if (enabled) {
+          try {
+            $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
+              var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+              $log.debug("posicion: ", position.coords.latitude, "/", position.coords.longitude);
+              $scope.map.setCenter(latLng);
+            }, function(error) {
+              $log.error("Could not get location");
+            });
+          } catch (exception) {
+            $log.error("Could not get location");
+          }
+        } else {
+          cordova.plugins.diagnostic.switchToLocationSettings();
+        }
+      }, function(error) {
+        console.error("The following error occurred: " + error);
+      });
+    }
+    // $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
+    //   var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    //   $log.debug("posicion: ", position.coords.latitude, "/", position.coords.longitude);
+    //   $scope.map.setCenter(latLng);
+    // }, function(error) {
+    //   $log.debug("Could not get location");
+    // });
     ContactService.getBranchesItems().then(function(response) {
       $scope.markersJson = response;
       // setMapOnAll($scope.markersJson.branches, codeBranches);
@@ -207,7 +230,10 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
       });
       var geocoder = new google.maps.Geocoder();
       geocoder.geocode({
-        'address': address
+        'address': address,
+        'componentRestrictions': {
+          'country': UTILS_CONFIG.GOOGLE_MAPS_RESTRICTED_COUNTRY
+        }
       }, function(results, status) {
         if (status == 'OK') {
           $scope.map.setCenter(results[0].geometry.location);

@@ -103,7 +103,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
         } else {
           $log.error("No data");
           $ionicLoading.hide();
-          var modalType = 'error';
+          var modalType = 'info';
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = $rootScope.translation.NO_DATA;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -113,6 +113,9 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
         $log.error('Error AssetList: ', err);
         $ionicLoading.hide();
         var modalType = 'error';
+        if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+          modalType = 'info';
+        }
         var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
         var modalContent = err.message;
         PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -137,18 +140,23 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       UsageService.getAssetDebt(assetId, index).then(function(response) {
           $log.info("reponse debt: ", response);
           $scope.dataUsageAssetDebt.items = response;
+          var aux = {};
           if (response.find(findObjectByTypeOfDebt1)) {
-            var aux = response.find(findObjectByTypeOfDebt1);
-            $scope.dataUsageAssetDebtToShow = aux;
+            aux = response.find(findObjectByTypeOfDebt1);
+            // $scope.dataUsageAssetDebtToShow = aux;
+            $scope.showAssetDebt = true;
           } else if (response.find(findObjectByTypeOfDebt2)) {
-            var aux = response.find(findObjectByTypeOfDebt2);
-            $scope.dataUsageAssetDebtToShow = aux;
+            aux = response.find(findObjectByTypeOfDebt2);
+            $scope.showAssetDebt = true;
+            // $scope.dataUsageAssetDebtToShow = aux;                        
           } else if (response.find(findObjectByTypeOfDebt3)) {
-            var aux = response.find(findObjectByTypeOfDebt3);
-            $scope.dataUsageAssetDebtToShow = aux;
+            aux = response.find(findObjectByTypeOfDebt3);
+            $scope.showAssetDebt = true;
+            // $scope.dataUsageAssetDebtToShow = aux;
           }
-          $log.debug("dataUsageAssetDebtToShow: ", $scope.dataUsageAssetDebtToShow);
           $scope.showAssetDebt = true;
+          $scope.dataUsageAssetDebtToShow = aux;
+          $log.debug("dataUsageAssetDebtToShow: ", $scope.dataUsageAssetDebtToShow);
           $scope.showLoadingDebt = false;
           $scope.showRetryDebt = false;
           $ionicSlideBoxDelegate.update();
@@ -161,7 +169,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
         });
     } else {
       $log.error("No data debt with that AssetId");
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = $rootScope.translation.NO_DATA;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -197,7 +205,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
         });
     } else {
       $log.error("No data details with that AssetId");
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = $rootScope.translation.NO_DATA;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -234,6 +242,9 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
           $log.error('Error AssetUsage: ', err);
           $ionicLoading.hide();
           var modalType = 'error';
+          if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+            modalType = 'info';
+          }
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = err.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -246,7 +257,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
     } else {
       $log.error("No data usage with that AssetId");
       $ionicLoading.hide();
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = $rootScope.translation.NO_DATA;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -284,6 +295,9 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
           $log.error('Error AssetBills: ', err);
           $ionicLoading.hide();
           var modalType = 'error';
+          if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+            modalType = 'info';
+          }
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = err.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -296,7 +310,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
     } else {
       $log.error("No data bills with that AssetId");
       $ionicLoading.hide();
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = $rootScope.translation.NO_DATA;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -335,6 +349,9 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
           $log.error('Error AssetPayments: ', err);
           $ionicLoading.hide();
           var modalType = 'error';
+          if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+            modalType = 'info';
+          }
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = err.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -347,7 +364,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
     } else {
       $log.error("No data payments with that AssetId");
       $ionicLoading.hide();
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = $rootScope.translation.NO_DATA;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -411,6 +428,9 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
           $log.error('Error Get Bill By Date:: ', err);
           $ionicLoading.hide();
           var modalType = 'error';
+          if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+            modalType = 'info';
+          }
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = err.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -418,7 +438,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
     } else {
       $log.error("Imposible to get bill by date with that AssetId");
       $ionicLoading.hide();
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = $rootScope.translation.NO_DATA;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -445,7 +465,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       $state.go("session.payBill");
     } else {
       $log.debug("Error");
-      var modalType = 'error';
+      var modalType = 'info';
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = $rootScope.translation.NO_ACTIVE_DEBT;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -479,7 +499,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
     $log.info("$scope.selectedIdex slide: ", $scope.selectedIdex);
     cleanAll();
     $ionicSlideBoxDelegate.slide(index);
-    $scope.changeTab(0);
+    $scope.changeTab($scope.selectedTab);
 
   };
 
@@ -524,7 +544,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
     }
     $rootScope.showRotateIcon = false;
     if (!LocalStorageProvider.getLocalStorageItem('show_rotate_icon')) {
-      LocalStorageProvider.setLocalStorageItem('show_rotate_icon', "true")
+      LocalStorageProvider.setLocalStorageItem('show_rotate_icon', "false")
     }
     $scope.showRotateIcon = false;
     $log.debug("current state: " + $state.current.name);

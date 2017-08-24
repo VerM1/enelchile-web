@@ -12,7 +12,10 @@ angular.module('CoreModule').controller('branchesListCtrl', function($scope, $st
         $ionicLoading.hide();
       }, function(err) {
         $log.error(err);
-        var modalType = 'info';
+        var modalType = 'error';
+        if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+          modalType = 'info';
+        }
         var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
         var modalContent = $rootScope.translation.ERROR_FIND_GEOCODE + err.message;
         PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {

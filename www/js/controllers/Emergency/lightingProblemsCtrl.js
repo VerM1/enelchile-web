@@ -29,6 +29,15 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     alert(frase);
   };
 
+  var getAddress = function(calle) {
+    var myA = calle.split(/(\d+)/);
+    if (myA[0]) {
+      return myA[0].trim();
+    } else {
+      return "";
+    }
+  };
+
   var getNumber = function(calle) {
     const regex = / (\d+)/;
     var arr = regex.exec(calle);
@@ -37,8 +46,6 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     } else {
       return "";
     }
-
-
   };
 
   var getSelectedObject = function(stateName) {
@@ -77,9 +84,9 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     $ionicLoading.hide();
     $log.debug(success);
     // $scope.openModal('info', 'Exito', 'Su caso ha sido ingresado con el numero ' + success.caseNumber);
-    var modalType = 'info';
+    var modalType = 'success';
     var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-    var modalContent = 'Su caso ha sido ingresado con el numero: ' + success.caseNumber;
+    var modalContent = $rootScope.translation.SUCCESS_CASE_ENTERED_WITH_NUMBER + ': ' + success.caseNumber;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
   };
 
@@ -88,8 +95,11 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     $log.error(err);
     // $scope.openModal('error', 'Error', 'Su caso no ha podido ser ingresado.  ' + err.message);
     var modalType = 'error';
+    if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+      modalType = 'info';
+    }
     var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-    var modalContent = 'Su caso no ha podido ser ingresado:  ' + err.message;
+    var modalContent = $rootScope.translation.ERROR_CASE_ENTERED_WITH_NUMBER + ':  ' + err.message;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
   };
 
@@ -178,7 +188,12 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     // $scope.forms.lightingForm.typeOfProblem.$setViewValue(01);
     if (address) {
       if (address.calle) {
-        $scope.forms.lightingForm.street.$setViewValue(address.calle);
+        var calle = getAddress(address.calle);
+        if (calle) {
+          $scope.forms.lightingForm.street.$setViewValue(calle);
+        } else {
+          $scope.forms.lightingForm.street.$setViewValue('');
+        }
         var numero = getNumber(address.calle);
         if (numero) {
           $scope.forms.lightingForm.number.$setViewValue(numero);

@@ -79,27 +79,35 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
   //GENERATE XML PAYMENT
   var generateXmlPayment = function(paymentObject) {
     var defer = $q.defer();
-    var xmlTemplate = UTILS_CONFIG.PAYMENT_TEMPLATE;
-    $log.info("template previo: ", xmlTemplate);
-    xmlTemplate = xmlTemplate.replace('</banco>', UTILS_CONFIG.PAYMENT_ID_BANK + '</banco>');
-    xmlTemplate = xmlTemplate.replace('</tipoPago>', paymentObject.paymentType + '</tipoPago>');
-    xmlTemplate = xmlTemplate.replace('</monto>', paymentObject.amount + '</monto>');
-    xmlTemplate = xmlTemplate.replace('</fechaVencimiento>', paymentObject.expirationDate + '</fechaVencimiento>');
-    xmlTemplate = xmlTemplate.replace('</fechaEmision>', paymentObject.issueDate + '</fechaEmision>');
-    xmlTemplate = xmlTemplate.replace('</fechaOnClick>', paymentObject.onClickDate + '</fechaOnClick>');
-    xmlTemplate = xmlTemplate.replace('</codigoBarra>', paymentObject.barcode + '</codigoBarra>');
-    xmlTemplate = xmlTemplate.replace('</empresa>', UTILS_CONFIG.PAYMENT_ENTERPRISE + '</empresa>');
-    xmlTemplate = xmlTemplate.replace('</nombre>', paymentObject.name + '</nombre>');
-    xmlTemplate = xmlTemplate.replace('</rut>', paymentObject.rut + '</rut>');
-    xmlTemplate = xmlTemplate.replace('</mail>', paymentObject.email + '</mail>');
-    $log.info("template post: ", xmlTemplate);
-    var wordsEncode = CryptoJS.enc.Utf8.parse(xmlTemplate); // WordArray object
-    var val = CryptoJS.enc.Base64.stringify(wordsEncode);
-    $log.info("val: ", val);
-    var wordsDecode = CryptoJS.enc.Base64.parse(val);
-    var valDecode = CryptoJS.enc.Utf8.stringify(wordsDecode);
-    $log.info("valDecode: ", valDecode);
-    defer.resolve(val);
+    try {
+      var xmlTemplate = UTILS_CONFIG.PAYMENT_TEMPLATE;
+      $log.info("template previo: ", xmlTemplate);
+      xmlTemplate = xmlTemplate.replace('</banco>', UTILS_CONFIG.PAYMENT_ID_BANK + '</banco>');
+      xmlTemplate = xmlTemplate.replace('</tipoPago>', paymentObject.paymentType + '</tipoPago>');
+      xmlTemplate = xmlTemplate.replace('</monto>', paymentObject.amount + '</monto>');
+      xmlTemplate = xmlTemplate.replace('</fechaVencimiento>', paymentObject.expirationDate + '</fechaVencimiento>');
+      xmlTemplate = xmlTemplate.replace('</fechaEmision>', paymentObject.issueDate + '</fechaEmision>');
+      xmlTemplate = xmlTemplate.replace('</fechaOnClick>', paymentObject.onClickDate + '</fechaOnClick>');
+      xmlTemplate = xmlTemplate.replace('</codigoBarra>', paymentObject.barcode + '</codigoBarra>');
+      xmlTemplate = xmlTemplate.replace('</empresa>', UTILS_CONFIG.PAYMENT_ENTERPRISE + '</empresa>');
+      xmlTemplate = xmlTemplate.replace('</nombre>', paymentObject.name + '</nombre>');
+      xmlTemplate = xmlTemplate.replace('</rut>', paymentObject.rut + '</rut>');
+      xmlTemplate = xmlTemplate.replace('</mail>', paymentObject.email + '</mail>');
+      $log.info("template post: ", xmlTemplate);
+      var wordsEncode = CryptoJS.enc.Utf8.parse(xmlTemplate); // WordArray object
+      var val = CryptoJS.enc.Base64.stringify(wordsEncode);
+      $log.info("val: ", val);
+      var wordsDecode = CryptoJS.enc.Base64.parse(val);
+      var valDecode = CryptoJS.enc.Utf8.stringify(wordsDecode);
+      $log.info("valDecode: ", valDecode);
+      defer.resolve(val);
+    } catch (exception) {
+      var error = {};
+      error.code = "-1";
+      error.message = exception;
+      defer.reject(error);
+    }
+
     return defer.promise;
   }
 

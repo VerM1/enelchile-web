@@ -1,6 +1,7 @@
 angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsService, $ionicSlideBoxDelegate, DataMapService, $log, LocalStorageProvider, $rootScope, UsageService, EmergencyService, $ionicModal, $state, $ionicLoading, AnalyticsService, $route, PopupService, UTILS_CONFIG) {
 
   $scope.actualIndex = 0;
+  $scope.backHref = "home";
 
   //MÉTODO ANALYTICS -- 05-07-2017
   $scope.sendAnalytics = function(categoria, accion) {
@@ -64,7 +65,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
               $ionicSlideBoxDelegate.update();
             } else {
               $log.error("No data with that contactId");
-              var modalType = 'error';
+              var modalType = 'info';
               var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
               var modalContent = $rootScope.translation.NO_DATA;
               PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -79,6 +80,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
       $log.info("no está logeado");
       try {
         if (DataMapService.getItem("uniqueAsset", false)) {
+          $scope.backHref = DataMapService.getItem("uniqueAsset", false);
           $log.info("ES UN ELEMENTO UNICO");
           $scope.dataBlackout.items = [];
           var items = DataMapService.getItem("reportBlackoutObject", false);
@@ -88,9 +90,9 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
           $ionicSlideBoxDelegate.update();
         } else {
           $log.error("Imposible to find Object: uniqueAsset");
-          var modalType = 'error';
+          var modalType = 'info';
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-          var modalContent = "Imposible to find Object: uniqueAsset";
+          var modalContent = $rootScope.translation.NOT_POSSIBLE_FIND_OBJECT + ": uniqueAsset";
           PopupService.openModal(modalType, modalTitle, modalContent, $scope);
         }
       } catch (err) {
@@ -111,7 +113,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
   var callbackSuccess = function(success) {
     $ionicLoading.hide()
     $log.debug(success);
-    var modalType = 'validation';
+    var modalType = 'success';
     var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
     var modalContent = $rootScope.translation.SUCCESS_CASE_ENTERED_WITH_NUMBER + " " + success.caseNumber;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
@@ -121,6 +123,9 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
     $ionicLoading.hide();
     $log.error(err);
     var modalType = 'error';
+    if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+      modalType = 'info';
+    }
     var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
     var modalContent = err.message;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);

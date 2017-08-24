@@ -61,10 +61,10 @@ angular.module('AccessModule').controller('registerCtrl', function($scope, $log,
     }, function(err) {
       $ionicLoading.hide();
       var modalType = 'error';
+      if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+        modalType = 'info';
+      }
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-      // if (!err) {
-      //   err = $rootScope.translation.ERROR_GENERICO_SERVICES;
-      // }
       var modalContent = err.message;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
         $scope.modal.hide();

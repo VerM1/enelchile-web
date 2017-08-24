@@ -40,7 +40,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item select-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_STATE}}</label>
-                <select name="state" ng-change="sendAnalytics('Riesgo o accidente','Seleccionar Comuna')" title="{{translation.LABEL_STATE}}" ng-model="selectedState" ng-options="item as item.nombreComuna for item in listStates" ng-class="{'has-errors' : forms.accidentForm.state.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.state.$valid && forms.accidentForm.$submitted}"
+                <select name="state" ng-change="sendAnalytics('Riesgo o accidente','Seleccionar Comuna')" title="{{translation.LABEL_STATE}}" ng-model="selectedState" ng-options="item as item.nombreComuna for item in listStates | orderBy:'nombreComuna'" ng-class="{'has-errors' : forms.accidentForm.state.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.state.$valid && forms.accidentForm.$submitted}"
                     required>
                     <option>{{translation.LABEL_STATE}}</option>
                 </select>

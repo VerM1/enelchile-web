@@ -24,6 +24,15 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
     AnalyticsService.evento(categoria, accion); //Llamada a Analytics
   };
 
+  var getAddress = function(calle) {
+    var myA = calle.split(/(\d+)/);
+    if (myA[0]) {
+      return myA[0].trim();
+    } else {
+      return "";
+    }
+  };
+
   var getNumber = function(calle) {
     const regex = / (\d+)/;
     var arr = regex.exec(calle);
@@ -32,8 +41,6 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
     } else {
       return "";
     }
-
-
   };
 
   var getSelectedObject = function(stateName) {
@@ -72,9 +79,9 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
     $ionicLoading.hide();
     $log.debug(success);
     // $scope.openModal('info', 'Exito', 'Su caso ha sido ingresado con el numero ' + success.caseNumber)
-    var modalType = 'info';
+    var modalType = 'success';
     var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-    var modalContent = 'Su caso ha sido ingresado con el numero: ' + success.caseNumber;
+    var modalContent = $rootScope.translation.SUCCESS_CASE_ENTERED_WITH_NUMBER + ': ' + success.caseNumber;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
   };
 
@@ -83,8 +90,11 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
     $log.error(err);
     // $scope.openModal('error', 'Error', 'Su caso no ha podido ser ingresado.  ' + err.message);
     var modalType = 'error';
+    if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+      modalType = 'info';
+    }
     var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-    var modalContent = 'Su caso no ha podido ser ingresado:  ' + err.message;
+    var modalContent = $rootScope.translation.ERROR_CASE_ENTERED_WITH_NUMBER + ': ' + err.message;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
   };
 
@@ -176,7 +186,12 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
     // $scope.forms.accidentForm.typeOfProblem.$setViewValue(01);
     if (address) {
       if (address.calle) {
-        $scope.forms.accidentForm.street.$setViewValue(address.calle);
+        var calle = getAddress(address.calle);
+        if (calle) {
+          $scope.forms.accidentForm.street.$setViewValue(calle);
+        } else {
+          $scope.forms.accidentForm.street.$setViewValue('');
+        }
         var numero = getNumber(address.calle);
         if (numero) {
           $scope.forms.accidentForm.number.$setViewValue(numero);
