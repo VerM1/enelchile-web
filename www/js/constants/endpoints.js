@@ -10,15 +10,15 @@ angular.module("appenel").value("ENDPOINTS", {
   },
 
   /* URLS BASE SALESFORCE*/
-  // ENDPOINTS_SALESFORCE: 'https://pceveris-enel-mobile.cs44.force.com/communitytest', //PC-EVERIS
+   ENDPOINTS_SALESFORCE: 'https://pceveris-enel-mobile.cs44.force.com/communitytest', //PC-EVERIS
   //   ENDPOINTS_SALESFORCE: 'https://uat-emerpedev-atchchuat-enellatam.cs52.force.com/AppEnel', //UAT
-  ENDPOINTS_SALESFORCE: 'https://preprod-preprod-enellatam.cs52.force.com/AppEnel', //UAT
+  //ENDPOINTS_SALESFORCE: 'https://preprod-preprod-enellatam.cs52.force.com/AppEnel', //UAT
   //ENDPOINTS_SALESFORCE: 'https://enelsud.force.com/Appenel', //PROD
 
   /*  URLS BASE EXTERNAL */
-  // ENDPOINTS_BASE_EXTERNAL: 'https://pceveris-servicerest.cs44.force.com', //PC-EVERIS
+   ENDPOINTS_BASE_EXTERNAL: 'https://pceveris-servicerest.cs44.force.com', //PC-EVERIS
   //   ENDPOINTS_BASE_EXTERNAL: 'https://uat-enellatam.cs52.force.com', //UAT
-  ENDPOINTS_BASE_EXTERNAL: 'https://preprod-preprod-enellatam.cs52.force.com', //UAT
+  //ENDPOINTS_BASE_EXTERNAL: 'https://preprod-preprod-enellatam.cs52.force.com', //UAT
   //ENDPOINTS_BASE_EXTERNAL: 'https://enelsudsite.secure.force.com', //PROD.
 
 
