@@ -40,7 +40,25 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
           }
           markers.branches = markersBranches;
           markers.paymentPlaces = markersPaymentPlaces;
-          LocalStorageProvider.setLocalStorageItem('branches', markers)
+          LocalStorageProvider.setLocalStorageItem('branches', markers);
+          var actualDate = "";
+          try {
+            actualDate = moment().format("MM/DD/YYYY");
+          } catch (exception) {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = '0' + dd
+            }
+            if (mm < 10) {
+              mm = '0' + mm
+            }
+            today = mm + '/' + dd + '/' + yyyy;
+            actualDate = today;
+          }
+          LocalStorageProvider.setLocalStorageItem("last_request_sf_time_branches", actualDate);
           defer.resolve(markers);
         } else {
           $log.error('Get Data: ' + response.message);
@@ -89,7 +107,7 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
         email: email,
         telefonoPrimario: telefono,
         telefonoSecundario: movil,
-        descripción: descripcion
+        descripcion: descripcion
       }
     };
     var params = {};
@@ -100,7 +118,7 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
     ConnectionProvider.sendPost(url, params, data, headers, function(response) {
       if (response.code == 200) {
         $log.info('Set Contact: ', response);
-        defer.resolve(response.data);
+        defer.resolve(response);
       } else {
         $log.error('Get Data: ' + response.message);
         var obj = {};
@@ -150,8 +168,8 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
 
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
-        $log.info("Set Contact Auth ", respuesta.data);
-        defer.resolve(respuesta.data);
+        $log.info("Set Contact Auth ", respuesta);
+        defer.resolve(respuesta);
       } else {
         $log.error('Error Set Contact Auth: ', respuesta.message);
         var obj = {};

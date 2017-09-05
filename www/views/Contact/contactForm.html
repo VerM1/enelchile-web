@@ -22,8 +22,8 @@
                 </div>
             </ion-slide>
         </ion-slide-box>
-        <form name="forms.contactForm" novalidate="" ng-submit="validateForm()">
-            <ion-item class="lined-item select-text-without-icon position-rel">
+        <form name="forms.contactForm" novalidate="" ng-submit="validateForm()" validate-form-focus>
+            <ion-item class="lined-item" ng-class="isIos ? 'select-text-without-icon-ios': 'select-text-without-icon'">
                 <label class="label-input-form">{{translation.LABEL_TOPIC}}</label>
                 <select name="topic" title="{{translation.PLACEHOLDER_TOPIC}}" ng-model="topic" ng-options="item as item.label for item in typeList" ng-change="sendAnalytics('Formulario de Contacto','Seleccionar motivo '+topic )" ng-class="{'has-errors' : forms.contactForm.topic.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.topic.$valid && forms.contactForm.$submitted}"
                     required>
@@ -98,14 +98,16 @@
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
             </ion-item>
-            <ion-item class="item-icon-right lined-item input-text-without-icon">
-                <label class="label-input-form">{{translation.LABEL_MESSAGE}}</label>
-                <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_MESSAGE}}" name="message" ng-model="message" ng-blur="sendAnalytics('Formulario de Contacto','Escribir detalle del requerimiento')" ng-class="{'has-errors' : forms.contactForm.message.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.message.$valid && forms.contactForm.$submitted}"
-                    required></textarea>
-                <div class="error-container last-error-container" ng-show="forms.contactForm.message.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.message.$error">
-                    <div ng-messages-include="views/errorList.html"></div>
-                </div>
-            </ion-item>
+            <div class="row">
+                <ion-item class="item-icon-right lined-item input-text-without-icon width-full-size">
+                    <label class="label-textarea-form">{{translation.LABEL_MESSAGE}}</label>
+                    <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_MESSAGE}}" name="message" ng-model="message" ng-blur="sendAnalytics('Formulario de Contacto','Escribir detalle del requerimiento')" ng-class="{'has-errors' : forms.contactForm.message.$invalid && forms.contactForm.$submitted, 'no-errors' : forms.contactForm.message.$valid && forms.contactForm.$submitted}"
+                        required></textarea>
+                    <div class="error-container last-error-container" ng-show="forms.contactForm.message.$error && forms.contactForm.$submitted" ng-messages="forms.contactForm.message.$error">
+                        <div ng-messages-include="views/errorList.html"></div>
+                    </div>
+                </ion-item>
+            </div>
             <div class="row">
                 <div class="col">
                     <button class="button button-block contact-style button-general" ng-click="sendAnalytics('Formulario de Contacto','Presionar Enviar')" type="submit">{{translation.SEND | uppercase}}

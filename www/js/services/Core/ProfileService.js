@@ -29,7 +29,8 @@
             userData.telefonoFijo = phone;
             userData.activarNotificaciones = checkNotifications;
             LocalStorageProvider.setLocalStorageItem("USER_DATA", userData);
-            defer.resolve(respuesta.message);
+            // defer.resolve(respuesta.message);
+            defer.resolve(respuesta);
           } else {
             $log.error('Error changePassword: ', respuesta.message);
             var obj = {};
@@ -82,7 +83,8 @@
           $ionicLoading.hide();
           if (respuesta.code.toString() == "200") {
             $log.info("changePassword:: ", respuesta.message);
-            defer.resolve(respuesta.message);
+            // defer.resolve(respuesta.message);
+            defer.resolve(respuesta);
           } else {
             $log.error('Error changePassword: ', respuesta.message);
             var obj = {};

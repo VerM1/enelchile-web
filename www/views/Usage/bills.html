@@ -7,7 +7,7 @@
 <div class="row margin-top-10 border-bottom border-color-grey-enel" ng-repeat="bill in dataUsageAssetBills.items">
     <div class="col center amount">{{bill.fecha}}
     </div>
-    <div class="col center">{{bill.monto | currency : '$': 0}}
+    <div class="col center font-size-12">{{bill.monto | currency : '$': 0}}
     </div>
     <div ng-click="downloadBill(selectedIdex, bill.boleta , bill.fecha)" ng-if="bill.boleta>0" class="col center usage-icon">
         <i class="icon icon_enel_download_bill"></i>

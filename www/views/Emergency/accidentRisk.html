@@ -1,7 +1,7 @@
 <ion-view class="title-page" title="{{translation.RISK_OR_ACCIDENT | uppercase}}">
     <ion-content scroll="true" padding="false">
-        <form name="forms.accidentForm" novalidate="" ng-submit="validateForm()">
-            <ion-item class="item-icon-right lined-item select-text-without-icon">
+        <form name="forms.accidentForm" novalidate="" ng-submit="validateForm()" validate-form-focus>
+            <ion-item class="item-icon-right lined-item" ng-class="isIos ? 'select-text-without-icon-ios': 'select-text-without-icon'">
                 <label class="label-input-form">{{translation.LABEL_TYPE_OF_PROBLEM}}</label>
                 <select name="typeOfProblem" title="{{translation.PLACEHOLDER_TYPE_OF_PROBLEM}}" ng-model="typeOfProblem" ng-change="sendAnalytics('Riesgo o accidente','Seleccionar tipo de problema '+typeOfProblem )" ng-options="item as item.label for item in listProblemTypes"
                     ng-class="{'has-errors' : forms.accidentForm.typeOfProblem.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.typeOfProblem.$valid && forms.accidentForm.$submitted}" required>
@@ -38,7 +38,7 @@
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
             </ion-item>
-            <ion-item class="item-icon-right lined-item select-text-without-icon">
+            <ion-item class="item-icon-right lined-item" ng-class="isIos ? 'select-text-without-icon-ios': 'select-text-without-icon'">
                 <label class="label-input-form">{{translation.LABEL_STATE}}</label>
                 <select name="state" ng-change="sendAnalytics('Riesgo o accidente','Seleccionar Comuna')" title="{{translation.LABEL_STATE}}" ng-model="selectedState" ng-options="item as item.nombreComuna for item in listStates | orderBy:'nombreComuna'" ng-class="{'has-errors' : forms.accidentForm.state.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.state.$valid && forms.accidentForm.$submitted}"
                     required>
@@ -95,16 +95,16 @@
                 </ion-item>
             </div>
             <div class="row margin-top-10">
-                <div class="col">
-                    <ion-item class="item-icon-right lined-item input-text-without-icon  position-rel">
-                        <label class="label-input-form">{{translation.LABEL_DESCRIBE_THE_INCIDENT}}</label>
-                        <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-model="description" ng-blur="sendAnalytics('Riesgo o accidente','Escribir Descripción')" ng-class="{'has-errors' : forms.accidentForm.description.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.description.$valid && forms.accidentForm.$submitted}"
-                            required></textarea>
-                        <div class="error-container last-error-container" ng-show="forms.accidentForm.description.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.description.$error">
-                            <div ng-messages-include="views/errorList.html"></div>
-                        </div>
-                    </ion-item>
-                </div>
+                <!-- <div class="col"> -->
+                <ion-item class="item-icon-right lined-item input-text-without-icon width-full-size">
+                    <label class="label-textarea-form">{{translation.LABEL_DESCRIBE_THE_INCIDENT}}</label>
+                    <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-model="description" ng-blur="sendAnalytics('Riesgo o accidente','Escribir Descripción')" ng-class="{'has-errors' : forms.accidentForm.description.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.description.$valid && forms.accidentForm.$submitted}"
+                        required></textarea>
+                    <div class="error-container last-error-container" ng-show="forms.accidentForm.description.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.description.$error">
+                        <div ng-messages-include="views/errorList.html"></div>
+                    </div>
+                </ion-item>
+                <!-- </div> -->
             </div>
             <div class="row">
                 <div class="col">

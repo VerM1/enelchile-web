@@ -24,7 +24,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     ConnectionProvider.sendPost(url, params, data, headers, function(respuesta) {
       if (respuesta.code.toString() == "200") {
         $log.debug('Get Data: ', respuesta);
-        defer.resolve(respuesta.data);
+        defer.resolve(respuesta);
       } else {
         $log.error('Error Get Data: ' + respuesta.message);
         var obj = {};
@@ -80,7 +80,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     ConnectionProvider.sendPost(url, params, data, headers, function(respuesta) {
       if (respuesta.code.toString() == "200") {
         $log.debug('Get Data: ', respuesta);
-        defer.resolve(respuesta.data);
+        defer.resolve(respuesta);
       } else {
         $log.error('Error Get Data: ' + respuesta.message);
         var obj = {};
@@ -138,7 +138,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     ConnectionProvider.sendPost(url, params, data, headers, function(respuesta) {
       if (respuesta.code.toString() == "200") {
         $log.debug('Get Data: ', respuesta);
-        defer.resolve(respuesta.data);
+        defer.resolve(respuesta);
       } else {
         $log.error('Error Get Data: ' + respuesta.message);
         var obj = {};
@@ -191,6 +191,24 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
             obj.push(response.data[i]);
           }
           LocalStorageProvider.setLocalStorageItem("blackout_list", obj);
+          var actualDate = "";
+          try {
+            actualDate = moment().format("MM/DD/YYYY");
+          } catch (exception) {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = '0' + dd
+            }
+            if (mm < 10) {
+              mm = '0' + mm
+            }
+            today = mm + '/' + dd + '/' + yyyy;
+            actualDate = today;
+          }
+          LocalStorageProvider.setLocalStorageItem("last_request_sf_time_blackout_problems", actualDate);
           defer.resolve(obj);
         } else {
           $log.error('Error getBlackoutList: ' + response.message);
@@ -244,6 +262,24 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
             obj.push(response.data[i]);
           }
           LocalStorageProvider.setLocalStorageItem("lighting_list", obj);
+          var actualDate = "";
+          try {
+            actualDate = moment().format("MM/DD/YYYY");
+          } catch (exception) {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = '0' + dd
+            }
+            if (mm < 10) {
+              mm = '0' + mm
+            }
+            today = mm + '/' + dd + '/' + yyyy;
+            actualDate = today;
+          }
+          LocalStorageProvider.setLocalStorageItem("last_request_sf_time_lighting_problems", actualDate);
           defer.resolve(obj);
         } else {
           $log.error('Error getLightingList: ' + response.message);
@@ -297,6 +333,24 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
             obj.push(response.data[i]);
           }
           LocalStorageProvider.setLocalStorageItem("risk_accident_list", obj);
+          var actualDate = "";
+          try {
+            actualDate = moment().format("MM/DD/YYYY");
+          } catch (exception) {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = '0' + dd
+            }
+            if (mm < 10) {
+              mm = '0' + mm
+            }
+            today = mm + '/' + dd + '/' + yyyy;
+            actualDate = today;
+          }
+          LocalStorageProvider.setLocalStorageItem("last_request_sf_time_accident_risk_problems", actualDate);
           defer.resolve(obj);
         } else {
           $log.error('Error getRiskAccidentList: ' + response.message);
@@ -340,7 +394,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     obj.data = {
       bean: {
         numeroSuministro: numeroSuministro,
-        siniestro: siniestro,
+        descripcion: siniestro,
         tipoDeProblema: tipoDeProblema
       }
 
@@ -350,7 +404,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
         $log.info("RESPONSE EMERGENCY ", respuesta);
-        defer.resolve(respuesta.data);
+        defer.resolve(respuesta);
       } else {
         $log.error('Error AssetList: ', respuesta.message);
         var obj = {};
@@ -403,7 +457,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
         $log.info("RESPONSE EMERGENCY ", respuesta);
-        defer.resolve(respuesta.data);
+        defer.resolve(respuesta);
       } else {
         $log.error('Error AssetList: ', respuesta.message);
         var obj = {};
@@ -458,7 +512,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
         $log.info("RESPONSE EMERGENCY ", respuesta);
-        defer.resolve(respuesta.data);
+        defer.resolve(respuesta);
       } else {
         $log.error('Error AssetList: ', respuesta.message);
         var obj = {};

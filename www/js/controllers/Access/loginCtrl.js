@@ -1,4 +1,4 @@
-angular.module('AccessModule').controller('loginCtrl', function($scope, $state, $rootScope, $log, AccessService, $rootScope, AnalyticsService, PopupService, $ionicLoading, UTILS_CONFIG) {
+angular.module('AccessModule').controller('loginCtrl', function($scope, $state, $ionicPlatform, $rootScope, $log, AccessService, $rootScope, AnalyticsService, PopupService, $ionicLoading, UTILS_CONFIG) {
   $scope.sendAnalytics = function(categoria, accion) {
     AnalyticsService.evento(categoria, accion); //Llamada a Analytics
   };
@@ -44,12 +44,20 @@ angular.module('AccessModule').controller('loginCtrl', function($scope, $state, 
       $ionicLoading.show({
         template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
       });
-      AccessService.getLoginServices(userNumber, password).then(
+      var platform = "";
+      if ($ionicPlatform.is("ios")) {
+        platform = "IOS";
+      } else if ($ionicPlatform.is("android")) {
+        platform = "ANDROID";
+      } else {
+        platform = "WEB";
+      }
+
+      AccessService.getLoginServices(userNumber, password, platform).then(
         function(response) {
           $log.info("response login: ", response);
           $ionicLoading.hide();
           $rootScope.isLogged = true;
-          // $rootScope.contactId = response.contactId;
           $state.go("session.usage");
         },
         function(err) {

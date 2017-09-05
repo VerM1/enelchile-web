@@ -27,6 +27,24 @@ angular.module('FeaturedModule').factory('FeaturedService', function(ConnectionP
             featuredList.push(obj);
           });
           LocalStorageProvider.setLocalStorageItem('featured_list', featuredList);
+          var actualDate = "";
+          try {
+            actualDate = moment().format("MM/DD/YYYY");
+          } catch (exception) {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = '0' + dd
+            }
+            if (mm < 10) {
+              mm = '0' + mm
+            }
+            today = mm + '/' + dd + '/' + yyyy;
+            actualDate = today;
+          }
+          LocalStorageProvider.setLocalStorageItem("last_request_sf_time_featured", actualDate);
           defer.resolve(featuredList);
         } else {
           $log.error('Error Get Data: ' + respuesta.message);

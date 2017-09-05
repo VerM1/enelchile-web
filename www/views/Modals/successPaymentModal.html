@@ -46,6 +46,12 @@
                         </ion-item>
                         <div class="half-column-form">
                             <ion-item class="item-icon-right lined-item">
+                                <label class="label-input-form">{{translation.LABEL_STATE}}</label>
+                                <input type="text" ng-value="modal.content.comuna" disabled>
+                            </ion-item>
+                        </div>
+                        <div class="half-column-form">
+                            <ion-item class="item-icon-right lined-item">
                                 <label class="label-input-form">{{translation.TRANSACTION_ID}}</label>
                                 <input type="text" ng-value="modal.content.numeroTransaccion" disabled>
                             </ion-item>
@@ -62,7 +68,7 @@
                                 <input type="text" ng-value="modal.content.fecha" disabled>
                             </ion-item>
                         </div>
-                        <ion-item class="col item-icon-right lined-item position-rel">
+                        <ion-item class="item-icon-right lined-item position-rel">
                             <label class="label-input-form">{{translation.LABEL_PAYMENT_MESSAGE}}</label>
                             <textarea class="form-textarea center" ng-model="modal.content.mensaje" ng-value="modal.content.mensaje" disabled></textarea>
                         </ion-item>
@@ -72,15 +78,6 @@
                     <div class="col left">
                         <p class="border-bottom border-color-grey-enel">{{translation.PAYMENT_SUCCESS_KEPT_BILL}}</p>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col left">
-                        <p>{{translation.PAYMENT_SUCCESS_ALL_CHANNELS_TEXT}}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div ng-bind-html="modal.content.rrss"></div>
                 </div>
             </div>
         </div>

@@ -33,8 +33,8 @@ angular.module('AccessModule').controller('validationCtrl', function($state, $sc
     AccessService.validateUser(userId, $scope.forms.activateAccount.insertCode.$viewValue).then(function(success) {
       $ionicLoading.hide();
       $log.info(success);
-      var modalType = 'success';
-      var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
+      var modalType = 'info';
+      var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = $rootScope.translation.SUCCESS_USER_VALIDATED;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
         $state.go("guest.login");
@@ -76,8 +76,8 @@ angular.module('AccessModule').controller('validationCtrl', function($state, $sc
     var formatedRutNumber = DataMapService.getItem('verification_step_1_rut');
     AccessService.requestPasswordChangeCode(formatedRutNumber).then(function(success) {
       $ionicLoading.hide();
-      var modalType = 'success';
-      var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
+      var modalType = 'info';
+      var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var message = $rootScope.translation.SUCCESS_CODE_SENT;
       PopupService.openModal(modalType, modalTitle, message, $scope, function() {
         $scope.modal.hide();

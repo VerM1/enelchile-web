@@ -6,7 +6,7 @@
 <div class="row margin-top-10 border-bottom border-color-grey-enel" ng-repeat="payment in dataUsageAssetPayments.items">
     <div class="col center amount">{{payment.fechaPago}}
     </div>
-    <div class="col center">{{payment.monto | currency : '$': 0}}
+    <div class="col center font-size-12">{{payment.monto | currency : '$': 0}}
     </div>
     <div class="col center font-size-12 bolder">{{payment.tipoPago}}
     </div>

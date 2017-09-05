@@ -12,7 +12,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <form name="forms.profileForm1" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm1()">
+                <form name="forms.profileForm1" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm1()" validate-form-focus>
                     <ion-item class="border-radius-10">
                         <ion-checkbox ng-model="checkNotifications" name="checkNotifications" ng-checked="booleanNotifications" class="profile-check-notifications">{{translation.ACTIVATE_NOTIFICATIONS}}</ion-checkbox>
                     </ion-item>
@@ -44,19 +44,19 @@
                         </div>
                     </ion-item>
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col">
                             <button class="button button-block profile-style button-general" type="submit">{{translation.SAVE | uppercase}}
                     </button>
                         </div>
-                    </div>
+                    </div> -->
                 </form>
             </div>
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col">
-                <form name="forms.profileForm2" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm2()">
+                <form name="forms.profileForm2" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm2()" validate-form-focus>
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
                         <label class="label-input-form">{{translation.LABEL_ENTER_NEW_PASS}}</label>
                         <input type="password" placeholder="{{translation.PLACEHOLDER_ENTER_NEW_PASS}}" name="password" ng-model="password" ng-class="{'has-errors' : forms.profileForm2.password.$invalid && forms.profileForm2.$submitted, 'no-errors' : forms.profileForm2.password.$valid && forms.profileForm2.$submitted}"
@@ -77,13 +77,12 @@
                     <div class="row">
                         <div class="col">
                             <button class="button button-block profile-style button-general" type="submit">{{translation.SAVE | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
                     </button>
                         </div>
                     </div>
                 </form>
             </div>
-        </div>
+        </div> -->
 
         <div class="row">
             <div class="col position-rel">

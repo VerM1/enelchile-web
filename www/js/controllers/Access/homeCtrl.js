@@ -61,6 +61,10 @@ angular.module('AccessModule').controller('homeCtrl', function($scope, $state, $
               assetData.numeroSuministro = clientNum;
               assetData.numeroSuministroDv = formatedClientNumber;
               assetData.direccion = assetDebt.direccion;
+              assetData.comuna = "";
+              if (assetDebt.comuna) {
+                assetData.comuna = assetDebt.comuna;
+              }
               assetData.items = response;
               assetData.index = 0;
               DataMapService.setItem("payBillObject", assetData);
@@ -97,6 +101,10 @@ angular.module('AccessModule').controller('homeCtrl', function($scope, $state, $
             var data = {};
             data.index = 0;
             data.direccion = response.direccion;
+            data.comuna = "";
+            if (response.comuna) {
+              data.comuna = response.comuna;
+            }
             data.numeroSuministro = response.numeroSuministro;
             data.numeroSuministroDv = response.numeroSuministro + "-" + response.digitoVerificador;
             DataMapService.setItem("reportBlackoutObject", data);

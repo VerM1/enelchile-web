@@ -19,7 +19,7 @@
                 </div>
             </ion-slide>
         </ion-slide-box>
-        <form name="forms.blackoutForm" novalidate="" ng-submit="validateForm()">
+        <form name="forms.blackoutForm" novalidate="" ng-submit="validateForm()" validate-form-focus>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
                 <label class="label-input-form">{{translation.LABEL_NAME}}</label>
                 <input type="text" name="name" placeholder="{{translation.PLACEHOLDER_NAME}}" ng-model="name" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir Nombre')" ng-class="{'has-errors' : forms.blackoutForm.name.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.name.$valid && forms.blackoutForm.$submitted}"
@@ -60,37 +60,39 @@
                 </div>
             </ion-item>
             <div class="center margin-top-10 blackout-form-emergency-subtype">
-                <div class="element" ng-class="{'selected-element': selected2tab}" ng-click="selectedProblem(typesOfProblems2.value)">
+                <div class="element" ng-class="{'selected-element': selected1tab}" ng-click="selectedProblem(typesOfProblems1.value)">
                     <a class="color-white">
                         <div class="width-full-size">
                             <i class="icon icon_enel_neighborhood"></i>
                         </div>
                         <div class="width-full-size">
                             <!--{{translation.BLACKOUT_AT_NEIGHBORHOOD}}-->
-                            {{typesOfProblems2.label | uppercase}}
+                            {{typesOfProblems1.label | uppercase}}
                         </div>
                     </a>
                 </div>
-                <div class="element" ng-class="{'selected-element': selected1tab}" ng-click="selectedProblem(typesOfProblems1.value)">
+                <div class="element" ng-class="{'selected-element': selected2tab}" ng-click="selectedProblem(typesOfProblems2.value)">
                     <a class="color-white">
                         <div class="width-full-size">
                             <i class="icon icon_enel_house"></i>
                         </div>
                         <div class="width-full-size">
                             <!--{{translation.BLACKOUT_AT_HOME}}-->
-                            {{typesOfProblems1.label | uppercase}}
+                            {{typesOfProblems2.label | uppercase}}
                         </div>
                     </a>
                 </div>
             </div>
-            <ion-item class="item-icon-right lined-item input-text-without-icon  position-rel">
-                <label class="label-input-form">{{translation.LABEL_DESCRIBE_THE_INCIDENT}}</label>
-                <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir detalle del requerimiento')" ng-model="description" ng-class="{'has-errors' : forms.blackoutForm.description.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.description.$valid && forms.blackoutForm.$submitted}"
-                    required></textarea>
-                <div class="error-container last-error-container" ng-show="forms.blackoutForm.description.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.description.$error">
-                    <div ng-messages-include="views/errorList.html"></div>
-                </div>
-            </ion-item>
+            <div class="row">
+                <ion-item class="item-icon-right lined-item input-text-without-icon width-full-size">
+                    <label class="label-textarea-form">{{translation.LABEL_DESCRIBE_THE_INCIDENT}}</label>
+                    <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir detalle del requerimiento')" ng-model="description" ng-class="{'has-errors' : forms.blackoutForm.description.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.description.$valid && forms.blackoutForm.$submitted}"
+                        required></textarea>
+                    <div class="error-container last-error-container" ng-show="forms.blackoutForm.description.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.description.$error">
+                        <div ng-messages-include="views/errorList.html"></div>
+                    </div>
+                </ion-item>
+            </div>
             <div class="row">
                 <div class="col">
                     <button class="button button-block emergency-style button-general" id="accept-button" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Aceptar')" type="submit">{{translation.ACCEPT | uppercase}}

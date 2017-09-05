@@ -23,6 +23,24 @@ angular.module('CoreModule').factory('UtilsService', function(SalesforceProvider
             obj.push(response.data[i]);
           }
           LocalStorageProvider.setLocalStorageItem("states", obj);
+          var actualDate = "";
+          try {
+            actualDate = moment().format("MM/DD/YYYY");
+          } catch (exception) {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = '0' + dd
+            }
+            if (mm < 10) {
+              mm = '0' + mm
+            }
+            today = mm + '/' + dd + '/' + yyyy;
+            actualDate = today;
+          }
+          LocalStorageProvider.setLocalStorageItem("last_request_sf_time_states", actualDate);
           defer.resolve(obj);
         } else {
           $log.error('Error getStates: ' + response.message);
@@ -77,13 +95,35 @@ angular.module('CoreModule').factory('UtilsService', function(SalesforceProvider
               $log.info(key + ' : ', value);
               var data = {};
               data.index = key;
-              data.direccion = value.direccion.direccion + " " + value.direccion.comuna;
+              data.direccion = value.direccion.direccion;
+              if (value.direccion && value.direccion.comuna && value.direccion.comuna != null && value.direccion.comuna != "") {
+                data.direccion = data.direccion + " " + value.direccion.comuna;
+                data.comuna = value.direccion.comuna;
+              }
               data.numeroSuministro = value.numeroSuministro;
               data.numeroSuministroDv = value.numeroSuministro + "-" + value.digitoVerificador;
               items.push(data);
             });
           }
           LocalStorageProvider.setLocalStorageItem('asset_list', items);
+          var actualDate = "";
+          try {
+            actualDate = moment().format("MM/DD/YYYY");
+          } catch (exception) {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = '0' + dd
+            }
+            if (mm < 10) {
+              mm = '0' + mm
+            }
+            today = mm + '/' + dd + '/' + yyyy;
+            actualDate = today;
+          }
+          LocalStorageProvider.setLocalStorageItem("last_request_sf_time_user_data", actualDate);
           defer.resolve(items);
         } else {
           $log.error('Error AssetList: ', respuesta.message);
@@ -189,6 +229,24 @@ angular.module('CoreModule').factory('UtilsService', function(SalesforceProvider
         if (respuesta.code.toString() == "200") {
           $log.info("getAssetList ", respuesta.data);
           LocalStorageProvider.setLocalStorageItem('subject_list', respuesta.data);
+          var actualDate = "";
+          try {
+            actualDate = moment().format("MM/DD/YYYY");
+          } catch (exception) {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = '0' + dd
+            }
+            if (mm < 10) {
+              mm = '0' + mm
+            }
+            today = mm + '/' + dd + '/' + yyyy;
+            actualDate = today;
+          }
+          LocalStorageProvider.setLocalStorageItem("last_request_sf_time_subject_list", actualDate);
           defer.resolve(respuesta.data);
         } else {
           $log.error('Error AssetList: ', respuesta.message);

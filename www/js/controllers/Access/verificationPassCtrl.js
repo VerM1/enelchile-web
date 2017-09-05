@@ -22,7 +22,7 @@ angular.module('AccessModule').controller('verificationPassCtrl', function($stat
       template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
     });
     AccessService.changePasswordNoAuth(rut, newPass, repeatNewPass, code).then(function(success) {
-      PopupService.openModal('success', $rootScope.translation.SUCCESS_MODAL_TITLE, $rootScope.translation.SUCCESS_PROFILE_CHANGE, $scope, function() {
+      PopupService.openModal('info', $rootScope.translation.ATTENTION_MODAL_TITLE, $rootScope.translation.SUCCESS_PROFILE_CHANGE, $scope, function() {
         $state.go("guest.login");
         $scope.modal.hide();
       });
@@ -62,8 +62,8 @@ angular.module('AccessModule').controller('verificationPassCtrl', function($stat
     var formatedRutNumber = userId;
     AccessService.requestPasswordChangeCode(formatedRutNumber).then(function(success) {
       $ionicLoading.hide();
-      var modalType = 'success';
-      var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
+      var modalType = 'info';
+      var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var message = $rootScope.translation.SUCCESS_CODE_SENT;
       PopupService.openModal(modalType, modalTitle, message, $scope, function() {
         $scope.modal.hide();

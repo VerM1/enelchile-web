@@ -1,4 +1,3 @@
-<!--<ion-view class="title-page" id="home" title="{{translation.HOME | uppercase}}" hide-back-button="true" data-ng-init="onload()">-->
 <ion-view class="title-page" id="home" title="{{translation.HOME | uppercase}}" hide-back-button="true">
     <ion-content scroll="true" padding="true">
         <div class="row">
@@ -6,7 +5,7 @@
                 <img class="logo-enel" src="img/logos/Enel_Logo_Secondary_color_RGB.png" />
             </div>
         </div>
-        <form name="forms.homeForm" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm()">
+        <form name="forms.homeForm" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm()" validate-form-focus>
             <div class="row">
                 <div class="col">
                     <div class="list">
@@ -31,22 +30,18 @@
             <div class="row">
                 <div class="col center">
                     <button class="button button-block emergency-style button-general" type="submit" ng-click="sendAnalytics('Inicio','Presionar reportar corte')" button-id="reportButton">{{translation.WITHOUT_LIGHT | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
                     </button>
                     <button class="button button-block usage-style button-general" ng-click="sendAnalytics('Inicio','Presionar pagar cuenta')" type="submit" button-id="payButton">{{translation.PAY_ACCOUNT | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
                     </button>
                 </div>
             </div>
         </form>
         <div class="row">
             <div class="col center ">
-                <button class="button button-block home-style button-general margin-top-30" ng-click="sendAnalytics('Inicio','Presionar Ingresar')" ui-sref="guest.login ">{{translation.LOGIN_VIRTUAL_BRANCH | uppercase}}
-                    <!--<i class="icon icon_enel_check"></i>-->
+                <button class="button button-block home-color background-none button-general-home-access" ng-click="sendAnalytics('Inicio','Presionar Ingresar')" ui-sref="guest.login ">{{translation.LOGIN_VIRTUAL_BRANCH | uppercase}}
                 </button>
-                <button class="button button-block register-style button-general " ng-click="sendAnalytics('Inicio','Presionar Registro')" ui-sref="guest.register ">{{translation.REGISTER_VIRTUAL_BRANCH | uppercase}}
-                    <!--<i class="icon icon_enel_check"></i>-->
-                </button>
+                <!-- <button class="button button-block register-color background-none button-general-home-register" ng-click="sendAnalytics('Inicio','Presionar Registro')" ui-sref="guest.register ">{{translation.REGISTER_VIRTUAL_BRANCH | uppercase}}
+                </button> -->
             </div>
         </div>
     </ion-content>

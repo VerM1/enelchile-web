@@ -1,5 +1,8 @@
-angular.module('ContactModule').controller('contactFormCtrl', function($scope, $state, $ionicSlideBoxDelegate, $ionicLoading, $log, $rootScope, LocalStorageProvider, AnalyticsService, UtilsService, PopupService, ContactService, UTILS_CONFIG, $route) {
-
+angular.module('ContactModule').controller('contactFormCtrl', function($scope, $ionicPlatform, $state, $ionicSlideBoxDelegate, $ionicLoading, $log, $rootScope, LocalStorageProvider, AnalyticsService, UtilsService, PopupService, ContactService, UTILS_CONFIG, $route) {
+  $scope.isIos = false;
+  if ($ionicPlatform.is('ios')) {
+    $scope.isIos = true;
+  }
   $scope.isLogged = $rootScope.isLogged;
   $scope.actualIndex = 0;
   $scope.dataContactForm = {};
@@ -124,9 +127,9 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         });
         ContactService.setContactFormAuth(numeroSuministro, asunto, descripcion).then(function(response) {
           $ionicLoading.hide();
-          var modalType = 'success';
-          var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-          var modalContent = 'Su contacto ha sido ingresado con el numero: ' + response.caseNumber;
+          var modalType = 'info';
+          var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+          var modalContent = response.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
             $state.go("session.contact");
             $scope.modal.hide();
@@ -179,9 +182,9 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         ContactService.setContactForm(numeroSuministro, asunto, rut, nombres, apellidoPaterno, apellidoMaterno, email, telefono, movil, descripcion).then(function(response) {
           $ionicLoading.hide();
           LocalStorageProvider.setLocalStorageItem('no_session_form_data', formData);
-          var modalType = 'success';
-          var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-          var modalContent = $rootScope.translation.SUCCESS_CONTACT_ENTERED_WITH_NUMBER + ": " + response.caseNumber;
+          var modalType = 'info';
+          var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+          var modalContent = response.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
             $state.go("guest.contact");
             $scope.modal.hide();
@@ -194,7 +197,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
             modalType = 'info';
           }
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-          var modalContent = $rootScope.translation.ERROR_CONTACT_ENTERED_WITH_NUMBER + ": " + err.message;
+          var modalContent = err.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
             $scope.modal.hide();
           });

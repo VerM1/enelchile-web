@@ -4,7 +4,7 @@
         <i class="usage-color ion-ios-information input-text-icon-helper"></i>
     </ion-header-bar>
     <ion-content scroll="true" overflow-scroll="true">
-        <form name="forms.addAssetForm" novalidate="" ng-submit="validateFormAddAsset()">
+        <form name="forms.addAssetForm" novalidate="" ng-submit="validateFormAddAsset()" validate-form-focus>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
                 <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="numClient" ng-model="numClient" ng-class="{'has-errors' : forms.addAssetForm.numClient.$invalid && forms.addAssetForm.$submitted, 'no-errors' : forms.addAssetForm.numClient.$valid && forms.addAssetForm.$submitted}"

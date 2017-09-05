@@ -11,7 +11,7 @@ angular.module('appenel')
                     console.log("scope:", scope);
                     console.log("element:", element);
                     console.log("attrs:", attrs);
-                    if (element[0].contentDocument) {
+                    if (element[0] && element[0].contentDocument) {
                         // element[0].contentDocument.children[0].style.width = "100%";
                         // element[0].contentDocument.children[0].style.height = "100%";
                         // element[0].contentDocument.children[0].children[1].style.width = "100%";

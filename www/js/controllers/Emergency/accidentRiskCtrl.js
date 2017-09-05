@@ -1,4 +1,8 @@
-angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $rootScope, $log, LocalStorageProvider, EmergencyService, $ionicModal, $state, $ionicLoading, UtilsService, $cordovaGeolocation, ContactService, AnalyticsService, PopupService, UTILS_CONFIG) {
+angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ionicPlatform, $rootScope, $log, LocalStorageProvider, EmergencyService, $ionicModal, $state, $ionicLoading, UtilsService, $cordovaGeolocation, ContactService, AnalyticsService, PopupService, UTILS_CONFIG) {
+  $scope.isIos = false;
+  if ($ionicPlatform.is('ios')) {
+    $scope.isIos = true;
+  }
   var scope = $scope;
   var address;
   $scope.authenticated;
@@ -79,9 +83,9 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
     $ionicLoading.hide();
     $log.debug(success);
     // $scope.openModal('info', 'Exito', 'Su caso ha sido ingresado con el numero ' + success.caseNumber)
-    var modalType = 'success';
-    var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-    var modalContent = $rootScope.translation.SUCCESS_CASE_ENTERED_WITH_NUMBER + ': ' + success.caseNumber;
+    var modalType = 'info';
+    var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+    var modalContent = success.message;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
   };
 
@@ -94,7 +98,7 @@ angular.module('CoreModule').controller('accidentRiskCtrl', function($scope, $ro
       modalType = 'info';
     }
     var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-    var modalContent = $rootScope.translation.ERROR_CASE_ENTERED_WITH_NUMBER + ': ' + err.message;
+    var modalContent = err.message;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
   };
 

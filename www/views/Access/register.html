@@ -1,6 +1,6 @@
 <ion-view class="title-page" id="register" title="{{translation.REGISTER | uppercase}}">
     <ion-content scroll="true">
-        <form class="list" name="forms.registerForm" novalidate="" ng-submit="validateForm()">
+        <form name="forms.registerForm" class="list" novalidate="" ng-submit="validateForm()" validate-form-focus>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_RUT}}</label>
                 <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-blur="sendAnalytics('Registro','Escribir Rut')" ng-class="{'has-errors' : forms.registerForm.rut.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.rut.$valid && forms.registerForm.$submitted}"

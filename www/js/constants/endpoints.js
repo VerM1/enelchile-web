@@ -10,15 +10,15 @@ angular.module("appenel").value("ENDPOINTS", {
   },
 
   /* URLS BASE SALESFORCE*/
-  //ENDPOINTS_SALESFORCE: 'https://pceveris-enel-mobile.cs44.force.com/communitytest', //PC-EVERIS
+  // ENDPOINTS_SALESFORCE: 'https://pceveris-enel-mobile.cs44.force.com/communitytest', //PC-EVERIS
   //   ENDPOINTS_SALESFORCE: 'https://uat-emerpedev-atchchuat-enellatam.cs52.force.com/AppEnel', //UAT
-  //ENDPOINTS_SALESFORCE: 'https://preprod-preprod-enellatam.cs52.force.com/AppEnel', //UAT
+  //ENDPOINTS_SALESFORCE: 'https://preprod-enelcommunity.cs52.force.com/AppEnel', //PRE-PROD
   ENDPOINTS_SALESFORCE: 'https://enelsud.force.com/Appenel', //PROD
 
   /*  URLS BASE EXTERNAL */
-  //ENDPOINTS_BASE_EXTERNAL: 'https://pceveris-servicerest.cs44.force.com', //PC-EVERIS
+  // ENDPOINTS_BASE_EXTERNAL: 'https://pceveris-servicerest.cs44.force.com', //PC-EVERIS
   //   ENDPOINTS_BASE_EXTERNAL: 'https://uat-enellatam.cs52.force.com', //UAT
-  //ENDPOINTS_BASE_EXTERNAL: 'https://preprod-preprod-enellatam.cs52.force.com', //UAT
+  //ENDPOINTS_BASE_EXTERNAL: 'https://preprod-preprod-enellatam.cs52.force.com', //PRE-PROD
   ENDPOINTS_BASE_EXTERNAL: 'https://enelsudsite.secure.force.com', //PROD.
 
 
@@ -27,7 +27,7 @@ angular.module("appenel").value("ENDPOINTS", {
   ENDPOINTS_ASSESTS_LIST: '/services/apexrest/GetSupplyAuth/',
   ENDPOINTS_ASSET_DETAIL: '/services/apexrest/DetailSupply/',
   ENDPOINTS_ASSET_DEBT: '/services/apexrest/GetDebtAuth',
-  ENDPOINTS_GET_BILLS: '/services/apexrest/GetTicketAuth/', //REVISAR
+  ENDPOINTS_GET_BILLS: '/services/apexrest/GetTicketAuth/', //
   ENDPOINTS_GET_PAYMENTS: '/services/apexrest/GetPaymentAuth/',
   ENDPOINTS_ENTER_READING: '/services/apexrest/EnterReadingAuth/',
   ENDPOINTS_EMERGENCY_LIGHTING_PROBLEM: '/services/apexrest/EmergencyLightingProblemAuth/',
@@ -38,29 +38,30 @@ angular.module("appenel").value("ENDPOINTS", {
   ENDPOINTS_EDIT_USER: '/services/apexrest/EditUserAuth/',
   ENDPOINTS_PASSWORD_CHANGE: '/services/apexrest/ChangeOwnPasswordsAuth/',
   ENDPOINTS_ASSET_PROOF_OF_DEBT: '/services/apexrest/ProofOfDebtAuth',
-  ENDPOINTS_GET_BILL_BY_DATE: '/services/apexrest/CopyReceiptAuth', //PC-EVERIS 
+  ENDPOINTS_GET_BILL_BY_DATE: '/services/apexrest/CopyReceiptAuth', // 
 
   /*  SERVICIOS DE ACCESO EXTERNO*/
-  ENDPOINTS_GET_USER_SESSION: '/services/apexrest/GetSessionInfo', //PC-EVERIS
-  ENDPOINTS_BRACNHES: '/services/apexrest/GetBranches', //PC-EVERIS
-  ENDPOINTS_FEATURED: '/services/apexrest/GetFeaturedBranches/', //PC-EVERIS
-  ENDPOINTS_COMMERCIAL_DATA: '/services/apexrest/GetBusinessData', //PC-EVERIS
-  ENDPOINTS_DEBT_DATA: '/services/apexrest/GetDebt', //PC-EVERIS
-  ENDPOINTS_GET_STATES: '/services/apexrest/GetCommunes/', //PC-EVERIS
-  ENDPOINTS_GET_ASSET_DEBT: '/services/apexrest/GetDebt', //PE-EVERIS
-  ENDPOINTS_EXTERNAL_EMERGENCY_LIGHTING_PROBLEM: '/services/apexrest/EmergencyLightingProblem/', //PC-EVERIS
-  ENDPOINTS_EXTERNAL_EMERGENCY_RISK_ACCIDENT: '/services/apexrest/EmergencyRiskAccident/', //PC-EVERIS
-  ENDPOINTS_EXTERNAL_EMERGENCY_BLACKOUT: '/services/apexrest/EmergencyLightCut/', //PC-EVERIS
-  ENDPOINTS_EXTERNAL_SETCONTACT: '/services/apexrest/SetContact/', //PC-EVERIS
-  ENDPOINTS_EXTERNAL_SUBJECT: '/services/apexrest/SubjectsType/', //PC-EVERIS
-  ENDPOINTS_BLACKOUT_PROBLEMS_LIST: '/services/apexrest/ProblemsTypeLightCut/', //PC-EVERIS
-  ENDPOINTS_LIGHTING_PROBLEMS_LIST: '/services/apexrest/ProblemsTypeStreetLighting/', //PC-EVERIS
-  ENDPOINTS_RISK_ACCIDENT_PROBLEMS_LIST: '/services/apexrest/ProblemsTypeEmergencyRisk/', //PC-EVERIS
-  ENDPOINTS_EXTERNAL_CHANGE_PASS: '/services/apexrest/ChangeOwnPasswords/', //PC-EVERIS
-  ENDPOINTS_EXTERNAL_CODE_REQUEST: '/services/apexrest/Recoverykey/', //PC-EVERIS
-  ENDPOINTS_EXTERNAL_REGISTRY_USER: '/services/apexrest/RegistryUser/', //PC-EVERIS
-  ENDPOINTS_EXTERNAL_ACTIVATE_ACCOUNT: '/services/apexrest/ActivateAccount', //PC-EVERIS,
-  ENDPOINTS_GET_ASSET_PROOF_OF_DEBT: '/services/apexrest/ProofOfDebt', //PC-EVERIS 
+  ENDPOINTS_GET_USER_SESSION: '/services/apexrest/GetSessionInfo', // LOGIN V1
+  // ENDPOINTS_GET_USER_SESSION: '/services/apexrest/GetSessionInfoNeol', //LOGIN V2.0
+  ENDPOINTS_BRACNHES: '/services/apexrest/GetBranches', //
+  ENDPOINTS_FEATURED: '/services/apexrest/GetFeaturedBranches/', //
+  ENDPOINTS_COMMERCIAL_DATA: '/services/apexrest/GetBusinessData', //
+  ENDPOINTS_DEBT_DATA: '/services/apexrest/GetDebt', //
+  ENDPOINTS_GET_STATES: '/services/apexrest/GetCommunes/', //
+  ENDPOINTS_GET_ASSET_DEBT: '/services/apexrest/GetDebt', //
+  ENDPOINTS_EXTERNAL_EMERGENCY_LIGHTING_PROBLEM: '/services/apexrest/EmergencyLightingProblem/', //
+  ENDPOINTS_EXTERNAL_EMERGENCY_RISK_ACCIDENT: '/services/apexrest/EmergencyRiskAccident/', //
+  ENDPOINTS_EXTERNAL_EMERGENCY_BLACKOUT: '/services/apexrest/EmergencyLightCut/', //
+  ENDPOINTS_EXTERNAL_SETCONTACT: '/services/apexrest/SetContact/', //
+  ENDPOINTS_EXTERNAL_SUBJECT: '/services/apexrest/SubjectsType/', //
+  ENDPOINTS_BLACKOUT_PROBLEMS_LIST: '/services/apexrest/ProblemsTypeLightCut/', //
+  ENDPOINTS_LIGHTING_PROBLEMS_LIST: '/services/apexrest/ProblemsTypeStreetLighting/', //
+  ENDPOINTS_RISK_ACCIDENT_PROBLEMS_LIST: '/services/apexrest/ProblemsTypeEmergencyRisk/', //
+  ENDPOINTS_EXTERNAL_CHANGE_PASS: '/services/apexrest/ChangeOwnPasswords/', //
+  ENDPOINTS_EXTERNAL_CODE_REQUEST: '/services/apexrest/Recoverykey/', //
+  ENDPOINTS_EXTERNAL_REGISTRY_USER: '/services/apexrest/RegistryUser/', //
+  ENDPOINTS_EXTERNAL_ACTIVATE_ACCOUNT: '/services/apexrest/ActivateAccount', //
+  ENDPOINTS_GET_ASSET_PROOF_OF_DEBT: '/services/apexrest/ProofOfDebt', //
 
 
   /*  OTROS ENLACES   */
@@ -74,5 +75,6 @@ angular.module("appenel").value("ENDPOINTS", {
   ENDPOINTS_PAYMENT_ERROR: 'TraductorSalidaPage.aspx?exito=false',
 
   /*  ANALYTICS  */
-  ENDPOINTS_ANALYTICS: 'https://www.google-analytics.com/collect'
+  ENDPOINTS_ANALYTICS: 'https://www.google-analytics.com/collect',
+  ENDPOINTS_GOOGLE_STATICS_MAP: "https://maps.googleapis.com/maps/api/staticmap"
 });

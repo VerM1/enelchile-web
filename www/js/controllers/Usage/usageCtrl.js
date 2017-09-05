@@ -13,11 +13,13 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
   $scope.selectedAssetNumber = 0;
   $scope.selectedAssetNumberDv = "";
   $scope.selectedAssetAddress = "";
+  $scope.selectedAssetState = "";
   $scope.actualIndex = 0;
   $scope.flagChangeTab = 0;
   $scope.tabAnt = 'Resumen - Resumen';
   $scope.orientaAnt = 0;
   $scope.showRotateIcon = $rootScope.showRotateIcon;
+  $scope.UTILS_CONFIG = UTILS_CONFIG;
 
   //MÉTODO ANALYTICS
   $scope.sendAnalytics = function(categoria, accion) {
@@ -50,6 +52,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
         /*if($scope.flagChangeTab === 0){
            AnalyticsService.evento($scope.tabAnt, 'Presionar Resumen (superior)'); //Analytics
         }*/
+        cleanAll();
         $rootScope.tabActualAnalytics = 'Resumen - Resumen';
         $scope.tab0selected = true;
         //$scope.flagChangeTab = 0;
@@ -57,18 +60,21 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
         getAssetDetail($scope.selectedIdex);
         break;
       case 1:
+        cleanAll();
         AnalyticsService.evento($scope.tabAnt, 'Presionar Consumos)'); //Analytics
         $rootScope.tabActualAnalytics = 'Resumen - Consumos';
         $scope.tab1selected = true;
         getAssetUsage($scope.selectedIdex);
         break;
       case 2:
+        cleanAll();
         AnalyticsService.evento($scope.tabAnt, 'Presionar Boletas'); //Analytics
         $rootScope.tabActualAnalytics = 'Resumen - Boletas';
         $scope.tab2selected = true;
         getAssetBills($scope.selectedIdex);
         break;
       case 3:
+        cleanAll();
         AnalyticsService.evento($scope.tabAnt, 'Presionar Pagos'); //Analytics
         $rootScope.tabActualAnalytics = 'Resumen - Pagos';
         $scope.tab3selected = true;
@@ -137,6 +143,10 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       $scope.selectedAssetNumber = assetId;
       $scope.selectedAssetNumberDv = $scope.dataUsageAssetList.items[index].numeroSuministroDv;
       $scope.selectedAssetAddress = $scope.dataUsageAssetList.items[index].direccion;
+      if ($scope.dataUsageAssetList.items[index].comuna) {
+        $scope.selectedAssetState = $scope.dataUsageAssetList.items[index].comuna;
+      }
+
       UsageService.getAssetDebt(assetId, index).then(function(response) {
           $log.info("reponse debt: ", response);
           $scope.dataUsageAssetDebt.items = response;
@@ -189,6 +199,9 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       $scope.selectedAssetNumber = assetId;
       $scope.selectedAssetNumberDv = $scope.dataUsageAssetList.items[index].numeroSuministroDv;
       $scope.selectedAssetAddress = $scope.dataUsageAssetList.items[index].direccion;
+      if ($scope.dataUsageAssetList.items[index].comuna) {
+        $scope.selectedAssetState = $scope.dataUsageAssetList.items[index].comuna;
+      }
       UsageService.getAssetDetail(assetId, index, $scope.selectedAssetNumberDv, $scope.selectedAssetAddress).then(function(response) {
           $log.info("reponse detalle: ", response);
           $scope.dataUsageAssetDetail = response;
@@ -226,13 +239,22 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       $scope.selectedAssetNumber = assetId;
       $scope.selectedAssetNumberDv = $scope.dataUsageAssetList.items[index].numeroSuministroDv;
       $scope.selectedAssetAddress = $scope.dataUsageAssetList.items[index].direccion;
+      if ($scope.dataUsageAssetList.items[index].comuna) {
+        $scope.selectedAssetState = $scope.dataUsageAssetList.items[index].comuna;
+      }
       $ionicLoading.show({
         template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
       });
       UsageService.getAssetUsage(assetId, index).then(function(response) {
           $scope.dataUsageAssetUsage.items = response.items;
+          $scope.dataUsageAssetUsage.typeUsage = response.typeUsage;
           $scope.dataUsageAssetUsage.graphlabels = response.graphlabels;
           $scope.dataUsageAssetUsage.graphdata = response.graphdata;
+          //
+          $scope.dataUsageAssetUsage.graphdataLine = response.graphdataLine;
+          $scope.dataUsageAssetUsage.graphlabelsLine = response.graphlabelsLine;
+          $scope.dataUsageAssetUsage.graphseriesLine = response.graphseriesLine;
+          //
           $scope.dataUsageAssetUsage.dataset = response.dataset;
           $scope.dataUsageAssetUsage.options = response.options;
           $ionicSlideBoxDelegate.update();
@@ -279,6 +301,9 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       $scope.selectedAssetNumber = assetId;
       $scope.selectedAssetNumberDv = $scope.dataUsageAssetList.items[index].numeroSuministroDv;
       $scope.selectedAssetAddress = $scope.dataUsageAssetList.items[index].direccion;
+      if ($scope.dataUsageAssetList.items[index].comuna) {
+        $scope.selectedAssetState = $scope.dataUsageAssetList.items[index].comuna;
+      }
       $ionicLoading.show({
         template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
       });
@@ -333,6 +358,9 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       $scope.selectedAssetNumber = assetId;
       $scope.selectedAssetNumberDv = $scope.dataUsageAssetList.items[index].numeroSuministroDv;
       $scope.selectedAssetAddress = $scope.dataUsageAssetList.items[index].direccion;
+      if ($scope.dataUsageAssetList.items[index].comuna) {
+        $scope.selectedAssetState = $scope.dataUsageAssetList.items[index].comuna;
+      }
       $ionicLoading.show({
         template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
       });
@@ -459,6 +487,7 @@ angular.module('UsageModule').controller('usageCtrl', function($scope, $state, $
       assetData.numeroSuministro = $scope.selectedAssetNumber;
       assetData.numeroSuministroDv = $scope.selectedAssetNumberDv;
       assetData.direccion = $scope.selectedAssetAddress;
+      assetData.comuna = $scope.selectedAssetState;
       assetData.items = $scope.dataUsageAssetDebt.items;
       assetData.index = $scope.selectedIdex;
       DataMapService.setItem("payBillObject", assetData);

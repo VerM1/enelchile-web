@@ -1,4 +1,4 @@
-angular.module('CoreModule').controller('branchesDescriptionCtrl', function($scope, $state, $window, UtilsService, DataMapService, $log, ENDPOINTS) {
+angular.module('CoreModule').controller('branchesDescriptionCtrl', function($scope, $state, $window, UtilsService, DataMapService, $log, ENDPOINTS, UTILS_CONFIG) {
 
   function init() {
     $scope.branchesDescription = {};
@@ -18,6 +18,10 @@ angular.module('CoreModule').controller('branchesDescriptionCtrl', function($sco
           $scope.branchesDescription.imagen = replaceAll($scope.branchesDescription.imagen, "src=\"/", "src=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
           $scope.showHtmlImage = true;
           $log.info("new image: ", $scope.branchesDescription.imagen);
+        } else if ($scope.branchesDescription.imagen === null || $scope.branchesDescription.imagen === "") {
+          var width = $window.innerWidth;
+          var urlMap = ENDPOINTS.ENDPOINTS_GOOGLE_STATICS_MAP + '?center=' + $scope.branchesDescription.latitud + ',' + $scope.branchesDescription.longitud + '&zoom=18&size=' + width + 'x300&maptype=' + UTILS_CONFIG.GOOGLE_MAPS_TYPE_MAP + '&format=png&visual_refresh=true&markers=' + $scope.branchesDescription.latitud + ',' + $scope.branchesDescription.longitud + '&key=' + UTILS_CONFIG.GOOGLE_MAPS_KEY;
+          $scope.branchesDescription.imagen = '<img alt="img" src="' + urlMap + '"/>';
         }
         if ($scope.branchesDescription.horario_pago.match("<")) {
           $scope.branchesDescription.horario_pago = replaceAll($scope.branchesDescription.horario_pago, "\\", "\"\"");

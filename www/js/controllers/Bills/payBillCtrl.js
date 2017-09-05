@@ -21,6 +21,7 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
     $scope.numeroSuministro = "";
     $scope.numeroSuministroDv = "";
     $scope.direccion = "";
+    $scope.comuna = "";
     $scope.items = [];
 
     try {
@@ -30,6 +31,9 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
         $scope.numeroSuministro = assetObject.numeroSuministro;
         $scope.numeroSuministroDv = assetObject.numeroSuministroDv;
         $scope.direccion = assetObject.direccion;
+        if (assetObject.comuna) {
+          $scope.comuna = assetObject.comuna;
+        }
         $scope.items = assetObject.items;
         index = assetObject.index;
         $log.info("largo array: ", $scope.items.length);
@@ -72,6 +76,7 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
       request.amount = $scope.selectedDebt.monto;
       request.paymentType = $scope.selectedDebt.tipoDeuda;
       request.email = $scope.forms.payBillForm.email.$viewValue;
+      $scope.email = $scope.forms.payBillForm.email.$viewValue;
       request.expirationDate = $scope.selectedDebt.fechaVencimiento;
       request.issueDate = $scope.selectedDebt.fechaEmision;
       request.onClickDate = moment().format("DD/MM/YYYY HH:mm:ss");
@@ -102,8 +107,6 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
             .then(function() {
               $scope.modal = null;
               if ($scope.isLogged) {
-                LocalStorageProvider.removeLocalStorageItem("asset_debt_" + index);
-                LocalStorageProvider.removeLocalStorageItem("asset_detail_" + index);
                 $state.go("session.usage");
               } else {
                 $state.go("guest.home");
@@ -146,7 +149,11 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
 
 
   $scope.generateTemplateBill = function(typeModal, url) {
+    LocalStorageProvider.removeLocalStorageItem("asset_debt_" + index);
+    LocalStorageProvider.removeLocalStorageItem("asset_detail_" + index);
+
     var trxidDecode = $scope.selectedTrxId;
+    var successCode = "false";
     var urlAux = url.split("?")[1];
     urlAux = decodeURIComponent(urlAux);
     var responseParameters = (urlAux).split("&");
@@ -162,6 +169,11 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
       $log.error("Imposible to finde trxid");
     }
 
+    if (parameterMap.exito !== undefined && parameterMap.exito !== null) {
+      successCode = parameterMap.exito.toString();
+    } else {
+      $log.error("Imposible to finde success code");
+    }
 
     $scope.modal.remove()
       .then(function() {
@@ -170,19 +182,19 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
     $ionicLoading.show({
       template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
     });
-
-    BillsService.generateTemplateBill(trxidDecode).then(function(response) {
+    BillsService.generateTemplateBill(trxidDecode, $scope.numeroSuministro, $scope.email, successCode).then(function(response) {
       $ionicLoading.hide();
       $log.info("generacion exitosa de template de la boleta");
       var modalType = typeModal;
       var modalTitle = "";
       var modalContent = "";
       if (typeModal == "successPayment") {
-        modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
+        modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
         modalContent = {};
         modalContent.numeroCliente = $scope.numeroSuministroDv;
         modalContent.monto = $scope.selectedDebt.monto;
         modalContent.direccion = $scope.direccion;
+        modalContent.comuna = $scope.comuna;
         modalContent.numeroTransaccion = response.IdTransaccionComercial;
         modalContent.canalPago = response.nombreBanco;
         modalContent.fecha = response.fechaOnClick;
@@ -190,7 +202,7 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
         modalContent.rrss = UTILS_CONFIG.PAYMENT_RRSS_IMAGE;
       } else {
         modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-        modalContent = response.mensaje;
+        modalContent = $rootScope.translation.INCOMPLETE_PAYMENT;
       }
 
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {

@@ -1,5 +1,8 @@
-angular.module('CoreModule').controller('tutorialCtrl', function($scope, $log, AnalyticsService, $state, LocalStorageProvider, $ionicSlideBoxDelegate) {
-
+angular.module('CoreModule').controller('tutorialCtrl', function($scope, $ionicPlatform, $log, AnalyticsService, $state, LocalStorageProvider, $ionicSlideBoxDelegate) {
+  $scope.isIos = false;
+  if ($ionicPlatform.is('ios')) {
+    $scope.isIos = true;
+  }
   $scope.antIndex = 0;
 
   //MÉTODO ANALYTICS

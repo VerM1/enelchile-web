@@ -212,7 +212,7 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
       views: {
         'tab-contact': {
           templateUrl: 'views/Contact/paymentOptions.html',
-          controller: 'branchesMapCtrl'
+          controller: 'paymentOptionsCtrl'
         }
       }
     })
@@ -374,7 +374,7 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
       views: {
         'tab-contact': {
           templateUrl: 'views/Contact/paymentOptions.html',
-          controller: 'branchesMapCtrl'
+          controller: 'paymentOptionsCtrl'
         }
       }
     })

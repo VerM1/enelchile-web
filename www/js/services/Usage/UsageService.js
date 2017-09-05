@@ -1,7 +1,7 @@
 /**
  * Created by ngajardo on 12-12-2016.
  */
-angular.module('UsageModule').factory('UsageService', function($q, ConnectionProvider, SalesforceProvider, LocalStorageProvider, $log, ENDPOINTS, AccessService) {
+angular.module('UsageModule').factory('UsageService', function($q, ConnectionProvider, SalesforceProvider, LocalStorageProvider, $log, ENDPOINTS, AccessService, UTILS_CONFIG) {
 
   pub = {};
   //PRIVATE SERVICES
@@ -100,13 +100,35 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               $log.info(key + ' : ', value);
               var data = {};
               data.index = key;
-              data.direccion = value.direccion.direccion + " " + value.direccion.comuna;
+              data.direccion = value.direccion.direccion;
+              if (value.direccion.comuna && value.direccion.comuna != null && value.direccion.comuna != "") {
+                data.direccion = data.direccion + " " + value.direccion.comuna;
+                data.comuna = value.direccion.comuna;
+              }
               data.numeroSuministro = value.numeroSuministro;
               data.numeroSuministroDv = value.numeroSuministro + "-" + value.digitoVerificador;
               items.push(data);
             });
           }
           LocalStorageProvider.setLocalStorageItem('asset_list', items);
+          var actualDate = "";
+          try {
+            actualDate = moment().format("MM/DD/YYYY");
+          } catch (exception) {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+              dd = '0' + dd
+            }
+            if (mm < 10) {
+              mm = '0' + mm
+            }
+            today = mm + '/' + dd + '/' + yyyy;
+            actualDate = today;
+          }
+          LocalStorageProvider.setLocalStorageItem("last_request_sf_time_user_data", actualDate);
           defer.resolve(items);
         } else {
           $log.error('Error AssetList: ', respuesta.message);
@@ -173,6 +195,10 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
                 data.fechaEmision = value.fechaEmision;
                 data.estado = value.estado;
                 data.direccion = value.direccion;
+                if (value.comuna && value.comuna != null && value.comuna != "") {
+                  data.direccion = data.direccion + " " + value.comuna;
+                  data.comuna = value.comuna;
+                }
                 data.consumo = value.consumo;
                 data.codigoBarra = value.codigoBarra;
                 items.push(data);
@@ -181,7 +207,9 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               }
             });
           }
-          LocalStorageProvider.setLocalStorageItem('asset_debt_' + index, items);
+          if (items.length > 0) {
+            LocalStorageProvider.setLocalStorageItem('asset_debt_' + index, items);
+          }
           defer.resolve(items);
         } else {
           $log.error('Error AssetDebt: ', respuesta.message);
@@ -314,29 +342,82 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var options = {};
           var pointBackgroundColor = [];
           var borderColor = [];
+          //
+          var dataGraphLine = [];
+          var dataGraphLineReadingDay = [];
+          var dataGraphLineReadingNight = [];
+          var dataGraphLineReadingPeak = [];
+          //
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
               $log.info(key + ' : ', value);
               var data = {};
+              var actualReading = "";
+              var ammountGraph = "";
               data.index = key;
-              data.numeroCuenta = value.numeroCuenta;
-              data.nombrePuntoDistribucion = value.nombrePuntoDistribucion;
-              data.nombreConsumo = value.nombreConsumo;
-              data.idPuntoDistribucion = value.idPuntoDistribucion;
-              data.idConsumidor = value.idConsumidor;
-              data.fechaLectura = value.fechaLectura;
-              data.fechaFacturacion = value.fechaFacturacion;
-              data.consumoEnergia = value.consumoEnergia;
+              data.fechaFacturacion = value.fecha;
+              if (value.totalConsumo != null && value.totalConsumo.toString() != "" && value.totalConsumo.toString() != "0" && value.totalConsumo.toString() != "-") {
+                data.lecturaActual = value.totalConsumo;
+                actualReading = value.totalConsumo;
+              } else {
+                data.lecturaActual = "-";
+                actualReading = "0";
+              }
+              if (value.consumoMes != null && value.consumoMes.toString() != "" && value.consumoMes.toString() != "0" && value.consumoMes.toString() != "-") {
+                data.consumoEnergia = value.consumoMes;
+                ammountGraph = value.consumoMes;
+              } else {
+                data.consumoEnergia = "-";
+                ammountGraph = "0";
+              }
+              if (value.tipoConsumo && value.tipoConsumo != null && value.tipoConsumo.toString() != "" && value.tipoConsumo.toString() != "0" && value.tipoConsumo.toString() != "-") {
+                // if (value.tipoConsumo != UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_1) {
+                //     data.tipoConsumo = value.tipoConsumo;
+                // } else {
+                //     data.tipoConsumo = "-";
+                // }
+                data.tipoConsumo = value.tipoConsumo;
+              } else {
+                data.tipoConsumo = "-";
+              }
               items.push(data);
-              graphlabels.push(data.fechaLectura);
-              graphdata.push(data.consumoEnergia);
+              graphlabels.push(data.fechaFacturacion);
+              graphdata.push(ammountGraph);
+
+              //
+              if (data.tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_3) {
+                dataGraphLineReadingDay.push(ammountGraph);
+              } else if (data.tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_4) {
+                dataGraphLineReadingNight.push(ammountGraph);
+              } else if (data.tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_5) {
+                dataGraphLineReadingPeak.push(ammountGraph);
+              }
+              //
+
               pointBackgroundColor.push('rgba(5,85,250,1)');
               borderColor.push('rgba(5,85,250,1)');
             });
           }
+          //
+          dataGraphLine.push(dataGraphLineReadingDay.reverse());
+          dataGraphLine.push(dataGraphLineReadingNight.reverse());
+          dataGraphLine.push(dataGraphLineReadingPeak.reverse());
+          //
           response.items = items;
+          if (response.items.length > 0 && response.items[0].tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_1) {
+            response.typeUsage = UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_1;
+          }
+
           response.graphlabels = graphlabels.reverse();
           response.graphdata = graphdata.reverse();
+
+          //
+          response.graphdataLine = dataGraphLine;
+          var graphlabelsLine = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic", "Ene"];
+          response.graphlabelsLine = graphlabelsLine;
+          var graphseriesLine = ['Dia (kWh)', 'Noche (kWh)', 'Punta (kWh)'];
+          response.graphseriesLine = graphseriesLine;
+          //
           var ds = {
             label: 'Consumos',
             data: graphdata,
@@ -345,12 +426,24 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           }
           graphdataset.push(ds);
           response.dataset = graphdataset;
-          options = {
-            scales: {
-              xAxes: [{
-                display: false
-              }]
-            }
+          // options = {
+          //     scales: {
+          //         xAxes: [{
+          //             display: false
+          //         }]
+          //     }
+          // }
+          // options: {
+          //     scales: {
+          //         yAxes: [{
+          //             ticks: {
+          //                 beginAtZero: true
+          //             }
+          //         }]
+          //     }
+          // }
+          options: {
+            pointLabelFontSize: 60
           }
           response.options = options;
           LocalStorageProvider.setLocalStorageItem('asset_usages_' + index, response);
@@ -415,16 +508,23 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               $log.info(key + ' : ', value);
               var data = {};
               data.index = key;
-              data.monto = value.monto;
+              var ammountGraph = "";
+              if (value.monto != null && value.monto.toString() != "" && value.monto.toString() != "0" && value.monto.toString() != "-") {
+                data.monto = value.monto;
+                ammountGraph = value.monto;
+              } else {
+                data.monto = "-";
+                ammountGraph = "0";
+              }
               data.fecha = value.fecha;
-              if (value.boleta != null && value.boleta != "") {
+              if (value.boleta && value.boleta != null && value.boleta.toString() != "") {
                 data.boleta = value.boleta;
               } else {
                 data.boleta = 0;
               }
               items.push(data);
               graphlabels.push(data.fecha);
-              graphdata.push(data.monto);
+              graphdata.push(ammountGraph);
               pointBackgroundColor.push('rgba(5,85,250,1)');
               borderColor.push('rgba(5,85,250,1)');
             });
@@ -440,10 +540,19 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           }
           graphdataset.push(ds);
           response.dataset = graphdataset;
-          options = {
+          // options = {
+          //   scales: {
+          //     xAxes: [{
+          //       display: false
+          //     }]
+          //   }
+          // }
+          options: {
             scales: {
-              xAxes: [{
-                display: false
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
               }]
             }
           }
@@ -512,40 +621,55 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               $log.info(key + ' : ', value);
               var data = {};
               data.index = key;
-              data.tipoPago = value.tipoPago;
-              data.monto = value.monto;
+              if (value.tipoPago != null && value.tipoPago.toString() != "" && value.tipoPago.toString() != "0" && value.tipoPago.toString() != "-") {
+                data.tipoPago = value.tipoPago;
+              } else {
+                data.tipoPago = "-";
+              }
+              var ammountGraph = "";
+              if (value.monto != null && value.monto.toString() != "" && value.monto.toString() != "0" && value.monto.toString() != "-") {
+                data.monto = value.monto;
+              } else {
+                data.monto = "-";
+              }
               data.fechaPago = value.fechaPago;
               items.push(data);
+              // COMIENZO VERSIONANTIGUA
+              graphlabels.push(data.fechaPago);
+              graphdata.push(data.monto);
+              // FIN VERSION ANTIGUA
+              pointBackgroundColor.push('rgba(5,85,250,1)');
+              borderColor.push('rgba(5,85,250,1)');
             });
             var respuestaDataGraph = respuesta.data.reverse();
-            for (var i = 0; i < respuestaDataGraph.length; i++) {
-              $log.info(i + ' : ', respuestaDataGraph[i]);
-              var fechaSplit = respuestaDataGraph[i].fechaPago.split("/");
-              var mesSplit = fechaSplit[1];
-              if (mesAux == mesSplit) {
-                montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
-                if ((i + 1) === respuestaDataGraph.length) {
-                  graphlabels.push(respuestaDataGraph[i].fechaPago);
-                  graphdata.push(montoAux);
-                }
-              } else if (mesAux != mesSplit && i != 0) {
-                graphlabels.push(respuestaDataGraph[i - 1].fechaPago);
-                graphdata.push(montoAux);
-                montoAux = 0;
-                montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
-                mesAux = mesSplit;
-                fechaAux = respuestaDataGraph[i].fechaPago;
-                if ((i + 1) === respuestaDataGraph.length) {
-                  graphlabels.push(respuestaDataGraph[i].fechaPago);
-                  graphdata.push(montoAux);
-                }
-              } else {
-                montoAux = 0;
-                montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
-                mesAux = mesSplit;
-                fechaAux = respuestaDataGraph[i].fechaPago;
-              }
-            }
+            // for (var i = 0; i < respuestaDataGraph.length; i++) {
+            //     $log.info(i + ' : ', respuestaDataGraph[i]);
+            //     var fechaSplit = respuestaDataGraph[i].fechaPago.split("/");
+            //     var mesSplit = fechaSplit[1];
+            //     if (mesAux == mesSplit) {
+            //         montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
+            //         if ((i + 1) === respuestaDataGraph.length) {
+            //             graphlabels.push(respuestaDataGraph[i].fechaPago);
+            //             graphdata.push(montoAux);
+            //         }
+            //     } else if (mesAux != mesSplit && i != 0) {
+            //         graphlabels.push(respuestaDataGraph[i - 1].fechaPago);
+            //         graphdata.push(montoAux);
+            //         montoAux = 0;
+            //         montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
+            //         mesAux = mesSplit;
+            //         fechaAux = respuestaDataGraph[i].fechaPago;
+            //         if ((i + 1) === respuestaDataGraph.length) {
+            //             graphlabels.push(respuestaDataGraph[i].fechaPago);
+            //             graphdata.push(montoAux);
+            //         }
+            //     } else {
+            //         montoAux = 0;
+            //         montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
+            //         mesAux = mesSplit;
+            //         fechaAux = respuestaDataGraph[i].fechaPago;
+            //     }
+            // }
 
 
           }
@@ -562,10 +686,19 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           }
           graphdataset.push(ds);
           response.dataset = graphdataset;
-          options = {
+          // options = {
+          //     scales: {
+          //         xAxes: [{
+          //             display: false
+          //         }]
+          //     }
+          // }
+          options: {
             scales: {
-              xAxes: [{
-                display: false
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
               }]
             }
           }

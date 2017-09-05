@@ -39,11 +39,11 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
         $log.info("setEnterReading ", respuesta.data);
-        var data = {};
-        data.message = respuesta.message;
-        if (respuesta.data != null && respuesta.data.length > 0) {
-          data.caseId = respuesta.data.caseId;
-        }
+        // var data = {};
+        // data.message = respuesta.message;
+        // if (respuesta.data != null && respuesta.data.length > 0) {
+        //   data.caseId = respuesta.data.caseId;
+        // }
         defer.resolve(respuesta);
       } else {
         $log.error('Error AssetDetail: ', respuesta.message);
@@ -113,30 +113,34 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
 
 
   // GENERATE TEMPLATE BILL
-  var generateTemplateBillAuth = function(trxId) {
-    var defer = $q.defer();
-    var obj = {};
-    obj.path = ENDPOINTS.ENDPOINTS_ENTER_READING;
-    obj.method = 'GET';
-    obj.contentType = 'application/json';
+  // var generateTemplateBillAuth = function(trxId) {
+  //   var defer = $q.defer();
+  //   var obj = {};
+  //   obj.path = ENDPOINTS.ENDPOINTS_ENTER_READING;
+  //   obj.method = 'GET';
+  //   obj.contentType = 'application/json';
 
-    ConnectionProvider.sendPostForm(url, params, data, headers, function(respuesta) {
-      $log.info('Payment WebPay: ', respuesta);
-      defer.resolve(respuesta);
-    }, function(err) {
-      $log.error('Error Payment WebPay: ' + err);
-      defer.reject(err);
-    })
-    return defer.promise;
-  }
+  //   ConnectionProvider.sendPostForm(url, params, data, headers, function(respuesta) {
+  //     $log.info('Payment WebPay: ', respuesta);
+  //     defer.resolve(respuesta);
+  //   }, function(err) {
+  //     $log.error('Error Payment WebPay: ' + err);
+  //     defer.reject(err);
+  //   })
+  //   return defer.promise;
+  // }
 
 
   // GENERATE TEMPLATE BILL
-  var generateTemplateBill = function(trxId) {
+  var generateTemplateBill = function(trxId, numeroSuministro, email, successCode) {
     var defer = $q.defer();
     var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_GET_ASSET_PROOF_OF_DEBT;
     var params = {
-      'trxId': trxId
+      'trxId': trxId,
+      'numeroSuministro': numeroSuministro,
+      'email': email,
+      'successCode': successCode
+
     };
     var data = {};
     var headers = {
@@ -191,7 +195,7 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
   return {
     setEnterReading: setEnterReading,
     generateXmlPayment: generateXmlPayment,
-    generateTemplateBillAuth: generateTemplateBillAuth,
+    // generateTemplateBillAuth: generateTemplateBillAuth,
     generateTemplateBill: generateTemplateBill
   };
 });

@@ -106,15 +106,33 @@
     border: none;
     display: block;
     padding-top: 2px;
-    padding-left: 5px;
+    padding-left: 6px;
     height: 34px;
-    /*color: #aaa;*/
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.select-text-without-icon-ios select {
+    background: none;
+    width: 100%;
+    border: none;
+    display: block;
+    padding-top: 2px;
+    padding-left: 10px;
+    height: 34px;
     font-size: 14px;
     line-height: 16px;
 }
 
 .label-input-form {
     padding-left: 10px;
+    background: none;
+    width: 100%;
+    font-weight: bold;
+}
+
+.label-textarea-form {
+    padding-left: 5px;
     background: none;
     width: 100%;
     font-weight: bold;
@@ -147,15 +165,24 @@
     color: gray;
 }
 
-.button-general {
+.button-general,
+.button-general-home-access,
+.button-general-home-register {
     min-height: 35px !important;
     line-height: 30px !important;
     font-size: 12px !important;
-    /*color: #fff !important;*/
 }
 
 .button-general:hover {
     color: #fff !important;
+}
+
+.button-general-home-access:hover {
+    color: #FF5A0F !important;
+}
+
+.button-general-home-register:hover {
+    color: #55be5a !important;
 }
 
 .button-general .icon_enel_check {
@@ -174,6 +201,13 @@
 
 .reload-icon {
     font-size: 46px;
+    color: #7e7e7e;
+}
+
+.reload-error-message {
+    font-size: 14px;
+    color: #7e7e7e;
+    overflow: auto;
 }
 
 
@@ -220,7 +254,7 @@
 }
 
 .background-none {
-    background-color: none !important;
+    background: none !important;
 }
 
 .border-1 {
@@ -623,6 +657,10 @@ h3 {
     height: 100%;
 }
 
+.tutorial-margin-header {
+    margin-top: 20px;
+}
+
 .tutorial .swiper-pagination {
     bottom: auto;
     top: 0px !important;
@@ -946,7 +984,7 @@ h3 {
 }
 
 .amount {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
 }
 
@@ -1052,6 +1090,7 @@ h3 {
     float: left;
     padding-top: 5px;
     background-color: #aaa;
+    height: 90px;
 }
 
 .blackout-form-emergency-subtype .element i {
@@ -1346,6 +1385,7 @@ h3 {
     background-color: #f8f8f8;
     padding: 5px 0px;
     border-bottom: 1px solid #ebebeb;
+    overflow: auto;
 }
 
 .featured-list-component {
@@ -1381,7 +1421,7 @@ h3 {
     margin: auto;
     border: 1px solid #888;
     width: 80%;
-    height: 200px;
+    height: 250px;
     min-height: 110px !important;
     top: 20%;
     left: 10%;
@@ -1423,7 +1463,7 @@ h3 {
 }
 
 .modal-container .modal-content .modal-content-body {
-    height: 90px;
+    height: 125px;
     overflow-y: scroll;
     text-align: center;
     font-size: 16px;
@@ -1538,9 +1578,10 @@ h3 {
 /*** BEGIN LOADING SPINNER   ***/
 
 .loading-icon {
-    color: #000;
+    color: #7e7e7e;
     font-weight: bold;
     width: 40px;
+    padding-top: 1px;
 }
 
 .loading-text {
@@ -1667,3 +1708,12 @@ h3 {
 
 
 /*  END SEARCH_CLIENT   */
+
+
+/* .keyboard-open .tabs {
+    display: none;
+}
+
+.keyboard-open .has-tabs {
+    bottom: 0;
+} */

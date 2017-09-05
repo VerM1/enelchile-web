@@ -43,12 +43,13 @@ angular.module("appenel").constant("translation_es", {
   "SUCCESS": "Éxito",
   "ERROR": "Error",
   "INFO": "Información",
+  "DAY": "Día",
+  "NIGHT": "Noche",
+  "PEAK": "Punta",
   "PHONE_PRIMARY": "Teléfono Primario",
   "PHONE_SECONDARY": "Teléfono Secundario",
   "LOGIN_VIRTUAL_BRANCH": "Acceder a sucursal virtual",
-  "REGISTER_VIRTUAL_BRANCH": "Registro en sucursal virtual",
-
-
+  "REGISTER_VIRTUAL_BRANCH": "Registrarse",
 
 
   /*  APP VERSION   */
@@ -151,6 +152,7 @@ angular.module("appenel").constant("translation_es", {
 
   /*  BEGIN USAGE  */
   "OVERVIEW": "Resumen",
+  "USAGE": "Consumo",
   "USAGES": "Consumos",
   "BILLS": "Boletas",
   "PAYMENTS": "Pagos",
@@ -158,7 +160,8 @@ angular.module("appenel").constant("translation_es", {
   "SEND_READING": "Enviar lectura",
   'OUTSTADING_DEBT': 'Deuda Vigente',
   'EXPIRATION': 'Vencimiento',
-  'RATE': 'Tarífa',
+  'RATE': 'Tarifa',
+  'TYPE_USAGE': 'Tipo consumo',
   'CUTOFF_DATE': 'Fecha de Corte',
   'LAST_PAYMENT_AMOUNT': 'Monto último pago',
   'LAST_PAYMENT_DATE': 'Fecha último pago',
@@ -179,6 +182,10 @@ angular.module("appenel").constant("translation_es", {
   "PLACEHOLDER_READING_DAY": "Consumo día",
   "PLACEHOLDER_READING_NIGHT": "Consumo noche",
   "PLACEHOLDER_READING_PEAK": "Consumo punta",
+  "READING": "Lectura",
+  "READING_DAY": "Consumo día",
+  "READING_NIGHT": "Consumo noche",
+  "READING_PEAK": "Consumo punta",
 
 
   /*  PAY BILL   */
@@ -201,6 +208,7 @@ angular.module("appenel").constant("translation_es", {
   "PAYMENT_SUCCESS_ALL_CHANNELS_TEXT": "Ponemos todos los canales de atención a su disposición",
   "LABEL_PAYMENT_NUM_CLIENT": "N° de cliente",
   "LABEL_PAYMENT_MESSAGE": "Observaciones",
+  "INCOMPLETE_PAYMENT": "En estos momentos no es posible procesar la solicitud, por favor inténtalo más tarde.",
 
   /*  EMERGENCY  MENU */
   "EMERGENCIES": "Emergencias",
@@ -216,8 +224,8 @@ angular.module("appenel").constant("translation_es", {
   "REPORT_EMERGENCY": "Reportar Emergencia",
 
   /*  EMERGENCY - BLACKOUT  */
-  "BLACKOUT_AT_HOME": "Mi casa no tiene luz",
-  "BLACKOUT_AT_NEIGHBORHOOD": "Mi barrio no tiene luz",
+  "BLACKOUT_TYPE_PROBLEM_LABEL_1": "Sin Luz - Mi barrio (mi domicilio y el de mis vecinos)",
+  "BLACKOUT_TYPE_PROBLEM_LABEL_2": "Sin Luz - Solo mi domicilio",
   "LABEL_DESCRIBE_THE_INCIDENT": "Observaciones",
   "PLACEHOLDER_DESCRIBE_THE_INCIDENT": "Ingresar observaciones...",
 
@@ -265,7 +273,7 @@ angular.module("appenel").constant("translation_es", {
   "PAYMENT_HOURS": "Horarios de Pago",
   "OPENING_HOURS": "Horarios de Apertura",
   "SPECIAL_HOURS": "Horarios Especiales",
-  "ERROR_FIND_GEOCODE": "Imposible encontrar la ubicacion por la siguiente razón: ",
+  "ERROR_FIND_GEOCODE": "No fue posible encontrar la ubicacion por la siguiente razón: ",
   "MUST_NOT_EMPTY": "El campo no puede estar vacio",
 
   "PAYMENT_OPTIONS_01_BRAND": "Western Union",
@@ -373,7 +381,7 @@ angular.module("appenel").constant("translation_es", {
   "HELPER_MODAL_TITLE": "Ayuda",
   "INFO_MODAL_TITLE": "Información",
   "VALIDATION_MODAL_TITLE": "Validación",
-  "SUCCESS_MODAL_TITLE": "Éxito.",
+  "SUCCESS_MODAL_TITLE": "Éxito",
   "ADD_ASSET_MODAL_TITLE": "Añadir suministro",
 
   /*  CASES */

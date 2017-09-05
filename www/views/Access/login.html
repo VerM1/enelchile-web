@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <form class="list col" name="forms.loginForm" novalidate="" ng-submit="validateForm()">
+                <form class="list col" name="forms.loginForm" novalidate="" ng-submit="validateForm()" validate-form-focus>
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
                         <label class="label-input-form">{{translation.LABEL_RUT}}</label>
                         <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-class="{'has-errors' : forms.loginForm.rut.$invalid && forms.loginForm.$submitted, 'no-errors' : forms.loginForm.rut.$valid && forms.loginForm.$submitted}" required
@@ -25,30 +25,20 @@
                         </div>
                     </ion-item>
                     <button class="button button-block home-style button-general" type="submit">{{translation.LOGIN | uppercase}}
-                                <!--<i class="icon icon_enel_check"></i>-->
                             </button>
                 </form>
             </div>
         </div>
-        <!--<div class="row padding-horizontal">
-            <div class="col center">
-                <button class="button button-block home-style button-general" ng-click="login()">{{translation.LOGIN | uppercase}}
-                    <i class="icon icon_enel_check"></i>
-        </button>
-        </div>
-        </div>-->
-        <div class="row padding-horizontal">
+        <!-- <div class="row padding-horizontal">
             <div class="col center">
                 <button class="button button-block home-style button-general" ng-click="sendAnalytics('Ingresar','Presionar Olvidé mi contraseña')" ui-sref="guest.verification">{{translation.FORGOT_PASS | uppercase}}
-                    <!--<i class="icon icon_enel_check"></i>-->
                 </button>
             </div>
-        </div>
+        </div> -->
 
         <div class="row padding-horizontal">
             <div class="col center">
                 <button class="button button-block back-button button-general" ng-click="sendAnalytics('Ingresar','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
-                    <!--<i class="icon icon_enel_check"></i>-->
                 </button>
             </div>
         </div>

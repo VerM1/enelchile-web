@@ -1,5 +1,8 @@
-angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope, $log, LocalStorageProvider, $rootScope, UtilsService, EmergencyService, $ionicModal, $state, $ionicLoading, $cordovaGeolocation, ContactService, AnalyticsService, PopupService, UTILS_CONFIG, $timeout) {
-
+angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope, $ionicPlatform, $log, LocalStorageProvider, $rootScope, UtilsService, EmergencyService, $ionicModal, $state, $ionicLoading, $cordovaGeolocation, ContactService, AnalyticsService, PopupService, UTILS_CONFIG, $timeout) {
+  $scope.isIos = false;
+  if ($ionicPlatform.is('ios')) {
+    $scope.isIos = true;
+  }
   var address;
   $scope.authenticated;
   $scope.listStates = [];
@@ -84,9 +87,9 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     $ionicLoading.hide();
     $log.debug(success);
     // $scope.openModal('info', 'Exito', 'Su caso ha sido ingresado con el numero ' + success.caseNumber);
-    var modalType = 'success';
-    var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-    var modalContent = $rootScope.translation.SUCCESS_CASE_ENTERED_WITH_NUMBER + ': ' + success.caseNumber;
+    var modalType = 'info';
+    var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+    var modalContent = success.message;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
   };
 
@@ -99,7 +102,7 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
       modalType = 'info';
     }
     var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-    var modalContent = $rootScope.translation.ERROR_CASE_ENTERED_WITH_NUMBER + ':  ' + err.message;
+    var modalContent = err.message;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
   };
 

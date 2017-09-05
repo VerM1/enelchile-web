@@ -1,5 +1,8 @@
-angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsService, $ionicSlideBoxDelegate, DataMapService, $log, LocalStorageProvider, $rootScope, UsageService, EmergencyService, $ionicModal, $state, $ionicLoading, AnalyticsService, $route, PopupService, UTILS_CONFIG) {
-
+angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicPlatform, UtilsService, $ionicSlideBoxDelegate, DataMapService, $log, LocalStorageProvider, $rootScope, UsageService, EmergencyService, $ionicModal, $state, $ionicLoading, AnalyticsService, $route, PopupService, UTILS_CONFIG) {
+  $scope.isIos = false;
+  if ($ionicPlatform.is('ios')) {
+    $scope.isIos = true;
+  }
   $scope.actualIndex = 0;
   $scope.backHref = "home";
 
@@ -23,34 +26,42 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
   $scope.typesOfProblems2 = {};
   var selectedTypeProblem = 0;
   $scope.selected1tab = false;
-  $scope.selected2tab = true;
+  $scope.selected2tab = false;
 
   function init() {
     $scope.isLogged = $rootScope.isLogged;
     $scope.dataBlackout = {};
-    $ionicLoading.show({
-      template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
-    });
+
     var objTypeOfProblems1 = {
-      value: UTILS_CONFIG.BLACKOUT_TYPE_PROBLEM_1,
-      label: $rootScope.translation.BLACKOUT_AT_HOME
+      value: UTILS_CONFIG.BLACKOUT_TYPE_PROBLEM_CODE_1,
+      label: $rootScope.translation.BLACKOUT_TYPE_PROBLEM_LABEL_1
     };
     var objTypeOfProblems2 = {
-      value: UTILS_CONFIG.BLACKOUT_TYPE_PROBLEM_2,
-      label: $rootScope.translation.BLACKOUT_AT_NEIGHBORHOOD
+      value: UTILS_CONFIG.BLACKOUT_TYPE_PROBLEM_CODE_2,
+      label: $rootScope.translation.BLACKOUT_TYPE_PROBLEM_LABEL_2
     };
-    EmergencyService.getBlackoutProblemsList().then(function(response) {
-      $log.debug(response);
-      $scope.typesOfProblems1 = response.length > 0 && response[0] ? response[0] : objTypeOfProblems1;
-      $scope.typesOfProblems2 = response.length > 0 && response[1] ? response[1] : objTypeOfProblems2;
-      selectedTypeProblem = $scope.typesOfProblems1.value;
-      $ionicLoading.hide();
-    }, function(err) {
-      $scope.typesOfProblems1 = objTypeOfProblems1;
-      $scope.typesOfProblems2 = objTypeOfProblems2;
-      $log.error(err);
-      $ionicLoading.hide();
-    });
+
+    // TIPO DE PROBLEMAS - OPCION 1: VALORES DIRECTO DESDE SERVICIO
+    // $ionicLoading.show({
+    //   template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
+    // });
+    // EmergencyService.getBlackoutProblemsList().then(function(response) {
+    //   $log.debug(response);
+    //   $scope.typesOfProblems1 = response.length > 0 && response[0] ? response[0] : objTypeOfProblems1;
+    //   $scope.typesOfProblems2 = response.length > 0 && response[1] ? response[1] : objTypeOfProblems2;
+    //   selectedTypeProblem = $scope.typesOfProblems1.value;
+    //   $ionicLoading.hide();
+    // }, function(err) {
+    //   $scope.typesOfProblems1 = objTypeOfProblems1;
+    //   $scope.typesOfProblems2 = objTypeOfProblems2;
+    //   $log.error(err);
+    //   $ionicLoading.hide();
+    // });
+
+    // TIPO DE PROBLEMAS - OPCION 2: SE APLICA VALORES DIRECTO, A PETICION DE NEGOCIO
+    $scope.typesOfProblems1 = objTypeOfProblems1;
+    $scope.typesOfProblems2 = objTypeOfProblems2;
+    selectedTypeProblem = $scope.typesOfProblems1.value;
 
     if ($scope.isLogged) {
       $log.info("está logeado");
@@ -102,20 +113,24 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
   }
 
   $scope.closeModal = function() {
-    $log.debug('sending to home');
     $scope.modal.hide();
     if ($rootScope.isLogged) {
       $state.go('session.emergency');
     } else {
-      $state.go('guest.emergency');
+      if ($scope.backHref === "preBlackout") {
+        $state.go('guest.preBlackout');
+      } else {
+        $state.go('guest.home');
+      }
+
     }
   };
   var callbackSuccess = function(success) {
     $ionicLoading.hide()
     $log.debug(success);
-    var modalType = 'success';
-    var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-    var modalContent = $rootScope.translation.SUCCESS_CASE_ENTERED_WITH_NUMBER + " " + success.caseNumber;
+    var modalType = 'info';
+    var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+    var modalContent = success.message;
     PopupService.openModal(modalType, modalTitle, modalContent, $scope);
   };
 
@@ -240,8 +255,8 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, UtilsSe
     } else {
       $log.debug("no existe aun el formulario");
     }
-    $scope.selected1tab = false;
-    $scope.selected2tab = true;
+    $scope.selected1tab = true;
+    $scope.selected2tab = false;
   }
 
 

@@ -17,7 +17,7 @@ angular.module('CoreModule').controller('branchesListCtrl', function($scope, $st
           modalType = 'info';
         }
         var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-        var modalContent = $rootScope.translation.ERROR_FIND_GEOCODE + err.message;
+        var modalContent = err.message;
         PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
           $scope.modal.hide();
         });

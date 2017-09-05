@@ -1,4 +1,4 @@
-angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $state, $window, $rootScope, UtilsService, $cordovaGeolocation, ContactService, DataMapService, $log, LocalStorageProvider, $route, $ionicLoading, AnalyticsService, PopupService, UTILS_CONFIG) {
+angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $state, $window, $rootScope, UtilsService, $cordovaGeolocation, ContactService, DataMapService, $log, LocalStorageProvider, $route, $ionicLoading, AnalyticsService, PopupService, UTILS_CONFIG, $ionicPlatform) {
 
   $scope.goToMap = function() {
     AnalyticsService.evento('Sucursales Cercanas', 'Presionar Mapa'); //Analytics
@@ -119,46 +119,56 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
       timeout: 10000,
       enableHighAccuracy: true
     };
-
-    if (cordova.plugins && cordova.plugins.diagnostic) {
-      cordova.plugins.diagnostic.isLocationEnabled(function(enabled) {
-        console.log("Location is " + (enabled ? "enabled" : "not enabled"));
-        if (enabled) {
-          try {
-            $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
-              var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-              $log.debug("posicion: ", position.coords.latitude, "/", position.coords.longitude);
-              $scope.map.setCenter(latLng);
-            }, function(error) {
+    if ($ionicPlatform.is('corodva')) {
+      if (cordova && cordova.plugins && cordova.plugins.diagnostic) {
+        cordova.plugins.diagnostic.isLocationEnabled(function(enabled) {
+          console.log("Location is " + (enabled ? "enabled" : "not enabled"));
+          if (enabled) {
+            try {
+              $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
+                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                $log.debug("posicion: ", position.coords.latitude, "/", position.coords.longitude);
+                $scope.map.setCenter(latLng);
+              }, function(error) {
+                $log.error("Could not get location");
+              });
+            } catch (exception) {
               $log.error("Could not get location");
-            });
-          } catch (exception) {
-            $log.error("Could not get location");
+            }
+          } else {
+            cordova.plugins.diagnostic.switchToLocationSettings();
           }
-        } else {
-          cordova.plugins.diagnostic.switchToLocationSettings();
-        }
-      }, function(error) {
-        console.error("The following error occurred: " + error);
-      });
+        }, function(error) {
+          console.error("The following error occurred: " + error);
+        });
+      }
+    } else {
+      try {
+        $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
+          var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          $log.debug("posicion: ", position.coords.latitude, "/", position.coords.longitude);
+          $scope.map.setCenter(latLng);
+        }, function(error) {
+          $log.error("Could not get location");
+        });
+      } catch (exception) {
+        $log.error("Could not get location");
+      }
     }
-    // $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
-    //   var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    //   $log.debug("posicion: ", position.coords.latitude, "/", position.coords.longitude);
-    //   $scope.map.setCenter(latLng);
-    // }, function(error) {
-    //   $log.debug("Could not get location");
-    // });
     ContactService.getBranchesItems().then(function(response) {
       $scope.markersJson = response;
       // setMapOnAll($scope.markersJson.branches, codeBranches);
       $scope.selectedItem(1);
     }, function(err) {
-      var modalType = 'info';
+      var modalType = 'error';
+      if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
+        modalType = 'info';
+      }
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
-      var modalContent = $rootScope.translation.ERROR_FIND_GEOCODE + err.message;
+      var modalContent = err.message;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
-        $scope.modal.hide();
+        // $scope.modal.hide();
+        $scope.modal.remove();
       });
     });
     $rootScope.tabActualAnalytics = 'Sucursales Cercanas';
@@ -213,9 +223,11 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
     $ionicLoading.show({
       template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
     });
-    for (var i = 0; i < markers.length; i++) {
-      var marker = markers[i];
-      marker.setMap(null);
+    if (markers && markers.length > 0) {
+      for (var i = 0; i < markers.length; i++) {
+        var marker = markers[i];
+        marker.setMap(null);
+      }
     }
     $ionicLoading.hide();
   }
@@ -237,6 +249,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
       }, function(results, status) {
         if (status == 'OK') {
           $scope.map.setCenter(results[0].geometry.location);
+          $scope.map.setZoom(13);
           $ionicLoading.hide();
         } else {
           $ionicLoading.hide();
@@ -245,7 +258,8 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = $rootScope.translation.ERROR_FIND_GEOCODE + status;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
-            $scope.modal.hide();
+            // $scope.modal.hide();
+            $scope.modal.remove();
           });
         }
       });
@@ -255,7 +269,8 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
       var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
       var modalContent = $rootScope.translation.MUST_NOT_EMPTY;
       PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
-        $scope.modal.hide();
+        // $scope.modal.hide();
+        $scope.modal.remove();
       });
     }
   }

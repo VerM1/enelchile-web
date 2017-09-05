@@ -31,9 +31,9 @@ angular.module('BillsModule').controller('enterReadingCtrl', function($scope, $s
       $ionicLoading.hide();
       if (success.data) {
         $log.info("success: ", success);
-        var modalType = 'success';
-        var modalTitle = $rootScope.translation.SUCCESS_MODAL_TITLE;
-        var modalContent = $rootScope.translation.YOUR_READING_CODE_IS + success.data.caseNumber;
+        var modalType = 'info';
+        var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
+        var modalContent = success.message;
         PopupService.openModal(modalType, modalTitle, modalContent, $scope);
       } else {
         $log.error('no data');
