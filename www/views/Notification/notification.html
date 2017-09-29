@@ -1,0 +1,36 @@
+<ion-view class="title-page" title="{{translation.NOTIFICATIONS | uppercase}}">
+    <ion-content scroll="true" padding="false" id="notificationslist">
+        <ion-refresher pulling-text="{{translation.SWIPE_TO_UPDATE}}" on-refresh="doRefresh()" refreshing-text="{{translation.UPDATING_NOTIFICATIONS}}" refreshing-icon="ion-loading-b"></ion-refresher>
+        <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
+            <ion-item ng-repeat="item in items" item="item" class="item-notification" ng-class="item.status==UTILS_CONFIG.NOTIFICATION_STATUS_NOTIFICATION_01 ? 'item-notification-mark-as-read':''" ng-click="openNotification({{item}})">
+                <div class="row">
+                    <div class="col-10">
+                        <i class="icon icon_enel_email"></i>
+                    </div>
+                    <div class="col-90">
+                        <div class="row">
+                            <div class="col-60 left notification-left-side-list">
+                                <span class="width-full-size">{{item.titulo}}</span>
+                            </div>
+                            <div class="col-40 right notification-right-side-list">
+                                <span class="width-full-size">{{item.fecha}}</span>
+                            </div>
+                        </div>
+                        <div class="col left notification-subtitle-side-list">
+                            <span class="width-full-size">{{item.mensaje}}</span>
+                        </div>
+                    </div>
+                </div>
+                <ion-option-button class="notification-button-check" ng-click="markAsRead({{item}})">
+                    <i class="icon_enel_check"></i>
+                </ion-option-button>
+                <ion-option-button class="notification-button-delete" ng-click="deleteNotification({{item}})">
+                    <i class="icon_enel_trash"></i>
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+        <div ng-if="showMessageWithoutNotification" class="row col center no-notification-message">
+            <span>{{translation.NO_DATA_NOTIFICATION}}</span>
+        </div>
+    </ion-content>
+</ion-view>
