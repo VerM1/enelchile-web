@@ -1,6 +1,6 @@
 <ion-view class="title-page" title="{{translation.BLACKOUT | uppercase}}">
     <ion-content scroll="true" padding="false">
-        <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="{{dataBlackout.items.length <= 1 ? false: true}}" active-slide="0" pager-click="pagerClick(index)" does-continue="false" class="slider">
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="{{dataBlackout.items.length <= 1 ? false: true}}" active-slide="activeSlide" pager-click="pagerClick(index)" does-continue="false" class="slider">
             <ion-slide ng-repeat="element in dataBlackout.items">
                 <div class="header-top emergency-style">
                     <div class="row header-subtitle-page">
@@ -22,7 +22,7 @@
         <form name="forms.blackoutForm" novalidate="" ng-submit="validateForm()" validate-form-focus>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
                 <label class="label-input-form">{{translation.LABEL_NAME}}</label>
-                <input type="text" name="name" placeholder="{{translation.PLACEHOLDER_NAME}}" ng-model="name" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir Nombre')" ng-class="{'has-errors' : forms.blackoutForm.name.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.name.$valid && forms.blackoutForm.$submitted}"
+                <input type="text" name="name" placeholder="{{translation.PLACEHOLDER_NAME}}" ng-model="name" ng-blur="sendAnalytics(translation.PAGE_BLACKOUT +' - '+ translation.GA_STEP_02,translation.GA_WRITE_NAMES)" ng-class="{'has-errors' : forms.blackoutForm.name.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.name.$valid && forms.blackoutForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.blackoutForm.name.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.name.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -30,7 +30,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
                 <label class="label-input-form">{{translation.LABEL_LASTNAMES}}</label>
-                <input type="text" name="lastnames" placeholder="{{translation.PLACEHOLDER_LASTNAMES}}" ng-model="lastnames" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir Escribir Apellidos')" ng-class="{'has-errors' : forms.blackoutForm.lastnames.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.lastnames.$valid && forms.blackoutForm.$submitted}"
+                <input type="text" name="lastnames" placeholder="{{translation.PLACEHOLDER_LASTNAMES}}" ng-model="lastnames" ng-blur="sendAnalytics(translation.PAGE_BLACKOUT +' - '+ translation.GA_STEP_02,translation.GA_WRITE_LASTNAMES)" ng-class="{'has-errors' : forms.blackoutForm.lastnames.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.lastnames.$valid && forms.blackoutForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.blackoutForm.lastnames.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.lastnames.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -38,7 +38,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
                 <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
-                <input type="email" name="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" ng-model="email" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir Correo Electrónico')" ng-class="{'has-errors' : forms.blackoutForm.email.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.email.$valid && forms.blackoutForm.$submitted}"
+                <input type="email" name="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" ng-model="email" ng-blur="sendAnalytics(translation.PAGE_BLACKOUT +' - '+ translation.GA_STEP_02,translation.GA_WRITE_EMAIL)" ng-class="{'has-errors' : forms.blackoutForm.email.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.email.$valid && forms.blackoutForm.$submitted}"
                     required ng-maxlength="40">
                 <div class="error-container last-error-container" ng-show="forms.blackoutForm.email.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.email.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -46,7 +46,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
                 <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
-                <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_PHONE}}" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir teléfono primario')" ng-class="{'has-errors' : forms.blackoutForm.phone.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.phone.$valid && forms.blackoutForm.$submitted}"
+                <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_PHONE}}" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics(translation.PAGE_BLACKOUT +' - '+ translation.GA_STEP_02,translation.GA_WRITE_PHONE)" ng-class="{'has-errors' : forms.blackoutForm.phone.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.phone.$valid && forms.blackoutForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.blackoutForm.phone.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.phone.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -54,7 +54,8 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!isLogged">
                 <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
-                <input type="number" name="cellphone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir teléfono secundario')" ng-class="{'has-errors' : forms.blackoutForm.cellphone.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.cellphone.$valid && forms.blackoutForm.$submitted}">
+                <input type="number" name="cellphone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics(translation.PAGE_BLACKOUT +' - '+ translation.GA_STEP_02,translation.GA_WRITE_CELLPHONE)"
+                    ng-class="{'has-errors' : forms.blackoutForm.cellphone.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.cellphone.$valid && forms.blackoutForm.$submitted}">
                 <div class="error-container last-error-container" ng-show="forms.blackoutForm.cellphone.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.cellphone.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
@@ -86,8 +87,8 @@
             <div class="row">
                 <ion-item class="item-icon-right lined-item input-text-without-icon width-full-size">
                     <label class="label-textarea-form">{{translation.LABEL_DESCRIBE_THE_INCIDENT}}</label>
-                    <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-blur="sendAnalytics('Corte de luz - Paso 2','Escribir detalle del requerimiento')" ng-model="description" ng-class="{'has-errors' : forms.blackoutForm.description.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.description.$valid && forms.blackoutForm.$submitted}"
-                        required></textarea>
+                    <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-blur="sendAnalytics(translation.PAGE_BLACKOUT +' - '+ translation.GA_STEP_02,translation.GA_WRITE_DESCRIBE_THE_INCIDENT)" ng-model="description"
+                        ng-class="{'has-errors' : forms.blackoutForm.description.$invalid && forms.blackoutForm.$submitted, 'no-errors' : forms.blackoutForm.description.$valid && forms.blackoutForm.$submitted}" required></textarea>
                     <div class="error-container last-error-container" ng-show="forms.blackoutForm.description.$error && forms.blackoutForm.$submitted" ng-messages="forms.blackoutForm.description.$error">
                         <div ng-messages-include="views/errorList.html"></div>
                     </div>
@@ -95,14 +96,14 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <button class="button button-block emergency-style button-general" id="accept-button" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Aceptar')" type="submit">{{translation.ACCEPT | uppercase}}
+                    <button class="button button-block emergency-style button-general" id="accept-button" type="submit">{{translation.ACCEPT | uppercase}}
                     </button>
-                    <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="session.emergency">{{translation.BACK | uppercase}}
+                    <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_BLACKOUT}} - {{translation.GA_STEP_02}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="session.emergencyMenu">{{translation.BACK | uppercase}}
                     </button>
 
-                    <button ng-if="!isLogged && backHref==='home'" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
+                    <button ng-if="!isLogged && backHref==='home'" class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_BLACKOUT}} - {{translation.GA_STEP_02}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="guest.home">{{translation.BACK | uppercase}}
                     </button>
-                    <button ng-if="!isLogged && backHref==='preBlackout'" class="button button-block back-button button-general" ng-click="sendAnalytics('Corte de luz - Paso 2','Presionar Volver')" ui-sref="guest.preBlackout">{{translation.BACK | uppercase}}
+                    <button ng-if="!isLogged && backHref==='preBlackout'" class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_BLACKOUT}} - {{translation.GA_STEP_02}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="guest.preBlackout">{{translation.BACK | uppercase}}
                     </button>
                 </div>
             </div>

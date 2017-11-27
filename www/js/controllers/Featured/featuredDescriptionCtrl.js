@@ -1,4 +1,4 @@
-angular.module('FeaturedModule').controller('featuredDescriptionCtrl', function($scope, $window, DataMapService, $log, ENDPOINTS) {
+angular.module('FeaturedModule').controller('featuredDescriptionCtrl', function($scope, $state, $window, DataMapService, $log, ENDPOINTS, AnalyticsService, $rootScope, $ionicScrollDelegate) {
 
   function init() {
     $scope.featuredDescription = {};
@@ -14,7 +14,7 @@ angular.module('FeaturedModule').controller('featuredDescriptionCtrl', function(
           $scope.featuredDescription.imagen = replaceAll($scope.featuredDescription.imagen, "href=\"/", "href=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
           $scope.featuredDescription.imagen = replaceAll($scope.featuredDescription.imagen, "src=\"/", "src=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
           $scope.showHtmlImage = true;
-          $log.info("new image: ", $scope.featuredDescription.imagen);
+          $log.debug("new image: ", $scope.featuredDescription.imagen);
         }
         if ($scope.featuredDescription.detalle.match("<")) {
           $scope.featuredDescription.detalle = replaceAll($scope.featuredDescription.detalle, "\\", "\"\"");
@@ -22,14 +22,16 @@ angular.module('FeaturedModule').controller('featuredDescriptionCtrl', function(
           $scope.featuredDescription.detalle = replaceAll($scope.featuredDescription.detalle, "href=\"/", "href=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
           $scope.featuredDescription.detalle = replaceAll($scope.featuredDescription.detalle, "src=\"/", "src=\"" + ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + "/");
           $scope.showHtmlDetail = true;
-          $log.info("new detalle: ", $scope.featuredDescription.detalle);
+          $log.debug("new detalle: ", $scope.featuredDescription.detalle);
         }
       } else {
         $log.error("Error to get branches_detail");
+        AnalyticsService.evento($rootScope.translation.PAGE_FEATURED_DESCRIPTION, $rootScope.translation.GA_SUCCESS_SERVICES_RESPONSE + "-" + $rootScope.translation.ERROR_FEATURED_DETAIL); //Analytics 
       }
 
     } catch (exception) {
       $log.error("Error to get branches_detail: ", exception);
+      AnalyticsService.evento($rootScope.translation.PAGE_FEATURED_DESCRIPTION, $rootScope.translation.GA_SUCCESS_SERVICES_RESPONSE + "-" + $rootScope.translation.ERROR_FEATURED_DETAIL); //Analytics 
     }
 
   }
@@ -43,20 +45,33 @@ angular.module('FeaturedModule').controller('featuredDescriptionCtrl', function(
   }
 
 
-  $scope.openUrl = function(url) {
+  $scope.openUrl = function(url, title) {
+    AnalyticsService.evento($rootScope.translation.PAGE_FEATURED_DESCRIPTION, $rootScope.translation.GA_PUSH_OPEN_EXTERNAL_FEATURED + ": " + title);
     window.open(url, '_system');
   };
 
   $scope.goFeatured = function() {
+    AnalyticsService.evento($rootScope.translation.PAGE_FEATURED_DESCRIPTION, $rootScope.translation.GA_PUSH_BACK_BUTTON);
     if (DataMapService.getItem('featured_detail', false)) {
       DataMapService.deleteItem('featured_detail');
     }
-    $window.history.back();
+    if ($rootScope.isLogged) {
+      $state.go('session.featuredList');
+    } else {
+      $state.go('guest.featuredList');
+    }
   }
+
+  //MÉTODO ANALYTICS -- 05-07-2017
+  $scope.sendAnalytics = function(categoria, accion) {
+    AnalyticsService.evento(categoria, accion); //Llamada a Analytics
+  };
 
   //LOCATIONCHANGESUCCESS
   $scope.$on('$locationChangeSuccess', function(ev, n) {
     if (n.indexOf('session/featuredDescription') > -1 || n.indexOf('guest/featuredDescription') > -1) {
+      AnalyticsService.pantalla($rootScope.translation.PAGE_FEATURED_DESCRIPTION);
+      $ionicScrollDelegate.scrollTop();
       init();
     }
   });

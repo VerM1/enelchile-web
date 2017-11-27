@@ -10,16 +10,18 @@
                 <form class="list col" name="forms.loginForm" novalidate="" ng-submit="validateForm()" validate-form-focus>
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
                         <label class="label-input-form">{{translation.LABEL_RUT}}</label>
-                        <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-class="{'has-errors' : forms.loginForm.rut.$invalid && forms.loginForm.$submitted, 'no-errors' : forms.loginForm.rut.$valid && forms.loginForm.$submitted}" required
-                            ng-rut rut-format="none" asset-format asset-validator ng-maxlength="10">
+                        <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-blur="sendAnalytics(translation.PAGE_LOGIN, translation.GA_WRITE_USER_ID)" ng-class="{'has-errors' : forms.loginForm.rut.$invalid && forms.loginForm.$submitted, 'no-errors' : forms.loginForm.rut.$valid && forms.loginForm.$submitted}"
+                            required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="10">
                         <div class="error-container last-error-container" ng-show="forms.loginForm.rut.$error && forms.loginForm.$submitted" ng-messages="forms.loginForm.rut.$error">
                             <div ng-messages-include="views/errorList.html"></div>
                         </div>
                     </ion-item>
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
                         <label class="label-input-form">{{translation.LABEL_PASSWORD}}</label>
-                        <input type="password" placeholder="{{translation.PLACEHOLDER_PASSWORD}}" name="password" ng-model="password" ng-class="{'has-errors' : forms.loginForm.password.$invalid && forms.loginForm.$submitted, 'no-errors' : forms.loginForm.password.$valid && forms.loginForm.$submitted}"
-                            required ng-minlength="8" ng-maxlength="30" password-validator>
+                        <!-- <input type="password" placeholder="{{translation.PLACEHOLDER_PASSWORD}}" name="password" ng-model="password" ng-class="{'has-errors' : forms.loginForm.password.$invalid && forms.loginForm.$submitted, 'no-errors' : forms.loginForm.password.$valid && forms.loginForm.$submitted}"
+                            required ng-minlength="8" ng-maxlength="30" password-validator> -->
+                        <input type="password" placeholder="{{translation.PLACEHOLDER_PASSWORD}}" name="password" ng-model="password" ng-blur="sendAnalytics(translation.PAGE_LOGIN, translation.GA_WRITE_PASSWORD)" ng-class="{'has-errors' : forms.loginForm.password.$invalid && forms.loginForm.$submitted, 'no-errors' : forms.loginForm.password.$valid && forms.loginForm.$submitted}"
+                            required>
                         <div class="error-container last-error-container" ng-show="forms.loginForm.password.$error && forms.loginForm.$submitted" ng-messages="forms.loginForm.password.$error">
                             <div ng-messages-include="views/errorList.html"></div>
                         </div>
@@ -29,16 +31,16 @@
                 </form>
             </div>
         </div>
-        <!-- <div class="row padding-horizontal">
+        <div class="row padding-horizontal">
             <div class="col center">
-                <button class="button button-block home-style button-general" ng-click="sendAnalytics('Ingresar','Presionar Olvidé mi contraseña')" ui-sref="guest.verification">{{translation.FORGOT_PASS | uppercase}}
-                </button>
+                <button class="button button-block home-style button-general" ng-click="recoveryPassNeol()">{{translation.FORGOT_PASS | uppercase}}
+                    </button>
             </div>
-        </div> -->
+        </div>
 
         <div class="row padding-horizontal">
             <div class="col center">
-                <button class="button button-block back-button button-general" ng-click="sendAnalytics('Ingresar','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
+                <button class="button button-block back-button button-general" ng-click="goBack()">{{translation.BACK | uppercase}}
                 </button>
             </div>
         </div>

@@ -1,9 +1,9 @@
-angular.module('CoreModule').controller('footerCtrl', function($scope, $state, $log, AnalyticsService, $rootScope) {
+angular.module('CoreModule').controller('footerCtrl', function($scope, $state, $log, AnalyticsService, $rootScope, $ionicLoading, NotificationService) {
   $scope.isProfile = false;
-  $scope.isLogged = $rootScope.isLogged;
 
   $scope.logoActionButton = function() {
-    if ($scope.isLogged) {
+    AnalyticsService.evento($rootScope.translation.HEADER, $rootScope.translation.GA_PUSH_LOGO_ICON); //Analytics  
+    if ($rootScope.isLogged) {
       $state.go("session.usage");
     } else {
       $state.go("guest.home");
@@ -11,15 +11,16 @@ angular.module('CoreModule').controller('footerCtrl', function($scope, $state, $
   }
 
   //MÉTODO ANALYTICS
-  $scope.sendAnalytics = function(categoria, accion) {
-    if (categoria === '') {
-      if ($rootScope.tabActualAnalytics === '') {
-        $rootScope.tabActualAnalytics = 'Resumen - Resumen';
-      }
-      categoria = $rootScope.tabActualAnalytics;
-    }
+  $scope.goToProfile = function(categoria, accion) {
+    // if (categoria === '') {
+    //   if ($rootScope.tabActualAnalytics === '') {
+    //     $rootScope.tabActualAnalytics = 'Resumen - Resumen';
+    //   }
+    //   categoria = $rootScope.tabActualAnalytics;
+    // }
     AnalyticsService.evento(categoria, accion); //Llamada a Analytics
     $rootScope.tabActualAnalytics = 'Perfil';
+    $state.go("session.profile");
   };
 
 
@@ -27,60 +28,60 @@ angular.module('CoreModule').controller('footerCtrl', function($scope, $state, $
     $log.debug("elemento seleccionado: " + item);
     switch (item) {
       case 1:
-        AnalyticsService.evento('Inicio', 'Presionar Inicio'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_HOME); //Analytics
         $log.debug("Selected Case Number is 1");
         $state.go('guest.home');
         break;
       case 2:
-        AnalyticsService.evento('Inicio', 'Presionar Emergencia'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_EMERGENCY); //Analytics
         $rootScope.tabActualAnalytics = 'Emergencia';
         $log.debug("Selected Case Number is 2");
-        $state.go('guest.emergency');
+        $state.go('guest.emergencyMenu');
         break;
       case 3:
-        AnalyticsService.evento('Inicio', 'Presionar Contacto'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_CONTACT); //Analytics
         $rootScope.tabActualAnalytics = 'Contacto';
         $log.debug("Selected Case Number is 3");
-        $state.go('guest.contact');
+        $state.go('guest.contactMenu');
         break;
       case 4:
-        AnalyticsService.evento('Inicio', 'Presionar Destacados'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_FEATURED); //Analytics
         $rootScope.tabActualAnalytics = 'Destacados';
         $log.debug("Selected Case Number is 4");
-        $state.go('guest.featured');
+        $state.go('guest.featuredList');
         break;
       case 5:
-        AnalyticsService.evento('Resumen - Resumen', 'Presionar Resumen'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_USAGE); //Analytics
         $rootScope.tabActualAnalytics = 'Resumen';
         $log.debug("Selected Case Number is 5");
         $state.go('session.usage');
         break;
       case 6:
-        AnalyticsService.evento('Resumen - Resumen', 'Presionar Emergencia'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_EMERGENCY); //Analytics
         $rootScope.tabActualAnalytics = 'Emergencia';
         $log.debug("Selected Case Number is 6");
-        $state.go('session.emergency');
+        $state.go('session.emergencyMenu');
         break;
       case 7:
-        AnalyticsService.evento('Resumen - Resumen', 'Presionar Contacto'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_CONTACT); //Analytics
         $rootScope.tabActualAnalytics = 'Contacto';
         $log.debug("Selected Case Number is 7");
-        $state.go('session.contact');
+        $state.go('session.contactMenu');
         break;
       case 8:
-        AnalyticsService.evento('Resumen - Resumen', 'Presionar Notificaciones'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_NOTIFICATIONS); //Analytics
         $rootScope.tabActualAnalytics = 'Notificaciones';
         $log.debug("Selected Case Number is 8");
-        $state.go('session.notifications');
+        $state.go('session.notification');
         break;
       case 9:
-        AnalyticsService.evento('Resumen - Resumen', 'Presionar Destacados'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_FEATURED); //Analytics
         $rootScope.tabActualAnalytics = 'Destacados';
         $log.debug("Selected Case Number is 9");
-        $state.go('session.featured');
+        $state.go('session.featuredList');
         break;
       default:
-        AnalyticsService.evento('Inicio', 'Presionar Inicio'); //Analytics
+        AnalyticsService.evento($rootScope.translation.FOOTER, $rootScope.translation.GA_PUSH_HOME); //Analytics
         $rootScope.tabActualAnalytics = 'Inicio';
         $state.go('guest.home');
         break;

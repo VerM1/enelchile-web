@@ -19,6 +19,7 @@
     <link href="css/enel_fonts.css" rel="stylesheet">
     <link href="css/enel_fonts_icons.css" rel="stylesheet">
     <link href="css/global.css" rel="stylesheet">
+    <link href="css/ngNotificationsBar.css" rel="stylesheet">
     <script src="cordova.js"></script>
     <script src="force.js"></script>
 
@@ -49,254 +50,85 @@
             border-right: 0px;
         }
     </style>
-
     <!-- Inyeccion de JS de Bower -->
 
     <!-- bower:js -->
 
 
-
-
-
-
-
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-
-
-
-
-
 
 
     <script src="lib/chart.js/dist/Chart.min.js"></script>
 
 
-
-
-
-
-
     <script src="lib/angular-chart.js/dist/angular-chart.min.js"></script>
-
-
-
-
-
 
 
     <script src="lib/angular-animate/angular-animate.js"></script>
 
 
-
-
-
+    <script src="lib/angular-base64/angular-base64.js"></script>
 
 
     <script src="lib/angular-i18n/angular-locale_es-cl.js"></script>
 
 
-
-
-
-
-
     <script src="lib/angular-messages/angular-messages.js"></script>
-
-
-
-
-
 
 
     <script src="lib/angular-password/angular-password.js"></script>
 
 
-
-
-
-
-
     <script src="lib/angular-route/angular-route.js"></script>
-
-
-
-
-
 
 
     <script src="lib/angular-sanitize/angular-sanitize.js"></script>
 
 
-
-
-
-
-
     <script src="lib/crypto-js/crypto-js.js"></script>
-
-
-
-
-
 
 
     <script src="lib/lodash/lodash.js"></script>
 
 
-
-
-
-
-
     <script src="lib/moment/moment.js"></script>
-
-
-
-
-
 
 
     <script src="lib/angular-rut/dist/angular-rut.min.js"></script>
 
 
-
-
-
-
-
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
 
 
-
-
-
+    <script src="lib/ng-notifications-bar/dist/ngNotificationsBar.min.js"></script>
 
 
     <script src="lib/ng-onload/release/ng-onload.js"></script>
 
 
-
-
-
-
-
     <script src="lib/ngCordova/dist/ng-cordova.js"></script>
 
 
-
-
-
-
-
     <!-- endinject -->
 
-    <!-- build:js -->
-    <!-- proyecto:js -->
-    <script src="js/modules/appenelModule.js"></script>
-    <script src="js/directives/ValidateFormFocus.js"></script>
-    <script src="js/directives/PaymentOnLoad.js"></script>
-    <script src="js/directives/PasswordValidator.js"></script>
-    <script src="js/directives/IframeOnLoad.js"></script>
-    <script src="js/directives/HideKeyboardOnSubmit.js"></script>
-    <script src="js/directives/FormCommit.js"></script>
-    <script src="js/directives/ButtonId.js"></script>
-    <script src="js/directives/AssetValidator.js"></script>
-    <script src="js/directives/AssetFormat.js"></script>
-    <script src="js/modules/UsageModule.js"></script>
-    <script src="js/controllers/Usage/usageCtrl.js"></script>
-    <script src="js/modules/CoreModule.js"></script>
-    <script src="js/controllers/Notifications/notificationsCtrl.js"></script>
-    <script src="js/modules/FeaturedModule.js"></script>
-    <script src="js/controllers/Featured/featuredDescriptionCtrl.js"></script>
-    <script src="js/controllers/Featured/featuredCtrl.js"></script>
-    <script src="js/controllers/Emergency/preBlackoutCtrl.js"></script>
-    <script src="js/controllers/Emergency/lightingProblemsCtrl.js"></script>
-    <script src="js/controllers/Emergency/emergencyCtrl.js"></script>
-    <script src="js/controllers/Emergency/blackoutCtrl.js"></script>
-    <script src="js/controllers/Emergency/accidentRiskCtrl.js"></script>
-    <script src="js/controllers/Core/tutorialCtrl.js"></script>
-    <script src="js/controllers/Core/profileCtrl.js"></script>
-    <script src="js/controllers/Core/oauthcallbackCtrl.js"></script>
-    <script src="js/controllers/Core/landingCtrl.js"></script>
-    <script src="js/controllers/Core/footerCtrl.js"></script>
-    <script src="js/controllers/Contact/paymentOptionsCtrl.js"></script>
-    <script src="js/modules/LocationsModule.js"></script>
-    <script src="js/controllers/Contact/menuContactCtrl.js"></script>
-    <script src="js/modules/ContactModule.js"></script>
-    <script src="js/controllers/Contact/contactFormCtrl.js"></script>
-    <script src="js/controllers/Contact/branchesMapCtrl.js"></script>
-    <script src="js/controllers/Contact/branchesListCtrl.js"></script>
-    <script src="js/controllers/Contact/branchesDescriptionCtrl.js"></script>
-    <script src="js/modules/BillsModule.js"></script>
-    <script src="js/controllers/Bills/payBillCtrl.js"></script>
-    <script src="js/controllers/Bills/enterReadingCtrl.js"></script>
-    <script src="js/modules/AccessModule.js"></script>
-    <script src="js/controllers/Access/verificationPassCtrl.js"></script>
-    <script src="js/controllers/Access/verificationCtrl.js"></script>
-    <script src="js/controllers/Access/validationCtrl.js"></script>
-    <script src="js/controllers/Access/startCtrl.js"></script>
-    <script src="js/controllers/Access/registerCtrl.js"></script>
-    <script src="js/controllers/Access/loginCtrl.js"></script>
-    <script src="js/controllers/Access/homeCtrl.js"></script>
-    <script src="js/controllers/Access/connectionCtrl.js"></script>
-    <script src="js/controllers/Access/closeCtrl.js"></script>
-    <script src="js/services/Usage/UsageService.js"></script>
-    <script src="js/services/Profile/ProfileService.js"></script>
-    <script src="js/services/Featured/FeaturedService.js"></script>
-    <script src="js/modules/EmergencyModule.js"></script>
-    <script src="js/services/Emergency/EmergencyService.js"></script>
-    <script src="js/services/Core/UtilsService.js"></script>
-    <script src="js/services/Core/ProfileService.js"></script>
-    <script src="js/services/Core/PopupService.js"></script>
-    <script src="js/services/Core/DataMapService.js"></script>
-    <script src="js/services/Contact/ContactService.js"></script>
-    <script src="js/services/Bills/BillsService.js"></script>
-    <script src="js/modules/AnalyticsModule.js"></script>
-    <script src="js/services/Analytics/GoogleAnalyticsService.js"></script>
-    <script src="js/services/Analytics/AnalyticsService.js"></script>
-    <script src="js/services/Access/AccessService.js"></script>
-    <script src="js/providers/Core/SalesforceProvider.js"></script>
-    <script src="js/providers/Core/LocalStorageProvider.js"></script>
-    <script src="js/providers/Core/ConnectionProvider.js"></script>
-    <script src="js/providers/Analytics/AnalyticsProvider.js"></script>
-    <script src="js/utils/DebugFactory.js"></script>
-    <script src="js/configs/routes.js"></script>
-    <script src="js/configs/CommonConfig.js"></script>
-    <script src="js/base/appenelRun.js"></script>
-    <script src="js/modules/ProfileModule.js"></script>
-    <script src="js/modules/NotificationsModule.js"></script>
-    <script src="js/translations/translation_es.js"></script>
-    <script src="js/constants/utilsConfig.js"></script>
-    <script src="js/constants/salesforceConfig.js"></script>
-    <script src="js/constants/endpoints.js"></script>
-    <script src="js/constants/analyticsConfig.js"></script>
-    <!-- endinject -->
-    <!-- endbuild -->
+    <!-- build:js --> 
+<!-- proyecto:js --> 
+ <script src="appEnel.min.js"></script>
+<!-- endinject -->
+<!-- endbuild -->
 
 
     <!-- ionic files -->
-    <!-- PERU -->
-    <!--
-    <script src="http://maps.google.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&libraries=places&sensor=true" type="text/javascript"></script>
-        -->
-    <!-- <script src="http://maps.google.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&libraries=places" type="text/javascript"></script>
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script> -->
-
-
     <!--    CHILE    -->
 
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyA1Lapzd7JQ_ZvjR3c7uoJFG3SgJ03tTcM&libraries=places" type="text/javascript"></script>
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyA1Lapzd7JQ_ZvjR3c7uoJFG3SgJ03tTcM&libraries=places" type="text/javascript"></script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-
-
-
-
-
 
 </head>
 
-<body ng-app="appenel">
-    <ion-nav-view></ion-nav-view>
+<body ng-app="appenel" class="platform-browser platform-cordova platform-webview">
+    <notifications-bar notification class="notifications"></notifications-bar>
+    <ion-nav-view> </ion-nav-view>
 </body>
 
 </html>

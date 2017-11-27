@@ -3,7 +3,7 @@
         <form name="forms.registerForm" class="list" novalidate="" ng-submit="validateForm()" validate-form-focus>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_RUT}}</label>
-                <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-blur="sendAnalytics('Registro','Escribir Rut')" ng-class="{'has-errors' : forms.registerForm.rut.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.rut.$valid && forms.registerForm.$submitted}"
+                <input type="text" placeholder="{{translation.PLACEHOLDER_RUT}}" name="rut" ng-model="rut" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_RUT)" ng-class="{'has-errors' : forms.registerForm.rut.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.rut.$valid && forms.registerForm.$submitted}"
                     required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="10">
                 <div class="error-container last-error-container" ng-show="forms.registerForm.rut.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.rut.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -11,7 +11,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_NAMES}}</label>
-                <input type="text" placeholder="{{translation.PLACEHOLDER_NAMES}}" name="names" ng-model="names" ng-blur="sendAnalytics('Registro','Escribir Nombre')" ng-class="{'has-errors' : forms.registerForm.names.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.names.$valid && forms.registerForm.$submitted}"
+                <input type="text" placeholder="{{translation.PLACEHOLDER_NAMES}}" name="names" ng-model="names" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_NAMES)" ng-class="{'has-errors' : forms.registerForm.names.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.names.$valid && forms.registerForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.registerForm.name.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.names.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -19,7 +19,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_LASTNAME}}</label>
-                <input type="text" placeholder="{{translation.PLACEHOLDER_LASTNAME}}" name="lastName" ng-model="lastName" ng-blur="sendAnalytics('Registro','Escribir Apellido Paterno')" ng-class="{'has-errors' : forms.registerForm.lastName.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.lastName.$valid && forms.registerForm.$submitted}"
+                <input type="text" placeholder="{{translation.PLACEHOLDER_LASTNAME}}" name="lastName" ng-model="lastName" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_LASTNAME)" ng-class="{'has-errors' : forms.registerForm.lastName.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.lastName.$valid && forms.registerForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.registerForm.lastName.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.lastName.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -27,7 +27,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_MOTHER_LASTNAME}}</label>
-                <input type="text" placeholder="{{translation.PLACEHOLDER_MOTHER_LASTNAME}}" name="motherLastName" ng-model="motherLastName" ng-blur="sendAnalytics('Registro','Escribir Apellido Materno')" ng-class="{'has-errors' : forms.registerForm.motherLastName.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.motherLastName.$valid && forms.registerForm.$submitted}"
+                <input type="text" placeholder="{{translation.PLACEHOLDER_MOTHER_LASTNAME}}" name="motherLastName" ng-model="motherLastName" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_MOTHER_LASTNAME)" ng-class="{'has-errors' : forms.registerForm.motherLastName.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.motherLastName.$valid && forms.registerForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.registerForm.motherLastName.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.motherLastName.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -35,7 +35,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
-                <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Registro','Escribir teléfono principal')" ng-class="{'has-errors' : forms.registerForm.phone.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.phone.$valid && forms.registerForm.$submitted}"
+                <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_PHONE)" ng-class="{'has-errors' : forms.registerForm.phone.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.phone.$valid && forms.registerForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.registerForm.phone.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.phone.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -43,14 +43,14 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
-                <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Registro','Escribir teléfono secundario')" ng-class="{'has-errors' : forms.registerForm.cellphone.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.cellphone.$valid && forms.registerForm.$submitted}">
+                <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_CELLPHONE)" ng-class="{'has-errors' : forms.registerForm.cellphone.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.cellphone.$valid && forms.registerForm.$submitted}">
                 <div class="error-container last-error-container" ng-show="forms.registerForm.cellphone.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.cellphone.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
-                <input placeholder="{{translation.PLACEHOLDER_EMAIL}}" name="email" ng-model="email" type="email" ng-blur="sendAnalytics('Registro','Escribir Correo Electrónico')" ng-class="{'has-errors' : forms.registerForm.email.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.email.$valid && forms.registerForm.$submitted}"
+                <input placeholder="{{translation.PLACEHOLDER_EMAIL}}" name="email" ng-model="email" type="email" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_EMAIL)" ng-class="{'has-errors' : forms.registerForm.email.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.email.$valid && forms.registerForm.$submitted}"
                     required ng-maxlength="40">
                 <div class="error-container last-error-container" ng-show="forms.registerForm.email.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.email.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -58,7 +58,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
-                <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="numClient" ng-model="numClient" ng-blur="sendAnalytics('Registro','Escribir número de cliente')" ng-class="{'has-errors' : forms.registerForm.numClient.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.numClient.$valid && forms.registerForm.$submitted}"
+                <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="numClient" ng-model="numClient" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_NUM_CLIENT)" ng-class="{'has-errors' : forms.registerForm.numClient.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.numClient.$valid && forms.registerForm.$submitted}"
                     required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="9">
                 <div class="error-container last-error-container" ng-show="forms.registerForm.numClient.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.numClient.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -66,23 +66,23 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_NUM_LAST_SERVICE}}</label>
-                <input placeholder="{{translation.PLACEHOLDER_NUM_LAST_SERVICE}}" name="numLastService" type="number" ng-model="numLastService" ng-blur="sendAnalytics('Registro','Escribir número última boleta emitida')" ng-class="{'has-errors' : forms.registerForm.numLastService.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.numLastService.$valid && forms.registerForm.$submitted}"
+                <input placeholder="{{translation.PLACEHOLDER_NUM_LAST_SERVICE}}" name="numLastService" type="number" ng-model="numLastService" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_NUM_LAST_SERVICE)" ng-class="{'has-errors' : forms.registerForm.numLastService.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.numLastService.$valid && forms.registerForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.registerForm.numLastService.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.numLastService.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
             </ion-item>
-            <ion-item class="item-icon-right lined-item input-text-without-icon">
+            <!-- <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_ALIAS_ASSET}}</label>
-                <input type="text" placeholder="{{translation.PLACEHOLDER_ALIAS_ASSET}}" name="alias" ng-model="alias" ng-blur="sendAnalytics('Registro','Escribir Alias')" ng-class="{'has-errors' : forms.registerForm.alias.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.alias.$valid && forms.registerForm.$submitted}"
+                <input type="text" placeholder="{{translation.PLACEHOLDER_ALIAS_ASSET}}" name="alias" ng-model="alias" ng-blur="sendAnalytics(translation.PAGE_REGISTER,'Escribir Alias')" ng-class="{'has-errors' : forms.registerForm.alias.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.alias.$valid && forms.registerForm.$submitted}"
                     required>
                 <div class="error-container last-error-container" ng-show="forms.registerForm.alias.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.alias.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
-            </ion-item>
+            </ion-item> -->
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_PASSWORD}}</label>
-                <input type="password" placeholder="{{translation.PLACEHOLDER_PASSWORD}}" name="password" ng-model="password" ng-blur="sendAnalytics('Registro','Escribir contraseña')" ng-class="{'has-errors' : forms.registerForm.password.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.password.$valid && forms.registerForm.$submitted}"
+                <input type="password" placeholder="{{translation.PLACEHOLDER_PASSWORD}}" name="password" ng-model="password" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_PASSWORD)" ng-class="{'has-errors' : forms.registerForm.password.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.password.$valid && forms.registerForm.$submitted}"
                     required ng-minlength="8" ng-maxlength="30" password-validator>
                 <div class="error-container last-error-container" ng-show="forms.registerForm.password.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.password.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -90,7 +90,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_PASSWORD_CONFIRM}}</label>
-                <input type="password" placeholder="{{translation.PLACEHOLDER_PASSWORD_CONFIRM}}" name="passwordConfirm" ng-model="passwordConfirm" ng-blur="sendAnalytics('Registro','Escribir confirmación de contraseña')" ng-class="{'has-errors' : forms.registerForm.passwordConfirm.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.passwordConfirm.$valid && forms.registerForm.$submitted}"
+                <input type="password" placeholder="{{translation.PLACEHOLDER_PASSWORD_CONFIRM}}" name="passwordConfirm" ng-model="passwordConfirm" ng-blur="sendAnalytics(translation.PAGE_REGISTER,translation.GA_WRITE_CONFIRM_PASSWORD)" ng-class="{'has-errors' : forms.registerForm.passwordConfirm.$invalid && forms.registerForm.$submitted, 'no-errors' : forms.registerForm.passwordConfirm.$valid && forms.registerForm.$submitted}"
                     required match-password="password">
                 <div class="error-container last-error-container" ng-show="forms.registerForm.passwordConfirm.$error && forms.registerForm.$submitted" ng-messages="forms.registerForm.passwordConfirm.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -98,10 +98,10 @@
             </ion-item>
             <div class="row">
                 <div class="col">
-                    <button class="button button-block register-style button-general" ng-click="sendAnalytics('Registro','Presionar Crear Cuenta')" type="submit">{{translation.CREATE_ACCOUNT | uppercase}}
+                    <button class="button button-block register-style button-general" ng-click="sendAnalytics('{{translation.PAGE_REGISTER}}','{{translation.GA_PUSH_CREATE_ACCOUNT}}')" type="submit">{{translation.CREATE_ACCOUNT | uppercase}}
                         <!--<i class="icon icon_enel_check"></i>-->
                     </button>
-                    <button class="button button-block back-button button-general" ng-click="sendAnalytics('Registro','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
+                    <button class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_REGISTER}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="guest.home">{{translation.BACK | uppercase}}
                         <!--<i class="icon icon_enel_check"></i>-->
                     </button>
                 </div>

@@ -1,4 +1,4 @@
-angular.module('AnalyticsModule').factory('AnalyticsProvider', ['$http', '$cordovaDevice', '$rootScope', 'ENDPOINTS', 'ANALYTICS_CONFIG', function($http, $cordovaDevice, $rootScope, ENDPOINTS, ANALYTICS_CONFIG) {
+angular.module('AnalyticsModule').factory('AnalyticsProvider', ['$http', '$cordovaDevice', '$rootScope', 'ENDPOINTS', 'ANALYTICS_CONFIG', function($http, $cordovaDevice, $rootScope, ENDPOINTS, ANALYTICS_CONFIG, $ionicPlatform) {
 
   function generateUUID() {
     var d = new Date().getTime();
@@ -14,11 +14,10 @@ angular.module('AnalyticsModule').factory('AnalyticsProvider', ['$http', '$cordo
 
   return {
     evento: function(categoria, accion) {
-
       if (force.isAuthenticated()) {
-        categoria = 'Con Loggeo - ' + categoria;
+        categoria = $rootScope.translation.WITH_SESSION + " - " + categoria;
       } else {
-        categoria = 'Sin Loggeo - ' + categoria;
+        categoria = $rootScope.translation.WITHOUT_SESSION + " - " + categoria;
       }
       var platform;
       try {
@@ -29,7 +28,6 @@ angular.module('AnalyticsModule').factory('AnalyticsProvider', ['$http', '$cordo
       if (!cid) {
         cid = generateUUID();
       }
-
       var event = {
         method: 'GET',
         url: ENDPOINTS.ENDPOINTS_ANALYTICS,
@@ -39,9 +37,10 @@ angular.module('AnalyticsModule').factory('AnalyticsProvider', ['$http', '$cordo
           tid: ANALYTICS_CONFIG.ID_ANALYTICS,
           t: 'event',
           an: ANALYTICS_CONFIG.APP_NAME,
-          av: $rootScope.translation.VERSION_APP,
-          aid: ANALYTICS_CONFIG.ID_APP,
-          cs: platform,
+          av: $rootScope.appVersion,
+          aid: ANALYTICS_CONFIG.APP_ID,
+          // cs: platform,
+          aiid: platform,
           ec: categoria,
           ea: accion
         }
@@ -59,49 +58,23 @@ angular.module('AnalyticsModule').factory('AnalyticsProvider', ['$http', '$cordo
       if (!cid) {
         cid = generateUUID();
       }
-
       var screenview = {
         method: 'GET',
-        url: endpoints.ENDPOINTS_ANALYTICS,
+        url: ENDPOINTS.ENDPOINTS_ANALYTICS,
         params: {
           cid: cid,
           v: 1,
-          tid: $rootScope.translation.ID_ANALYTICS,
+          tid: ANALYTICS_CONFIG.ID_ANALYTICS,
           t: 'screenview',
-          an: $rootScope.translation.APP_NAME,
-          av: $rootScope.translation.VERSION_APP,
-          aid: $rootScope.translation.ID_APP,
-          cs: platform,
-
-          cd: screen,
-          ua: $rootScope.analiticaUa
+          an: ANALYTICS_CONFIG.APP_NAME,
+          av: $rootScope.appVersion,
+          aid: ANALYTICS_CONFIG.APP_ID,
+          // cs: platform,
+          aiid: platform,
+          cd: screen
         }
       };
       $http(screenview);
-      /*
-      var pageview = {};
-      if($rootScope.uidEncrypt){
-      	pageview = {
-      		method: 'GET',
-      		url: endpoints.ENDPOINTS_ANALYTICS,
-      		params: {
-      			cid: cid,
-      			v: 1,
-      			tid: $rootScope.translation.ID_ANALYTICS,
-      			t: 'pageview',
-      			an: $rootScope.translation.APP_NAME,
-      			av: $rootScope.translation.VERSION_APP,
-      			aid: $rootScope.translation.ID_APP,
-      			cs: platform,
-
-      			dp: screen,
-      			ua : $rootScope.analiticaUa
-      		}
-      	};
-      }
-      $http(pageview);
-      */
     }
-
   };
 }]);

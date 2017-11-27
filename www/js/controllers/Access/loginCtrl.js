@@ -1,32 +1,16 @@
-angular.module('AccessModule').controller('loginCtrl', function($scope, $state, $ionicPlatform, $rootScope, $log, AccessService, $rootScope, AnalyticsService, PopupService, $ionicLoading, UTILS_CONFIG) {
+angular.module('AccessModule').controller('loginCtrl', function($scope, $state, $ionicPlatform, $rootScope, $log, AccessService, $rootScope, AnalyticsService, PopupService, $ionicLoading, UTILS_CONFIG, UtilsService, NotificationService, $sce, ENDPOINTS, $ionicScrollDelegate) {
+
+
+  $scope.forms = {};
+  $scope.xidDevice = $rootScope.xidDevice;
+
+  //MÉTODO ANALYTICS
   $scope.sendAnalytics = function(categoria, accion) {
     AnalyticsService.evento(categoria, accion); //Llamada a Analytics
   };
 
-  // $scope.login = function() {
-  //     AnalyticsService.evento('Ingresar', 'Presionar Ingresar'); //Analytics
-  //     AccessService.getLoginAccess(isMovilDevice).then(
-  //         function(response) {
-  //             $log.info("response login: ", response);
-  //             force.init(response);
-  //             $rootScope.isLogged = true;
-  //             AccessService.getContactId().then(function(idContact) {
-  //                 $log.debug('contactId::', idContact);
-  //                 $rootScope.contactId = '0037A00000LCKj9QAH';
-  //                 $state.go("session.usage");
-  //             }, function(err) {
-  //                 $log.error('Error obteniendo idContact::', err);
-  //             });
-  //         },
-  //         function(error) {
-  //             $log.error(error);
-  //         });
-  // }
-
-  $scope.forms = {};
-
   $scope.validateForm = function() {
-    AnalyticsService.evento('Ingresar', 'Presionar Ingresar'); //Analytics
+    AnalyticsService.evento($rootScope.translation.PAGE_LOGIN, $rootScope.translation.GA_PUSH_ENTER); //Analytics        
     if ($scope.forms.loginForm.$valid) {
       $log.debug("datos correctos");
       var numAux = $scope.forms.loginForm.rut.$viewValue;
@@ -53,14 +37,28 @@ angular.module('AccessModule').controller('loginCtrl', function($scope, $state, 
         platform = "WEB";
       }
 
+      //se envia los datos en mayusculas
+      userNumber = userNumber.toUpperCase();
+      //
+
       AccessService.getLoginServices(userNumber, password, platform).then(
         function(response) {
-          $log.info("response login: ", response);
+          $log.debug("response login: ", response);
           $ionicLoading.hide();
           $rootScope.isLogged = true;
+          var platformDevice = "";
+          if ($ionicPlatform.is("ios")) {
+            platformDevice = "ios";
+          } else if ($ionicPlatform.is("android")) {
+            platformDevice = "android";
+          }
+          UtilsService.setXID($scope.xidDevice, platformDevice);
+          NotificationService.getNotificationList();
+
           $state.go("session.usage");
         },
         function(err) {
+          AnalyticsService.evento($rootScope.translation.PAGE_LOGIN, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.LOGIN + "-" + err.message + "-" + err.analyticsCode); //Analytics 
           $log.error(err);
           $ionicLoading.hide();
           var modalType = 'error';
@@ -78,7 +76,7 @@ angular.module('AccessModule').controller('loginCtrl', function($scope, $state, 
 
   //LIMPIEZA DE FORMULARIO
   function resetForm() {
-    $log.info("reseteando login");
+    $log.debug("reseteando login");
     if ($scope.forms.loginForm) {
       $scope.forms.loginForm.rut.$viewValue = '';
       $scope.forms.loginForm.password.$viewValue = '';
@@ -86,7 +84,7 @@ angular.module('AccessModule').controller('loginCtrl', function($scope, $state, 
       $scope.forms.loginForm.password.$render();
       $scope.forms.loginForm.$setPristine();
     } else {
-      $log.info("no existe formulario aun");
+      $log.debug("no existe formulario aun");
     }
   }
 
@@ -94,9 +92,33 @@ angular.module('AccessModule').controller('loginCtrl', function($scope, $state, 
     $scope.modal.hide();
   };
 
+
+  //RECOVERY PASS NEOL
+  $scope.recoveryPassNeol = function() {
+    AnalyticsService.evento($rootScope.translation.PAGE_LOGIN, $rootScope.translation.GA_PUSH_PASSWORD_RECOVERY);
+    var modalType = 'iframe';
+    var modalTitle = $rootScope.translation.HELPER_MODAL_TITLE;
+    var modalContent = $sce.trustAsResourceUrl(ENDPOINTS.ENDPOINTS_EXTERNAL_RECOVERY_PASS_NEOL);
+
+    $ionicLoading.show({
+      template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
+    });
+    PopupService.openModal(modalType, modalTitle, modalContent, $scope);
+  }
+
+  $scope.goBack = function() {
+    AnalyticsService.evento($rootScope.translation.PAGE_LOGIN, $rootScope.translation.GA_PUSH_BACK_BUTTON); //Llamada a Analytics
+    $state.go("guest.home");
+  };
+
+
+
+
   $scope.$on('$locationChangeSuccess', function(ev, n) {
     if (n.indexOf('guest/login') > -1) {
       $log.debug("llamando a resetForm Login");
+      AnalyticsService.pantalla($rootScope.translation.PAGE_LOGIN);
+      $ionicScrollDelegate.scrollTop();
       resetForm();
     }
   });

@@ -1,9 +1,5 @@
-angular.module('BillsModule').controller('payBillCtrl', function($scope, $state, DataMapService, $log, AnalyticsService, $rootScope, $ionicLoading, BillsService, PopupService, ENDPOINTS, $sce, UTILS_CONFIG, LocalStorageProvider) {
+angular.module('BillsModule').controller('payBillCtrl', function($scope, $state, DataMapService, $log, AnalyticsService, $rootScope, $ionicLoading, BillsService, PopupService, ENDPOINTS, $sce, UTILS_CONFIG, LocalStorageProvider, $ionicScrollDelegate) {
 
-  // $scope.checkedItem = false;
-  // $scope.showPreviousAmount = false;
-  // $scope.showRecentAmount = false;
-  // $scope.disablePayButton = true;
 
   $scope.selectedDebt = {};
   $scope.translation = $rootScope.translation;
@@ -36,7 +32,7 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
         }
         $scope.items = assetObject.items;
         index = assetObject.index;
-        $log.info("largo array: ", $scope.items.length);
+        $log.debug("largo array: ", $scope.items.length);
         if ($scope.items[2]) {
           $scope.payBill = assetObject.items[2].monto;
           $scope.selectedDebt = assetObject.items[2];
@@ -57,12 +53,12 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
           $scope.showFirstElement = true;
         }
 
-        $log.info("$scope.showThirdElement", $scope.showThirdElement);
-        $log.info("$scope.showSecondElement", $scope.showSecondElement);
-        $log.info("$scope.showFirstElement", $scope.showFirstElement);
+        $log.debug("$scope.showThirdElement", $scope.showThirdElement);
+        $log.debug("$scope.showSecondElement", $scope.showSecondElement);
+        $log.debug("$scope.showFirstElement", $scope.showFirstElement);
       }
     } catch (err) {
-      $log.info("Error: ", err);
+      $log.debug("Error: ", err);
     }
   }
 
@@ -71,32 +67,51 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
 
   $scope.validateForm = function() {
     if ($scope.forms.payBillForm.$valid) {
-      $log.info("formulario OK");
-      var request = {};
-      request.amount = $scope.selectedDebt.monto;
-      request.paymentType = $scope.selectedDebt.tipoDeuda;
-      request.email = $scope.forms.payBillForm.email.$viewValue;
+      AnalyticsService.evento($rootScope.translation.PAGE_PAYMENT, $rootScope.translation.GA_PUSH_PAY_BILL);
+      $log.debug("formulario OK");
+
+      var formData = LocalStorageProvider.getLocalStorageItem('no_session_form_data');
+      if (formData) {
+        if (!force.isAuthenticated()) {
+          formData.email = $scope.forms.payBillForm.email.$viewValue;
+        }
+
+      } else {
+        if (!force.isAuthenticated()) {
+          formData = {
+            email: $scope.forms.payBillForm.email.$viewValue
+          };
+        }
+      }
+      LocalStorageProvider.setLocalStorageItem('no_session_form_data', formData);
+
+      //GENERACION DE XML PARA PAGO
+      var requestXmlPayment = {};
+      requestXmlPayment.amount = $scope.selectedDebt.monto;
+      requestXmlPayment.paymentType = $scope.selectedDebt.tipoDeuda;
+      requestXmlPayment.email = $scope.forms.payBillForm.email.$viewValue;
       $scope.email = $scope.forms.payBillForm.email.$viewValue;
-      request.expirationDate = $scope.selectedDebt.fechaVencimiento;
-      request.issueDate = $scope.selectedDebt.fechaEmision;
-      request.onClickDate = moment().format("DD/MM/YYYY HH:mm:ss");
-      request.barcode = $scope.selectedDebt.codigoBarra;
-      request.rut = "11111111-1";
-      request.name = "Nombre";
+      requestXmlPayment.expirationDate = $scope.selectedDebt.fechaVencimiento;
+      requestXmlPayment.issueDate = $scope.selectedDebt.fechaEmision;
+      requestXmlPayment.onClickDate = moment().format("DD/MM/YYYY HH:mm:ss");
+      requestXmlPayment.barcode = $scope.selectedDebt.codigoBarra;
+      requestXmlPayment.rut = "11111111-1";
+      requestXmlPayment.name = "Nombre";
       if ($scope.isLogged) {
         if (LocalStorageProvider.getLocalStorageItem("USER_DATA", false)) {
           var userData = LocalStorageProvider.getLocalStorageItem("USER_DATA", false)
-          request.rut = userData.rut;
-          request.name = userData.nombre;
+          requestXmlPayment.rut = userData.rut;
+          requestXmlPayment.name = userData.nombre;
         }
       }
       $ionicLoading.show({
         template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
       });
       $scope.selectedTrxId = $scope.selectedDebt.trxId;
-      BillsService.generateXmlPayment(request).then(function(response) {
+
+      BillsService.generateXmlPayment(requestXmlPayment).then(function(response) {
         $ionicLoading.hide();
-        $log.info("conversion exitosa de XML");
+        $log.debug("conversion exitosa de XML");
         var modalType = 'payment';
         var modalTitle = $rootScope.translation.VALIDATION_MODAL_TITLE;
         var modalContent = {};
@@ -115,6 +130,7 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
         });
       }, function(err) {
         $ionicLoading.hide();
+        AnalyticsService.evento($rootScope.translation.PAGE_PAYMENT, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.GENERATE_XML_PAYMENT + "-" + err.message + "-" + err.analyticsCode); //Analytics 
         var modalType = 'error';
         if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
           modalType = 'info';
@@ -133,24 +149,28 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
             });
         });
       });
+
     } else {
-      $log.info("formulario incorrecto");
+      $log.debug("formulario incorrecto");
     }
   }
 
 
   //METOD TYPE OF DEBT
   $scope.selectItem = function(index) {
-    $log.info("valor de index: ", index);
+    $log.debug("valor de index: ", index);
     $scope.selectedDebt = $scope.items[index];
-    // $log.info("valor de debt: ", $scope.selectedDebt);
   }
 
 
 
   $scope.generateTemplateBill = function(typeModal, url) {
-    LocalStorageProvider.removeLocalStorageItem("asset_debt_" + index);
-    LocalStorageProvider.removeLocalStorageItem("asset_detail_" + index);
+    if (LocalStorageProvider.getLocalStorageItem("asset_debt_" + index)) {
+      LocalStorageProvider.getLocalStorageItem("asset_debt_" + index);
+    }
+    if (LocalStorageProvider.getLocalStorageItem("asset_detail_" + index)) {
+      LocalStorageProvider.removeLocalStorageItem("asset_detail_" + index)
+    }
 
     var trxidDecode = $scope.selectedTrxId;
     var successCode = "false";
@@ -184,7 +204,7 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
     });
     BillsService.generateTemplateBill(trxidDecode, $scope.numeroSuministro, $scope.email, successCode).then(function(response) {
       $ionicLoading.hide();
-      $log.info("generacion exitosa de template de la boleta");
+      $log.debug("generacion exitosa de template de la boleta");
       var modalType = typeModal;
       var modalTitle = "";
       var modalContent = "";
@@ -218,6 +238,7 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
       });
     }, function(err) {
       $ionicLoading.hide();
+      AnalyticsService.evento($rootScope.translation.PAGE_PAYMENT, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.GENERATE_TEMPLATE_BILL + "-" + err.message + "-" + err.analyticsCode); //Analytics 
       var modalType = 'error';
       if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
         modalType = 'info';
@@ -239,44 +260,34 @@ angular.module('BillsModule').controller('payBillCtrl', function($scope, $state,
   }
 
 
-  // $scope.selectItem = function(debt) {
-  //     $log.info("valor de debt: ", debt);
-  //     $scope.selectedDebt = debt;
-  // }
-
-  //MÉTODO ANALYTICS -- 05-07-2017
-  // $scope.sendAnalytics = function(categoria, accion) {
-
-  //     // sendAnalytics('Paga tu cuenta','Seleccionar Deuda Anterior')
-
-  //     //         AnalyticsService.evento(categoria, accion); //Llamada a Analytics
-  // };
-
-
-  // $scope.setHtml = function() {
-  //   var doc = document.getElementById('iframe').contentWindow.document;
-  //   doc.open();
-  //   doc.write($scope.responseIframe);
-  //   doc.close();
-  // }
-
-
-
-
-
   function resetForm() {
-    console.log("reseteando Pay Bill");
-    $scope.forms.payBillForm.email.$viewValue = '';
+    $log.info("reseteando Pay Bill");
+    var formData = LocalStorageProvider.getLocalStorageItem('no_session_form_data');
+    if (!force.isAuthenticated() && formData) {
+      $scope.forms.payBillForm.email.$setViewValue(formData.email);
+    } else if (force.isAuthenticated()) {
+      var userData = LocalStorageProvider.getLocalStorageItem('USER_DATA');
+      if (userData) {
+        $scope.forms.payBillForm.email.$setViewValue(userData.email);
+      } else {
+        $scope.forms.payBillForm.email.$setViewValue('');
+      }
+    } else {
+      $scope.forms.payBillForm.email.$setViewValue('');
+    }
     $scope.forms.payBillForm.email.$render();
-    // $scope.forms.payBillForm.payBill.$viewValue = '';
-    // $scope.forms.payBillForm.payBill = '';
-    //$scope.forms.payBillForm.payBill.$render();
     $scope.forms.payBillForm.$setPristine();
+  }
+
+  $scope.sendAnalytics = function(categoria, accion) {
+    AnalyticsService.evento(categoria, accion);
   }
 
   $scope.$on('$locationChangeSuccess', function(ev, n) {
     if (n.indexOf('guest/payBill') > -1 || n.indexOf('session/payBill') > -1) {
       $log.debug("llamando a resetForm Pay Bill");
+      AnalyticsService.pantalla($rootScope.translation.PAGE_PAYMENT);
+      $ionicScrollDelegate.scrollTop();
       resetForm();
       init();
     }

@@ -20,10 +20,6 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
       controller: 'tutorialCtrl'
     })
 
-    .state('landing', {
-      controller: 'landingCtrl'
-    })
-
     /*   Sin Sesión   */
     .state('guest', {
       url: '/guest',
@@ -74,22 +70,22 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
       }
     })
 
-    .state('guest.verification', {
-      url: '/verification',
+    .state('guest.verificationStepOne', {
+      url: '/verificationStepOne',
       views: {
         'tab-home': {
-          templateUrl: 'views/Access/verification.html',
-          controller: 'verificationCtrl'
+          templateUrl: 'views/Access/verificationStepOne.html',
+          controller: 'verificationStepOneCtrl'
         }
       }
     })
 
-    .state('guest.verificationPass', {
-      url: '/verificationPass',
+    .state('guest.verificationStepTwo', {
+      url: '/verificationStepTwo',
       views: {
         'tab-home': {
-          templateUrl: 'views/Access/verificationPass.html',
-          controller: 'verificationPassCtrl'
+          templateUrl: 'views/Access/verificationStepTwo.html',
+          controller: 'verificationStepTwoCtrl'
         }
       }
     })
@@ -105,12 +101,12 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
     })
 
 
-    .state('guest.emergency', {
-      url: '/emergency',
+    .state('guest.emergencyMenu', {
+      url: '/emergencyMenu',
       views: {
         'tab-emergency': {
-          templateUrl: 'views/Emergency/menu.html',
-          controller: 'emergencyCtrl'
+          templateUrl: 'views/Emergency/emergencyMenu.html',
+          controller: 'emergencyMenuCtrl'
         }
       }
     })
@@ -155,12 +151,12 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
       }
     })
 
-    .state('guest.contact', {
-      url: '/contact',
+    .state('guest.contactMenu', {
+      url: '/contactMenu',
       views: {
         'tab-contact': {
-          templateUrl: 'views/Contact/menu.html',
-          controller: 'menuContactCtrl'
+          templateUrl: 'views/Contact/contactMenu.html',
+          controller: 'contactMenuCtrl'
         }
       }
     })
@@ -217,12 +213,12 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
       }
     })
 
-    .state('guest.featured', {
-      url: '/featured',
+    .state('guest.featuredList', {
+      url: '/featuredList',
       views: {
         'tab-featured': {
-          templateUrl: 'views/Featured/featured.html',
-          controller: 'featuredCtrl'
+          templateUrl: 'views/Featured/featuredList.html',
+          controller: 'featuredListCtrl'
         }
       }
     })
@@ -278,12 +274,22 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
       }
     })
 
-    .state('session.emergency', {
-      url: '/emergency',
+    .state('session.sendElectronicDoc', {
+      url: '/sendElectronicDoc',
+      views: {
+        'tab-usage': {
+          templateUrl: 'views/ManageAssets/sendElectronicDoc.html',
+          controller: 'sendElectronicDocCtrl'
+        }
+      }
+    })
+
+    .state('session.emergencyMenu', {
+      url: '/emergencyMenu',
       views: {
         'tab-emergency': {
-          templateUrl: 'views/Emergency/menu.html',
-          controller: 'emergencyCtrl'
+          templateUrl: 'views/Emergency/emergencyMenu.html',
+          controller: 'emergencyMenuCtrl'
         }
       }
     })
@@ -318,12 +324,12 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
       }
     })
 
-    .state('session.contact', {
-      url: '/contact',
+    .state('session.contactMenu', {
+      url: '/contactMenu',
       views: {
         'tab-contact': {
-          templateUrl: 'views/Contact/menu.html',
-          controller: 'menuContactCtrl'
+          templateUrl: 'views/Contact/contactMenu.html',
+          controller: 'contactMenuCtrl'
         }
       }
     })
@@ -379,23 +385,23 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
       }
     })
 
-    .state('session.notifications', {
-      url: '/notifications',
+    .state('session.notification', {
+      url: '/notification',
       views: {
-        'tab-notifications': {
-          templateUrl: 'views/Notifications/notifications.html',
-          controller: 'notificationsCtrl'
+        'tab-notification': {
+          templateUrl: 'views/Notification/notificationList.html',
+          controller: 'notificationCtrl'
         }
       }
     })
 
 
-    .state('session.featured', {
-      url: '/featured',
+    .state('session.featuredList', {
+      url: '/featuredList',
       views: {
         'tab-featured': {
-          templateUrl: 'views/Featured/featured.html',
-          controller: 'featuredCtrl'
+          templateUrl: 'views/Featured/featuredList.html',
+          controller: 'featuredListCtrl'
         }
       }
     })
@@ -420,18 +426,5 @@ angular.module('appenel').config(['$stateProvider', '$urlRouterProvider', functi
         }
       }
     })
-
-
-  /*
-      .state('session.close', {
-          url: '/close',
-          views: {
-              'menuInferior': {
-                  templateUrl: 'views/Access/close.html',
-                  controller: 'cerrarCtrl'
-              }
-          }
-      });
-      */
   /*   Con Sesión - Footer Principal  */
 }])

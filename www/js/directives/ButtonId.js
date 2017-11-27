@@ -3,13 +3,12 @@
  */
 
 angular.module('appenel').directive('buttonId', function() {
-    return {
-      restrict: "A",
-      link: function(scope, element, attributes) {
-        element.bind("click", function() {
-          scope.buttons.chosen = attributes.buttonId;
-        });
-      }
+  return {
+    restrict: "A",
+    link: function(scope, element, attributes) {
+      element.bind("click", function() {
+        scope.buttons.chosen = attributes.buttonId;
+      });
     }
-  });
-
+  }
+});

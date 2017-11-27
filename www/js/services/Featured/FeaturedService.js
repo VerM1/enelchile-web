@@ -51,24 +51,44 @@ angular.module('FeaturedModule').factory('FeaturedService', function(ConnectionP
           var obj = {};
           obj.code = respuesta.code;
           obj.message = respuesta.message;
+          if (respuesta.analyticsCode) {
+            obj.analyticsCode = respuesta.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
-
       }, function(err) {
         $log.error('Error Get Data: ' + err);
         var obj = {};
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
       });

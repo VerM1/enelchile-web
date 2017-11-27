@@ -1,4 +1,4 @@
-angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicPlatform, UtilsService, $ionicSlideBoxDelegate, DataMapService, $log, LocalStorageProvider, $rootScope, UsageService, EmergencyService, $ionicModal, $state, $ionicLoading, AnalyticsService, $route, PopupService, UTILS_CONFIG) {
+angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicPlatform, UtilsService, $ionicSlideBoxDelegate, DataMapService, $log, LocalStorageProvider, $rootScope, UsageService, EmergencyService, $ionicModal, $state, $ionicLoading, AnalyticsService, $route, PopupService, UTILS_CONFIG, $ionicScrollDelegate) {
   $scope.isIos = false;
   if ($ionicPlatform.is('ios')) {
     $scope.isIos = true;
@@ -6,20 +6,17 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
   $scope.actualIndex = 0;
   $scope.backHref = "home";
 
+  $scope.isLogged = $rootScope.isLogged;
+  $scope.activeSlide = 0;
+
   //MÉTODO ANALYTICS -- 05-07-2017
   $scope.sendAnalytics = function(categoria, accion) {
     AnalyticsService.evento(categoria, accion); //Llamada a Analytics
   };
 
-  $scope.$on('$locationChangeSuccess', function(ev, n) {
-    if (n.indexOf('session/blackout') > -1 || n.indexOf('guest/blackout') > -1) {
-      $log.debug("llamando a resetForm BlackOut");
-      resetForm();
-      init();
-    }
-  });
 
-  $scope.isLogged;
+
+
   $scope.dataBlackout;
   var clientNumber;
   $scope.typesOfProblems1 = {};
@@ -29,7 +26,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
   $scope.selected2tab = false;
 
   function init() {
-    $scope.isLogged = $rootScope.isLogged;
+
     $scope.dataBlackout = {};
 
     var objTypeOfProblems1 = {
@@ -64,18 +61,23 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
     selectedTypeProblem = $scope.typesOfProblems1.value;
 
     if ($scope.isLogged) {
-      $log.info("está logeado");
+      $log.debug("está logeado");
       try {
         DataMapService.deleteItem("uniqueAsset");
         $scope.dataBlackout.items = [];
         UtilsService.getAssetList($rootScope.contactId).then(
           function(items) {
             if (items.length > 0) {
+              if (LocalStorageProvider.getLocalStorageItem("asset_list_is_new_request") && LocalStorageProvider.getLocalStorageItem("asset_list_is_new_request") === "true") {
+                $scope.activeSlide = 0;
+              }
+              $ionicSlideBoxDelegate.slide($scope.activeSlide);
               $scope.dataBlackout.items = items;
               clientNumber = $scope.dataBlackout.items[0].numeroSuministro;
               $ionicSlideBoxDelegate.update();
             } else {
               $log.error("No data with that contactId");
+              AnalyticsService.evento($rootScope.translation.PAGE_BLACKOUT, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.NO_DATA); //Analytics 
               var modalType = 'info';
               var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
               var modalContent = $rootScope.translation.NO_DATA;
@@ -88,26 +90,29 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
         $log.error("Error: ", err);
       }
     } else {
-      $log.info("no está logeado");
+      $log.debug("no está logeado");
+      $scope.activeSlide = 0;
       try {
         if (DataMapService.getItem("uniqueAsset", false)) {
           $scope.backHref = DataMapService.getItem("uniqueAsset", false);
-          $log.info("ES UN ELEMENTO UNICO");
+          $log.debug("ES UN ELEMENTO UNICO");
           $scope.dataBlackout.items = [];
           var items = DataMapService.getItem("reportBlackoutObject", false);
           $scope.dataBlackout.items.push(items);
+          $ionicSlideBoxDelegate.slide($scope.activeSlide);
           clientNumber = items.numeroSuministro;
-          $log.info("items: ", $scope.dataBlackout.items);
+          $log.debug("items: ", $scope.dataBlackout.items);
           $ionicSlideBoxDelegate.update();
         } else {
           $log.error("Imposible to find Object: uniqueAsset");
+          AnalyticsService.evento($rootScope.translation.PAGE_BLACKOUT, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.NOT_POSSIBLE_FIND_OBJECT); //Analytics 
           var modalType = 'info';
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = $rootScope.translation.NOT_POSSIBLE_FIND_OBJECT + ": uniqueAsset";
           PopupService.openModal(modalType, modalTitle, modalContent, $scope);
         }
       } catch (err) {
-        $log.info("Error: ", err);
+        $log.debug("Error: ", err);
       }
     }
   }
@@ -115,7 +120,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
   $scope.closeModal = function() {
     $scope.modal.hide();
     if ($rootScope.isLogged) {
-      $state.go('session.emergency');
+      $state.go('session.emergencyMenu');
     } else {
       if ($scope.backHref === "preBlackout") {
         $state.go('guest.preBlackout');
@@ -136,6 +141,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
 
   var callbackError = function(err) {
     $ionicLoading.hide();
+    AnalyticsService.evento($rootScope.translation.PAGE_BLACKOUT, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.BLACKOUT + "-" + err.message + "-" + err.analyticsCode); //Analytics 
     $log.error(err);
     var modalType = 'error';
     if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
@@ -148,21 +154,20 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
 
 
   $scope.pagerClick = function(index) {
-    $log.info("se aplica slide button");
+    $log.debug("se aplica slide button");
     $ionicSlideBoxDelegate.slide(index);
   };
 
 
   $scope.slideHasChanged = function(index) {
     if ($scope.actualIndex < index) {
-      AnalyticsService.evento('Corte de luz', 'Swipe Right Suministros');
+      AnalyticsService.evento($rootScope.translation.PAGE_BLACKOUT + ' - ' + $rootScope.translation.GA_STEP_02, $rootScope.translation.GA_SWIPE_RIGHT);
     } else {
-      AnalyticsService.evento('Corte de luz', 'Swipe Left Suministros');
+      AnalyticsService.evento($rootScope.translation.PAGE_BLACKOUT + ' - ' + $rootScope.translation.GA_STEP_02, $rootScope.translation.GA_SWIPE_LEFT);
     } //Fin Analytics
 
     $scope.actualIndex = index;
     resetForm();
-    //$ionicSlideBoxDelegate.slide(index);
     $ionicSlideBoxDelegate.update();
     $route.reload();
   }
@@ -171,7 +176,8 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
 
   $scope.validateForm = function() {
     if ($scope.forms.blackoutForm.$valid) {
-      $log.info("formulario OK");
+      AnalyticsService.evento($rootScope.translation.PAGE_BLACKOUT, $rootScope.translation.GA_PUSH_SEND_FORM);
+      $log.debug("formulario OK");
       var formData = LocalStorageProvider.getLocalStorageItem('no_session_form_data');
       if (formData) {
         if (!$scope.isLogged) {
@@ -180,18 +186,15 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
           formData.email = $scope.forms.blackoutForm.email.$viewValue;
           formData.phone = $scope.forms.blackoutForm.phone.$viewValue;
           formData.cellphone = $scope.forms.blackoutForm.cellphone.$viewValue;
-          formData.description = $scope.forms.blackoutForm.description.$viewValue;
         }
-
       } else {
         if (!$scope.isLogged) {
           formData = {
             name: $scope.forms.blackoutForm.name.$viewValue,
-            lastnames: $scope.forms.blackoutForm.lastnames.$viewValue,
+            lastname: $scope.forms.blackoutForm.lastnames.$viewValue,
             email: $scope.forms.blackoutForm.email.$viewValue,
             phone: $scope.forms.blackoutForm.phone.$viewValue,
-            cellphone: $scope.forms.blackoutForm.cellphone.$viewValue,
-            description: $scope.forms.blackoutForm.description.$viewValue
+            cellphone: $scope.forms.blackoutForm.cellphone.$viewValue
           };
         }
       }
@@ -199,7 +202,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
       $ionicLoading.show({
         template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
       });
-      $log.info("selectedTypeProblem: ", selectedTypeProblem);
+      $log.debug("selectedTypeProblem: ", selectedTypeProblem);
       if (force.isAuthenticated()) {
         //numeroSuministro,siniestro,tipoDeProblema
         EmergencyService.emergencyLightCutAuth(clientNumber,
@@ -217,7 +220,7 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
         ).then(callbackSuccess, callbackError);
       }
     } else {
-      $log.info("formulario incorrecto");
+      $log.debug("formulario incorrecto");
     }
   }
 
@@ -227,24 +230,31 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
       var formData = LocalStorageProvider.getLocalStorageItem('no_session_form_data');
       if (formData) {
         if (!$scope.isLogged) {
-          formData.name = $scope.forms.blackoutForm.name.$viewValue;
-          formData.lastname = $scope.forms.blackoutForm.lastnames.$viewValue;
-          formData.email = $scope.forms.blackoutForm.email.$viewValue;
-          formData.phone = $scope.forms.blackoutForm.phone.$viewValue;
-          formData.cellphone = $scope.forms.blackoutForm.cellphone.$viewValue;
+          $scope.forms.blackoutForm.name.$setViewValue(formData.name);
+          $scope.forms.blackoutForm.lastnames.$setViewValue(formData.lastname);
+          $scope.forms.blackoutForm.email.$setViewValue(formData.email);
+          $scope.forms.blackoutForm.phone.$setViewValue(formData.phone);
+          $scope.forms.blackoutForm.cellphone.$setViewValue(formData.cellphone);
+          $scope.forms.blackoutForm.name.$render();
+          $scope.forms.blackoutForm.lastnames.$render();
+          $scope.forms.blackoutForm.email.$render();
+          $scope.forms.blackoutForm.phone.$render();
+          $scope.forms.blackoutForm.cellphone.$render();
         } else {
           $log.debug("está autenticado: no se guardará data en LS");
         }
-
       } else {
         if (!$scope.isLogged) {
-          formData = {
-            name: $scope.forms.blackoutForm.name.$viewValue,
-            lastnames: $scope.forms.blackoutForm.lastnames.$viewValue,
-            email: $scope.forms.blackoutForm.email.$viewValue,
-            phone: $scope.forms.blackoutForm.phone.$viewValue,
-            cellphone: $scope.forms.blackoutForm.cellphone.$viewValue
-          };
+          $scope.forms.blackoutForm.name.$setViewValue("");
+          $scope.forms.blackoutForm.lastnames.$setViewValue("");
+          $scope.forms.blackoutForm.email.$setViewValue("");
+          $scope.forms.blackoutForm.phone.$setViewValue("");
+          $scope.forms.blackoutForm.cellphone.$setViewValue("");
+          $scope.forms.blackoutForm.name.$render();
+          $scope.forms.blackoutForm.lastnames.$render();
+          $scope.forms.blackoutForm.email.$render();
+          $scope.forms.blackoutForm.phone.$render();
+          $scope.forms.blackoutForm.cellphone.$render();
         } else {
           $log.debug("está autenticado: no se guardará data en LS");
         }
@@ -266,28 +276,25 @@ angular.module('CoreModule').controller('blackoutCtrl', function($scope, $ionicP
     $scope.selected2tab = false;
     selectedTypeProblem = item;
     if (item == $scope.typesOfProblems1.value) {
-      AnalyticsService.evento('Corte de luz - Paso 2', 'Seleccionar:' + $scope.typesOfProblems1.label); //Analytics
+      AnalyticsService.evento($rootScope.translation.PAGE_BLACKOUT + ' - ' + $rootScope.translation.GA_STEP_02, $rootScope.translation.GA_SELECT_TYPE_OF_INCIDENT + ': ' + $scope.typesOfProblems1.label); //Analytics
       $scope.selected1tab = true;
     } else if (item == $scope.typesOfProblems2.value) {
-      AnalyticsService.evento('Corte de luz - Paso 2', 'Seleccionar:' + $scope.typesOfProblems2.label); //Analytics
+      AnalyticsService.evento($rootScope.translation.PAGE_BLACKOUT + ' - ' + $rootScope.translation.GA_STEP_02, $rootScope.translation.GA_SELECT_TYPE_OF_INCIDENT + ': ' + $scope.typesOfProblems2.label); //Analytics
       $scope.selected2tab = true;
     } else {
-      AnalyticsService.evento('Corte de luz - Paso 2', 'Seleccionar:' + $scope.typesOfProblems1.label); //Analytics
+      AnalyticsService.evento($rootScope.translation.PAGE_BLACKOUT + ' - ' + $rootScope.translation.GA_STEP_02, $rootScope.translation.GA_SELECT_TYPE_OF_INCIDENT + ': ' + $scope.typesOfProblems1.label); //Analytics
       $scope.selected1tab = true;
     }
-    // switch (item) {
-    //     case (item.toString() == $scope.typesOfProblems1.value.toString()):
-    //         AnalyticsService.evento('Corte de luz - Paso 2', 'Seleccionar:' + $scope.typesOfProblems1.label.toString()); //Analytics
-    //         $scope.selected1tab = true;
-    //         break;
-    //     case (item.toString() == $scope.typesOfProblems2.value.toString()):
-    //         AnalyticsService.evento('Corte de luz - Paso 2', 'Seleccionar:' + $scope.typesOfProblems2.label.toString()); //Analytics
-    //         $scope.selected2tab = true;
-    //         break;
-    //     default:
-    //         AnalyticsService.evento('Corte de luz - Paso 2', 'Seleccionar:' + $scope.typesOfProblems1.label.toString()); //Analytics
-    //         $scope.selected1tab = true;
-    //         break;
-    // }
+
   }
+
+  $scope.$on('$locationChangeSuccess', function(ev, n) {
+    if (n.indexOf('session/blackout') > -1 || n.indexOf('guest/blackout') > -1) {
+      AnalyticsService.pantalla($rootScope.translation.PAGE_BLACKOUT);
+      $ionicScrollDelegate.scrollTop();
+      $log.debug("llamando a resetForm BlackOut");
+      resetForm();
+      init();
+    }
+  });
 });

@@ -4,62 +4,65 @@
             <div class="row header-subtitle-page">
                 <div class="col center position-rel">
                     <div class="cursor-profile"></div>
-                    <div class="header-first-row profile-color">
+                    <div class="header-first-row profile-color margin-top-15">
                         <span>{{userFullName | uppercase}}</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <form name="forms.profileForm1" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm1()" validate-form-focus>
-                    <ion-item class="border-radius-10">
-                        <ion-checkbox ng-model="checkNotifications" name="checkNotifications" ng-checked="booleanNotifications" class="profile-check-notifications">{{translation.ACTIVATE_NOTIFICATIONS}}</ion-checkbox>
-                    </ion-item>
-                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
-                        <label class="label-input-form">{{translation.EMAIL}}</label>
-                        <input type="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" name="email" ng-model="email" ng-class="{'has-errors' : forms.profileForm1.email.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.email.$valid && forms.profileForm1.$submitted}"
-                            required ng-maxlength="40">
-                        <div class="error-container last-error-container" ng-show="forms.profileForm1.email.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.email.$error">
-                            <div ng-messages-include="views/errorList.html"></div>
-                        </div>
-                    </ion-item>
+        <div class="margin-10 border-1 border-color-grey-enel border-radius-15">
+            <div class="row">
+                <div class="col">
+                    <form name="forms.profileForm1" novalidate="" ng-submit="validateForm1()" validate-form-focus>
+                        <ion-item class="border-radius-10">
+                            <ion-checkbox ng-model="checkNotifications" name="checkNotifications" ng-checked="booleanNotifications" class="profile-check-notifications">{{translation.ACTIVATE_NOTIFICATIONS}}</ion-checkbox>
+                        </ion-item>
+                        <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                            <label class="label-input-form">{{translation.EMAIL}}</label>
+                            <input type="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" name="email" ng-model="email" ng-blur="sendAnalytics(translation.PAGE_PROFILE,translation.GA_WRITE_EMAIL)" ng-class="{'has-errors' : forms.profileForm1.email.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.email.$valid && forms.profileForm1.$submitted}"
+                                required ng-maxlength="40">
+                            <div class="error-container last-error-container" ng-show="forms.profileForm1.email.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.email.$error">
+                                <div ng-messages-include="views/errorList.html"></div>
+                            </div>
+                        </ion-item>
 
 
 
-                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
-                        <label class="label-input-form">{{translation.PHONE_PRIMARY}}</label>
-                        <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-class="{'has-errors' : forms.profileForm1.phone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.phone.$valid && forms.profileForm1.$submitted}"
-                            required>
-                        <div class="error-container last-error-container" ng-show="forms.profileForm1.phone.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.phone.$error">
-                            <div ng-messages-include="views/errorList.html"></div>
-                        </div>
-                    </ion-item>
+                        <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                            <label class="label-input-form">{{translation.PHONE_PRIMARY}}</label>
+                            <input type="number" placeholder="{{translation.PLACEHOLDER_PHONE}}" name="phone" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics(translation.PAGE_PROFILE,translation.GA_WRITE_PHONE)" ng-class="{'has-errors' : forms.profileForm1.phone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.phone.$valid && forms.profileForm1.$submitted}"
+                                required>
+                            <div class="error-container last-error-container" ng-show="forms.profileForm1.phone.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.phone.$error">
+                                <div ng-messages-include="views/errorList.html"></div>
+                            </div>
+                        </ion-item>
 
-                    <ion-item class="item-icon-right lined-item input-text-without-icon ">
-                        <label class="label-input-form">{{translation.PHONE_SECONDARY}}</label>
-                        <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-class="{'has-errors' : forms.profileForm1.cellphone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.cellphone.$valid && forms.profileForm1.$submitted}">
-                        <div class="error-container last-error-container" ng-show="forms.profileForm1.cellphone.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.cellphone.$error">
-                            <div ng-messages-include="views/errorList.html"></div>
-                        </div>
-                    </ion-item>
+                        <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                            <label class="label-input-form">{{translation.PHONE_SECONDARY}}</label>
+                            <input type="number" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" name="cellphone" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics(translation.PAGE_PROFILE,translation.GA_WRITE_CELLPHONE)" ng-class="{'has-errors' : forms.profileForm1.cellphone.$invalid && forms.profileForm1.$submitted, 'no-errors' : forms.profileForm1.cellphone.$valid && forms.profileForm1.$submitted}">
+                            <div class="error-container last-error-container" ng-show="forms.profileForm1.cellphone.$error && forms.profileForm1.$submitted" ng-messages="forms.profileForm1.cellphone.$error">
+                                <div ng-messages-include="views/errorList.html"></div>
+                            </div>
+                        </ion-item>
 
-                    <!-- <div class="row">
-                        <div class="col">
-                            <button class="button button-block profile-style button-general" type="submit">{{translation.SAVE | uppercase}}
+                        <div class="row">
+                            <div class="col">
+                                <button class="button button-block profile-style button-general" type="submit">{{translation.SAVE | uppercase}}
                     </button>
+                            </div>
                         </div>
-                    </div> -->
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
 
-        <!-- <div class="row">
+        <!--  <div class="margin-10 border-1 border-color-grey-enel border-radius-15">
+        <div class="row">
             <div class="col">
-                <form name="forms.profileForm2" class="border-1 border-color-grey-enel border-radius-15" novalidate="" ng-submit="validateForm2()" validate-form-focus>
+                <form name="forms.profileForm2" novalidate="" ng-submit="validateForm2()" validate-form-focus>
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
                         <label class="label-input-form">{{translation.LABEL_ENTER_NEW_PASS}}</label>
-                        <input type="password" placeholder="{{translation.PLACEHOLDER_ENTER_NEW_PASS}}" name="password" ng-model="password" ng-class="{'has-errors' : forms.profileForm2.password.$invalid && forms.profileForm2.$submitted, 'no-errors' : forms.profileForm2.password.$valid && forms.profileForm2.$submitted}"
+                        <input type="password" placeholder="{{translation.PLACEHOLDER_ENTER_NEW_PASS}}" name="password" ng-model="password" ng-blur="sendAnalytics(translation.PAGE_PROFILE,translation.GA_WRITE_EMAIL)" ng-class="{'has-errors' : forms.profileForm2.password.$invalid && forms.profileForm2.$submitted, 'no-errors' : forms.profileForm2.password.$valid && forms.profileForm2.$submitted}"
                             required ng-minlength="8" ng-maxlength="30" password-validator>
                         <div class="error-container last-error-container" ng-show="forms.profileForm2.password.$error && forms.profileForm2.$submitted" ng-messages="forms.profileForm2.password.$error">
                             <div ng-messages-include="views/errorList.html"></div>
@@ -68,7 +71,7 @@
 
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
                         <label class="label-input-form">{{translation.LABEL_REPEAT_NEW_PASS}}</label>
-                        <input type="password" placeholder="{{translation.PLACEHOLDER_REPEAT_NEW_PASS}}" name="newPassword" ng-model="newPassword" match-password="password" ng-class="{'has-errors' : forms.profileForm2.newPassword.$invalid && forms.profileForm2.$submitted, 'no-errors' : forms.profileForm2.newPassword.$valid && forms.profileForm2.$submitted}"
+                        <input type="password" placeholder="{{translation.PLACEHOLDER_REPEAT_NEW_PASS}}" name="newPassword" ng-model="newPassword" match-password="password" ng-blur="sendAnalytics(translation.PAGE_PROFILE,translation.GA_WRITE_EMAIL)" ng-class="{'has-errors' : forms.profileForm2.newPassword.$invalid && forms.profileForm2.$submitted, 'no-errors' : forms.profileForm2.newPassword.$valid && forms.profileForm2.$submitted}"
                             required>
                         <div class="error-container last-error-container" ng-show="forms.profileForm2.newPassword.$error && forms.profileForm2.$submitted" ng-messages="forms.profileForm2.newPassword.$error">
                             <div ng-messages-include="views/errorList.html"></div>
@@ -82,7 +85,51 @@
                     </div>
                 </form>
             </div>
-        </div> -->
+        </div> 
+    </div>-->
+
+
+        <div class="margin-10 border-1 border-color-grey-enel border-radius-15">
+            <div class="row">
+                <div class="col">
+                    <form name="forms.profileForm3" novalidate="" ng-submit="validateForm3()" validate-form-focus>
+                        <ion-item class="item-icon-right lined-item input-text-without-icon">
+                            <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
+                            <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="clientNum" ng-model="clientNum" ng-blur="sendAnalytics(translation.PAGE_PROFILE,translation.GA_WRITE_CLIENT_NUMBER)" ng-class="{'has-errors' : forms.profileForm3.clientNum.$invalid && forms.profileForm3.$submitted, 'no-errors' : forms.profileForm3.clientNum.$valid && forms.profileForm3.$submitted}"
+                                required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="9">
+                            <div class="error-container last-error-container" ng-show="forms.profileForm3.clientNum.$error && forms.profileForm3.$submitted" ng-messages="forms.profileForm3.clientNum.$error">
+                                <div ng-messages-include="views/errorList.html"></div>
+                            </div>
+                        </ion-item>
+                        <ion-item class="item-icon-right lined-item input-text-without-icon ">
+                            <label class="label-input-form">{{translation.LABEL_NUM_LAST_SERVICE}}</label>
+                            <input type="number" placeholder="{{translation.PLACEHOLDER_NUM_LAST_SERVICE}}" name="numLastService" ng-model="numLastService" ng-blur="sendAnalytics(translation.PAGE_PROFILE,translation.GA_WRITE_NUM_LAST_SERVICE)" ng-class="{'has-errors' : forms.profileForm3.numLastService.$invalid && forms.profileForm3.$submitted, 'no-errors' : forms.profileForm3.numLastService.$valid && forms.profileForm3.$submitted}"
+                                required ng-maxlength="40">
+                            <div class="error-container last-error-container" ng-show="forms.profileForm3.numLastService.$error && forms.profileForm3.$submitted" ng-messages="forms.profileForm3.numLastService.$error">
+                                <div ng-messages-include="views/errorList.html"></div>
+                            </div>
+                        </ion-item>
+
+                        <ion-item class="lined-item" ng-class="isIos ? 'select-text-without-icon-ios': 'select-text-without-icon'">
+                            <label class="label-input-form">{{translation.LABEL_RELATIONSHIP_WITH_ASSET}}</label>
+                            <select name="relationshipWithAsset" title="{{translation.PLACEHOLDER_RELATIONSHIP_WITH_ASSET}}" ng-model="relationshipWithAsset" ng-change="sendAnalytics('{{translation.PAGE_PROFILE}}','{{translation.GA_SELECT_RELATIONSHIP_WITH_ASSET}}: '+relationshipWithAsset.label )"
+                                ng-options="item as item.label for item in listRelationshipWithAsset" ng-class="{'has-errors' : forms.profileForm3.relationshipWithAsset.$invalid && forms.profileForm3.$submitted, 'no-errors' : forms.profileForm3.relationshipWithAsset.$valid && forms.profileForm3.$submitted}"
+                                required>
+                                <option value="" disabled selected>{{translation.PLACEHOLDER_SELECT}}</option>
+                            </select>
+                            <div class="error-container last-error-container" ng-show="forms.profileForm3.relationshipWithAsset.$error && forms.profileForm3.$submitted" ng-messages="forms.profileForm3.relationshipWithAsset.$error">
+                                <div ng-messages-include="views/errorList.html"></div>
+                            </div>
+                        </ion-item>
+                        <div class="row">
+                            <div class="col">
+                                <button class="button button-block usage-style button-general" type="submit">{{translation.ADD_ASSET | uppercase}}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col position-rel">

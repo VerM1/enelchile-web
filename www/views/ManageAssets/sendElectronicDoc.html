@@ -1,0 +1,59 @@
+<ion-view class="title-page" title="{{translation.SEND_ELECTRONIC_DOCUMENT | uppercase}}">
+    <ion-content scroll="true" padding="false">
+        <div class="header-top usage-style">
+            <div class="row header-subtitle-page">
+                <div class="col center position-rel">
+                    <div class="cursor"></div>
+                    <div class="header-first-row">
+                        <span>{{numeroSuministroDv}}</span>
+                    </div>
+                    <div class="header-second-row">
+                        <span>{{direccion}}</span>
+                    </div>
+                    <div class="header-radio-row">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="list" name="forms.sendElectronicDoc" novalidate="" ng-submit="validateForm()" validate-form-focus>
+            <ion-item class="item-icon-right lined-item input-text-without-icon">
+                <label class="label-input-form">{{translation.LABEL_PRINCIPAL_EMAIL}}</label>
+                <input type="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" name="principalEmail" ng-model="principalEmail" ng-class="{'has-errors' : forms.sendElectronicDoc.principalEmail.$invalid && forms.sendElectronicDoc.$submitted, 'no-errors' : forms.sendElectronicDoc.principalEmail.$valid && forms.sendElectronicDoc.$submitted}"
+                    disabled>
+                <div class="error-container last-error-container" ng-show="forms.sendElectronicDoc.principalEmail.$error && forms.sendElectronicDoc.$submitted" ng-messages="forms.sendElectronicDoc.principalEmail.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <ion-item class="item-icon-right lined-item" ng-class="isIos ? 'select-text-without-icon-ios': 'select-text-without-icon'">
+                <label class="label-input-form">{{translation.LABEL_RELATIONSHIP_WITH_OWNER}}</label>
+                <select name="relationshipWithOwner" title="{{translation.PLACEHOLDER_RELATIONSHIP_WITH_OWNER}}" ng-model="relationshipWithOwner" ng-change="sendAnalytics('{{translation.PAGE_SEND_ELECTRONIC_DOCUMENT}}','{{translation.GA_SELECT_RELATIONSHIP_WITH_OWNER}}: '+relationshipWithOwner.label )"
+                    ng-options="item as item.label for item in listRelationshipWithOwner" ng-class="{'has-errors' : forms.sendElectronicDoc.relationshipWithOwner.$invalid && forms.sendElectronicDoc.$submitted, 'no-errors' : forms.sendElectronicDoc.relationshipWithOwner.$valid && forms.sendElectronicDoc.$submitted}"
+                    required>
+                        <option value="" disabled selected>{{translation.PLACEHOLDER_SELECT}}</option>
+                    </select>
+                <div class="error-container last-error-container" ng-show="forms.sendElectronicDoc.relationshipWithOwner.$error && forms.sendElectronicDoc.$submitted" ng-messages="forms.sendElectronicDoc.relationshipWithOwner.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <div class="row">
+                <div class="col center">
+                    <button class="button-like-link" ng-click="sendElectronicDocConditions()" type="button">{{translation.SEND_ELECTRONIC_DOC_CONDITIONS}}</button>
+                </div>
+            </div>
+            <ion-item class="item-icon-right lined-item input-text-without-icon">
+                <label class="label-input-form">{{translation.LABEL_SECONDARY_EMAIL}}</label>
+                <input type="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" name="secondaryEmail" ng-model="secondaryEmail" ng-blur="sendAnalytics('{{translation.PAGE_SEND_ELECTRONIC_DOCUMENT}}','{{translation.GA_WRITE_SECONDARY_EMAIL}}')" ng-class="{'has-errors' : forms.sendElectronicDoc.secondaryEmail.$invalid && forms.sendElectronicDoc.$submitted, 'no-errors' : forms.sendElectronicDoc.secondaryEmail.$valid && forms.sendElectronicDoc.$submitted}"
+                    required>
+                <div class="error-container last-error-container" ng-show="forms.sendElectronicDoc.secondaryEmail.$error && forms.sendElectronicDoc.$submitted" ng-messages="forms.sendElectronicDoc.secondaryEmail.$error">
+                    <div ng-messages-include="views/errorList.html"></div>
+                </div>
+            </ion-item>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block usage-style button-general" type="submit">{{translation.SEND_READING | uppercase}}
+                        </button>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

@@ -12,7 +12,7 @@
                         <ion-item class="item-icon-right lined-item input-text-without-icon">
                             <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
                             <i class="button button-clear icon color-pink ion-ios-information input-text-icon-helper" ng-click="helpModal()"></i>
-                            <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="clientNum" ng-model="clientNum" ng-blur="sendAnalytics('Corte de luz - Paso 1','Escribir número de cliente')" ng-class="{'has-errors' : forms.preBlackoutForm.clientNum.$invalid && forms.preBlackoutForm.$submitted, 'no-errors' : forms.preBlackoutForm.clientNum.$valid && forms.preBlackoutForm.$submitted}"
+                            <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="clientNum" ng-model="clientNum" ng-blur="sendAnalytics(translation.PAGE_PRE_BLACKOUT +' - '+ translation.GA_STEP_01,translation.GA_WRITE_CLIENT_NUMBER)" ng-class="{'has-errors' : forms.preBlackoutForm.clientNum.$invalid && forms.preBlackoutForm.$submitted, 'no-errors' : forms.preBlackoutForm.clientNum.$valid && forms.preBlackoutForm.$submitted}"
                                 required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="9">
                             <div class="error-container last-error-container" ng-show="forms.preBlackoutForm.clientNum.$error && forms.preBlackoutForm.$submitted" ng-messages="forms.preBlackoutForm.clientNum.$error">
                                 <div ng-messages-include="views/errorList.html"></div>
@@ -23,19 +23,16 @@
             </div>
             <div class="row">
                 <div class="col center">
-                    <button class="button button-block emergency-style button-general" ng-click="sendAnalytics('Corte de luz - Paso 1','Presionar Consultar')" type="submit" button-id="consultButton">{{translation.CONSULT | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
+                    <button class="button button-block emergency-style button-general" type="submit" button-id="consultButton">{{translation.CONSULT | uppercase}}
                     </button>
                 </div>
             </div>
             <div class="row">
                 <div class="col center">
                     <button class="button-like-link" type="button" ng-click="searchClientId()">{{translation.SEARCH_NUM_CLIENT}}</button>
-                    <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('L-Corte de luz - Paso 1','Presionar Volver')" ui-sref="session.emergency">{{translation.BACK | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
+                    <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_PRE_BLACKOUT}} - {{translation.GA_STEP_01}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="session.emergencyMenu">{{translation.BACK | uppercase}}
                     </button>
-                    <button ng-if="!isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('SL-Corte de luz - Paso 1','Presionar Volver')" ui-sref="guest.emergency">{{translation.BACK | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
+                    <button ng-if="!isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_PRE_BLACKOUT}} - {{translation.GA_STEP_01}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="guest.emergencyMenu">{{translation.BACK | uppercase}}
                     </button>
                 </div>
             </div>

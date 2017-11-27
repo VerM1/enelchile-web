@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-packageName="mobiletouch.chilectra.cuentaenlinea" id="mobiletouch.chilectra.cuentaenlinea" ios-CFBundleIdentifier="MobileTouch.Chilectra2" version="17.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-packageName="mobiletouch.chilectra.cuentaenlinea" id="mobiletouch.chilectra.cuentaenlinea" ios-CFBundleIdentifier="MobileTouch.Chilectra2" version="17.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="Device">
         <param name="browser-package" value="Device" />
     </feature>
-    <name>Enel Chile</name>
+    <name>Enel</name>
     <description>
         Enel es una compañía de servicios dedicada a la distribución, comercialización y buen uso de la energía eléctrica.
     </description>
@@ -40,4 +40,5 @@
     <preference name="android-minSdkVersion" value="19" />
     <preference name="android-targetSdkVersion" value="23" />
     <preference name="BackupWebStorage" value="none" />
+    <preference name="deployment-target" value="7.1.2" />
 </widget>

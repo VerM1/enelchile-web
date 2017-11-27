@@ -47,6 +47,10 @@ angular.module("appenel").value("UTILS_CONFIG", {
   BLACKOUT_TYPE_PROBLEM_CODE_1: "3S0389",
   BLACKOUT_TYPE_PROBLEM_CODE_2: "5D0289",
 
+  /*  PROFILE MODULE */
+  RELATIONSHIP_WITH_ASSET_CODE_1: "1",
+  RELATIONSHIP_WITH_ASSET_CODE_2: "2",
+
   /*  USAGE TYPE OF RATES   */
   USAGE_TYPE_RATE_1: "BT1",
   USAGE_TYPE_RATE_2: "THR",
@@ -71,8 +75,8 @@ angular.module("appenel").value("UTILS_CONFIG", {
   IMAGE_ASSET_MODAL_HELP: '<img src="img/help/enel_help.png" alt="help" class="width-full-size" />',
 
   /*  ENCRYPTION KEY CRYPTO-JS */
-  ENABLE_ENCRYPTION_LOCALSTORAGE: false,
-  SECRET_KEY_ENCRYPTION: 'Everis2017-',
+  ENABLE_ENCRYPTION_LOCALSTORAGE: true,
+  SECRET_KEY_ENCRYPTION: 'Enel2017-*',
 
   /*  SECRET KEY TESTFAIRY */
   TESTFAIRY_SECRET_KEY: '5bd10c0da3a67fda56ea3218175f260b96f49d0b',
@@ -86,6 +90,18 @@ angular.module("appenel").value("UTILS_CONFIG", {
 
   /*  GOOGLE MAPS   */
   GOOGLE_MAPS_RESTRICTED_COUNTRY: 'CL',
-  GOOGLE_MAPS_KEY: "AIzaSyA1Lapzd7JQ_ZvjR3c7uoJFG3SgJ03tTcM",
+  GOOGLE_MAPS_KEY: "AIzaSyC7HeHcqS0r6p7vbGvSeb9-y4Pycwi0YpI",
   GOOGLE_MAPS_TYPE_MAP: "roadmap",
+  GOOGLE_MAPS_INIT_ZOOM: "11",
+  GOOGLE_MAPS_SEARCH_ZOOM: "15",
+  GOOGLE_MAPS_GOOGLE_STATIC_ZOOM: "18",
+
+  /*  NOTIFICATIONS */
+  NOTIFICATION_ICON_IMAGE: '<img src="img/logos/logo_e.png" alt="notification-image" width="40" class="notification-image" />',
+  NOTIFICATION_UPDATE_TYPE_01: 'read',
+  NOTIFICATION_UPDATE_TYPE_02: 'delete',
+  NOTIFICATION_STATUS_NOTIFICATION_01: 'Completed',
+  NOTIFICATION_STATUS_NOTIFICATION_02: 'Rejected',
+  NOTIFICATION_STATUS_NOTIFICATION_03: 'Realizado'
+
 });

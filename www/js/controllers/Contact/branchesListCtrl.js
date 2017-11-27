@@ -1,4 +1,4 @@
-angular.module('CoreModule').controller('branchesListCtrl', function($scope, $state, $rootScope, $log, LocalStorageProvider, DataMapService, ContactService, $ionicLoading, PopupService, UTILS_CONFIG) {
+angular.module('CoreModule').controller('branchesListCtrl', function($scope, $state, $rootScope, $log, LocalStorageProvider, DataMapService, ContactService, $ionicLoading, PopupService, UTILS_CONFIG, AnalyticsService, $ionicScrollDelegate) {
 
   function init() {
     $scope.branchesList = {};
@@ -12,6 +12,7 @@ angular.module('CoreModule').controller('branchesListCtrl', function($scope, $st
         $ionicLoading.hide();
       }, function(err) {
         $log.error(err);
+        AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_LIST, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.GET_BRANCHES + "-" + err.message + "-" + err.analyticsCode); //Analytics 
         var modalType = 'error';
         if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
           modalType = 'info';
@@ -27,6 +28,7 @@ angular.module('CoreModule').controller('branchesListCtrl', function($scope, $st
 
 
   $scope.goToMap = function() {
+    AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_LIST, $rootScope.translation.GA_PUSH_OPEN_MAP);
     $log.debug("go goToMap");
     $log.debug("$rootScope.isLogged: " + $rootScope.isLogged);
     if ($rootScope.isLogged) {
@@ -37,6 +39,7 @@ angular.module('CoreModule').controller('branchesListCtrl', function($scope, $st
   }
 
   $scope.goToList = function() {
+    AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_LIST, $rootScope.translation.GA_PUSH_OPEN_LIST);
     $log.debug("go goToList");
     $log.debug("$rootScope.isLogged: " + $rootScope.isLogged);
     if ($rootScope.isLogged) {
@@ -47,6 +50,7 @@ angular.module('CoreModule').controller('branchesListCtrl', function($scope, $st
   }
 
   $scope.viewDescription = function(index) {
+    AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_LIST, $rootScope.translation.GA_PUSH_VIEW_DESCRIPTION);
     if ($scope.branchesList.branches && $scope.branchesList.branches[index]) {
       DataMapService.setItem("branches_detail", $scope.branchesList.branches[index]);
       if ($rootScope.isLogged) {
@@ -60,9 +64,15 @@ angular.module('CoreModule').controller('branchesListCtrl', function($scope, $st
 
   }
 
+  $scope.sendAnalytics = function(categoria, accion) {
+    AnalyticsService.evento(categoria, accion);
+  }
+
 
   $scope.$on('$locationChangeSuccess', function(ev, n) {
     if (n.indexOf('session/branchesList') > -1 || n.indexOf('guest/branchesList') > -1) {
+      AnalyticsService.pantalla($rootScope.translation.PAGE_BRANCHES_LIST);
+      $ionicScrollDelegate.scrollTop();
       init();
     }
   });

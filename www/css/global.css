@@ -23,17 +23,43 @@
 */
 
 
+/*overrride ionic.css*/
+
+.bar-header {
+    background: #fff !important;
+    border-bottom: 1px solid #b2b2b2;
+}
+
+.tabs {
+    background-color: #fff !important;
+}
+
+.platform-android .tabs {
+    border-top: 1px solid #b2b2b2 !important;
+}
+
+.tabs-striped .tab-item.tab-item-active,
+.tabs-striped .tab-item.active,
+.tabs-striped .tab-item.activated {
+    border-color: #fff;
+}
+
+
 /*  tamanios letras */
 
 .font-size-12 {
     font-size: 12px;
 }
 
+.font-size-14 {
+    font-size: 14px;
+}
+
 
 /*alineamientos*/
 
 .tab-item .icon {
-    height: 15px !important;
+    height: 12px !important;
 }
 
 .center {
@@ -381,9 +407,9 @@
     font-weight: bold;
 }
 
-.tab-notifications.tab-item.tab-item-active,
-.tab-notifications.tab-item.active,
-.tab-notifications.tab-item.activated {
+.tab-notification.tab-item.tab-item-active,
+.tab-notification.tab-item.active,
+.tab-notification.tab-item.activated {
     color: #55be5a !important;
     font-weight: bold;
 }
@@ -484,6 +510,10 @@ h3 {
     padding-top: 10px !important;
 }
 
+.padding-top-15 {
+    padding-top: 15px !important;
+}
+
 .padding-top-20 {
     padding-top: 20px !important;
 }
@@ -498,6 +528,10 @@ h3 {
 
 .margin-top-10 {
     margin-top: 10px !important;
+}
+
+.margin-top-15 {
+    margin-top: 15px !important;
 }
 
 .margin-top-20 {
@@ -518,6 +552,18 @@ h3 {
 
 .margin-left-30 {
     margin-left: 30px;
+}
+
+.margin-10 {
+    margin: 10px;
+}
+
+.white-space {
+    word-wrap: break-word;
+    /* IE 5.5-7 */
+    white-space: -moz-pre-wrap;
+    /* Firefox 1.0-2.0 */
+    white-space: pre-wrap;
 }
 
 
@@ -628,31 +674,6 @@ h3 {
 
 /***  BEGIN TUTORIAL   ***/
 
-
-/*
-.slider {
-    height: 100% !important;
-}
-
-.slider-pager {
-    top: 0px;
-    background-color: rgba(50, 50, 50, 0.75);
-    height: 30px;
-    left: 0;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 5px 0;
-    right: 0;
-    -webkit-box-shadow: 0px 2px 10px -5px rgba(0, 0, 0, 0.85);
-    -moz-box-shadow: 0px 2px 10px -5px rgba(0, 0, 0, 0.85);
-    box-shadow: 0px 2px 10px -5px rgba(0, 0, 0, 0.85);
-}
-
-.slider-pager .slider-pager-page {
-    color: #fff;
-}
-*/
-
 .tutorial {
     height: 100%;
 }
@@ -743,28 +764,9 @@ h3 {
     text-decoration: none;
 }
 
-.tutorial .bienvenida {
-    background-color: #E61400;
-}
-
-.tutorial .dos {
-    background-color: #55BE5A;
-}
-
-.tutorial .tres {
-    background-color: #41B9E6;
-}
-
-.tutorial .cuatro {
-    background-color: #FF5A0F;
-}
-
-.tutorial .fin {
-    background-color: #FF0F64;
-}
-
 .tutorial .tutoUno {
-    background-color: #ff1065;
+    /* background-color: #ff1065; */
+    background-color: #40b9e6;
 }
 
 .tutorial .tutoDos {
@@ -772,10 +774,18 @@ h3 {
 }
 
 .tutorial .tutoTres {
-    background-color: #ff1065;
+    background-color: #40b9e6;
 }
 
 .tutorial .tutoCuatro {
+    background-color: #40b9e6;
+}
+
+.tutorial .tutoCinco {
+    background-color: #40b9e6;
+}
+
+.tutorial .tutoSeis {
     background-color: #40b9e6;
 }
 
@@ -1026,6 +1036,11 @@ h3 {
     color: #fff;
 }*/
 
+.scroll {
+    height: 100%;
+    width: 100%;
+}
+
 
 /*  END USAGE    */
 
@@ -1215,6 +1230,7 @@ h3 {
     background-color: #f8f8f8;
     padding: 5px 0px;
     border-bottom: 1px solid #ebebeb;
+    overflow: auto;
 }
 
 .branches-list-component {
@@ -1299,67 +1315,87 @@ h3 {
     color: #55be5a !important;
 }
 
-.notifications-list {
-    width: 100%;
-    height: 100%;
+.item-notification {
+    padding: 0 !important;
 }
 
-.notifications-list-item {
-    width: 100%;
-    padding: 10px;
-    border-bottom: 1px solid #55be5a;
-    clear: both;
+.item-notification .item-content {
+    padding: 0 !important;
+}
+
+.notification-button-delete {
+    border-color: transparent;
+    background-color: #666666;
+    color: #fff;
+}
+
+.notification-button-check {
+    border-color: transparent;
+    background-color: #55be5a;
+    color: #fff;
+}
+
+.item-notification .icon_enel_email {
+    font-size: 30px;
+    color: #55be5a;
+    position: absolute;
+    top: 20px;
+}
+
+.notification-left-side-list {
     overflow: hidden;
-    /*height: 1%;*/
+    padding-right: 5%;
+    color: #000;
+    font-weight: bold;
 }
 
-.notifications-list-first-column {
-    width: 20%;
-    float: left;
-    padding-top: 15px;
+.notification-right-side-list {
+    overflow: hidden;
+    padding-left: 5%;
+    color: #000;
+    font-weight: bold;
 }
 
-.notifications-list-first-column i {
-    font-size: 30px;
+.notification-subtitle-side-list {
+    overflow: hidden;
+    color: #666666;
+    padding-top: 5px;
+    /* font-weight: bold; */
+    font-style: italic;
 }
 
-.notifications-list-second-column {
-    width: 70%;
-    float: left;
-}
-
-.notifications-list-second-column .notifications-list-title {
-    width: 100%;
-    float: left;
-    font-size: 14px;
-    /*font-weight: bold;
-    font-style: italic;*/
-}
-
-.notifications-list-second-column .notifications-list-date {
-    width: 100%;
-    float: left;
-    font-size: 10px;
-}
-
-.notifications-list-second-column .notifications-list-subtitle {
-    width: 100%;
-    float: left;
-    font-size: 12px;
-}
-
-.notifications-list-third-column {
-    width: 10%;
-    float: left;
-    padding-top: 15px;
-}
-
-.notifications-list-third-column i {
-    font-size: 30px;
-}
-
-.notifications-revised-item {
+.item-notification-mark-as-read {
     background-color: #eee !important;
+    background: #eee !important;
+}
+
+.item-notification-mark-as-read .item-content {
+    background-color: #eee !important;
+    background: #eee !important;
+}
+
+.item-notification-mark-as-read .item-content .notification-left-side-list,
+.item-notification-mark-as-read .item-content .notification-right-side-list {
+    font-weight: normal;
+}
+
+.item-notification-mark-as-read .item-content .icon_enel_email {
+    color: #666666;
+}
+
+.item-notification .icon_enel_check,
+.item-notification .icon_enel_trash {
+    font-size: 30px;
+}
+
+.badge-notification {
+    background: #E61400 !important;
+}
+
+.no-notification-message {
+    margin-top: 30px;
+    color: #55be5a;
+    font-size: 16px;
 }
 
 
@@ -1421,7 +1457,7 @@ h3 {
     margin: auto;
     border: 1px solid #888;
     width: 80%;
-    height: 250px;
+    height: 260px;
     min-height: 110px !important;
     top: 20%;
     left: 10%;
@@ -1463,8 +1499,8 @@ h3 {
 }
 
 .modal-container .modal-content .modal-content-body {
-    height: 125px;
-    overflow-y: scroll;
+    height: 130px;
+    /* overflow-y: scroll; */
     text-align: center;
     font-size: 16px;
 }
@@ -1710,10 +1746,15 @@ h3 {
 /*  END SEARCH_CLIENT   */
 
 
-/* .keyboard-open .tabs {
+/*  BEGIN HIDE FOOTER WHEN KEYBOARD APPEAR    */
+
+.keyboard-open-android .tabs {
     display: none;
 }
 
-.keyboard-open .has-tabs {
+.keyboard-open-android .has-tabs {
     bottom: 0;
-} */
+}
+
+
+/*  END HIDE FOOTER WHEN KEYBOARD APPEAR    */

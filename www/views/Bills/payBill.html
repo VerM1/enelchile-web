@@ -11,7 +11,6 @@
                         <span>{{direccion}}</span>
                     </div>
                     <div class="header-radio-row">
-                        <!--<span>{{asset.NombreSuministro}}</span>-->
                     </div>
                 </div>
             </div>
@@ -109,7 +108,7 @@
                 <div class="col">
                     <ion-item class="item-icon-right lined-item input-text-without-icon ">
                         <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
-                        <input type="email" name="email" required placeholder="{{translation.PLACEHOLDER_EMAIL}}" ng-model="email" ng-blur="sendAnalytics('Paga tu cuenta','Escribir Correo Electrónico')" ng-class="{'has-errors' : forms.payBillForm.email.$invalid && forms.payBillForm.$submitted, 'no-errors' : forms.payBillForm.email.$valid && forms.payBillForm.$submitted}"
+                        <input type="email" name="email" required placeholder="{{translation.PLACEHOLDER_EMAIL}}" ng-model="email" ng-blur="sendAnalytics(translation.PAGE_PAYMENT,translation.GA_WRITE_EMAIL)" ng-class="{'has-errors' : forms.payBillForm.email.$invalid && forms.payBillForm.$submitted, 'no-errors' : forms.payBillForm.email.$valid && forms.payBillForm.$submitted}"
                             ng-maxlength="40">
                         <div class="error-container last-error-container" ng-show="forms.payBillForm.email.$error && forms.payBillForm.$submitted" ng-messages="forms.payBillForm.email.$error">
                             <div ng-messages-include="views/errorList.html"></div>
@@ -120,13 +119,13 @@
 
             <div class="row">
                 <div class="col">
-                    <button class="button button-block usage-style button-general" ng-click="sendAnalytics('Paga tu cuenta','Presionar Pagar')" ng-disabled="disablePayButton" type="submit">{{translation.PAY | uppercase}}
+                    <button class="button button-block usage-style button-general" ng-disabled="disablePayButton" type="submit">{{translation.PAY | uppercase}}
                         <!--<i class="icon icon_enel_check"></i>-->
                     </button>
-                    <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Paga tu cuenta','Presionar Volver')" ui-sref="session.usage">{{translation.BACK | uppercase}}
+                    <button ng-if="isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_PAYMENT}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="session.usage">{{translation.BACK | uppercase}}
                         <!--<i class="icon icon_enel_check"></i>-->
                     </button>
-                    <button ng-if="!isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('Paga tu cuenta','Presionar Volver')" ui-sref="guest.home">{{translation.BACK | uppercase}}
+                    <button ng-if="!isLogged" class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_PAYMENT}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="guest.home">{{translation.BACK | uppercase}}
                         <!--<i class="icon icon_enel_check"></i>-->
                     </button>
                 </div>

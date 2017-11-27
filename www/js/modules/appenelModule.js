@@ -13,10 +13,13 @@ angular.module('appenel', [
   'LocationsModule',
   'ProfileModule',
   'UsageModule',
-  'NotificationsModule',
+  'NotificationModule',
   'AnalyticsModule',
+  'ManageAssetModule',
   'ui.router',
   'ngMessages',
   'platanus.rut',
-  'chart.js'
+  'chart.js',
+  'ngNotificationsBar',
+  'ngSanitize'
 ])

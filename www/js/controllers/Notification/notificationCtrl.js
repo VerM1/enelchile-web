@@ -1,4 +1,4 @@
-angular.module('NotificationModule').controller('notificationCtrl', function($scope, $rootScope, $log, NotificationService, AnalyticsService, PopupService, UTILS_CONFIG, $ionicLoading, $timeout, $route) {
+angular.module('NotificationModule').controller('notificationCtrl', function($scope, $rootScope, $log, NotificationService, AnalyticsService, PopupService, UTILS_CONFIG, $ionicLoading, $timeout, $route, $ionicScrollDelegate) {
   $scope.data = {
     showDelete: false
   };
@@ -48,6 +48,7 @@ angular.module('NotificationModule').controller('notificationCtrl', function($sc
 
 
   $scope.deleteNotification = function(item) {
+    AnalyticsService.evento($rootScope.translation.PAGE_NOTIFICATION, $rootScope.translation.GA_PUSH_DELETE_NOTIFICATION);
     $log.info("se eliminara el item con taskId: ", item.taskId);
     $log.info("se procedera a marcar como leido el elemento: ", item.taskId);
     $ionicLoading.show({
@@ -77,6 +78,7 @@ angular.module('NotificationModule').controller('notificationCtrl', function($sc
   };
 
   $scope.openNotification = function(item) {
+    AnalyticsService.evento($rootScope.translation.PAGE_NOTIFICATION, $rootScope.translation.GA_PUSH_OPEN_NOTIFICATION);
     $log.info("el id seleccionado es: ", item.taskId);
     $log.info("se procedera a marcar como leido el elemento: ", item.taskId);
     var action = UTILS_CONFIG.NOTIFICATION_UPDATE_TYPE_01;
@@ -101,6 +103,7 @@ angular.module('NotificationModule').controller('notificationCtrl', function($sc
   };
 
   $scope.markAsRead = function(item) {
+    AnalyticsService.evento($rootScope.translation.PAGE_NOTIFICATION, $rootScope.translation.GA_PUSH_MARK_AS_READ_NOTIFICATION);
     $log.info("se procedera a marcar como leido el elemento: ", item.taskId);
     $ionicLoading.show({
       template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
@@ -132,8 +135,15 @@ angular.module('NotificationModule').controller('notificationCtrl', function($sc
     }
   }
 
+  //MÉTODO ANALYTICS -- 05-07-2017
+  $scope.sendAnalytics = function(categoria, accion) {
+    AnalyticsService.evento(categoria, accion); //Llamada a Analytics
+  };
+
   $scope.$on('$locationChangeSuccess', function(ev, n) {
     if (n.indexOf('session/notification') > -1) {
+      AnalyticsService.pantalla($rootScope.translation.PAGE_NOTIFICATION);
+      $ionicScrollDelegate.scrollTop();
       init();
     }
   });

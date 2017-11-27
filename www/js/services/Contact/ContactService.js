@@ -16,7 +16,7 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
 
       ConnectionProvider.sendGet(url, params, data, headers, function(response) {
         if (response.code == 200) {
-          $log.info('Get Data: ', response);
+          $log.debug('Get Data: ', response);
           for (var i = 0; i < response.data.length; i++) {
             var obj = {
               'index': i,
@@ -31,7 +31,7 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
               'horario_especial': response.data[i].horaEspecial,
               'imagen': response.data[i].imagen
             };
-            $log.info("obj: ", obj);
+            $log.debug("obj: ", obj);
             if (obj.tipo == '01') {
               markersBranches.push(obj);
             } else {
@@ -65,6 +65,11 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
           var obj = {};
           obj.code = response.code;
           obj.message = response.message;
+          if (response.analyticsCode) {
+            obj.analyticsCode = response.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
       }, function(err) {
@@ -73,15 +78,31 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
       });
@@ -93,7 +114,7 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
 
 
 
-  var setContactForm = function(numeroSuministro, asunto, rut, nombres, apellidoPaterno, apellidoMaterno, email, telefono, movil, descripcion) {
+  var setContactForm = function(numeroSuministro, asunto, rut, nombres, apellidoPaterno, email, telefono, movil, descripcion) {
     var defer = $q.defer();
     var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_EXTERNAL_SETCONTACT;
     var data = {
@@ -103,7 +124,6 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
         rut: rut,
         nombres: nombres,
         apellidoPaterno: apellidoPaterno,
-        apellidoMaterno: apellidoMaterno,
         email: email,
         telefonoPrimario: telefono,
         telefonoSecundario: movil,
@@ -117,13 +137,18 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
 
     ConnectionProvider.sendPost(url, params, data, headers, function(response) {
       if (response.code == 200) {
-        $log.info('Set Contact: ', response);
+        $log.debug('Set Contact: ', response);
         defer.resolve(response);
       } else {
         $log.error('Get Data: ' + response.message);
         var obj = {};
         obj.code = response.code;
         obj.message = response.message;
+        if (response.analyticsCode) {
+          obj.analyticsCode = response.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
     }, function(err) {
@@ -132,15 +157,31 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });
@@ -168,13 +209,18 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
 
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
-        $log.info("Set Contact Auth ", respuesta);
+        $log.debug("Set Contact Auth ", respuesta);
         defer.resolve(respuesta);
       } else {
         $log.error('Error Set Contact Auth: ', respuesta.message);
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
 
@@ -184,15 +230,31 @@ angular.module('ContactModule').factory('ContactService', function(ConnectionPro
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });

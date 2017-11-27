@@ -14,7 +14,6 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
         }
 
       };
-      //'numeroSuministro=' + assetId + "&lectura=" + reading;
     } else if ((reading == null || reading == '') && (readingDay != null && readingDay != '' && readingNight != null && readingNight != '' && readingPeak != null && readingPeak != '')) {
       obj.data = {
         bean: {
@@ -24,7 +23,6 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
           lecturaPunta: readingPeak
         }
       };
-      //'numeroSuministro=' + assetId + "&lecturaDia=" + readingDay + "&lecturaNoche=" + readingNight + "&lecturaPunta=" + readingPeak;
     } else {
       obj.data = {
         bean: {
@@ -32,24 +30,23 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
         }
 
       };
-      //'numeroSuministro=' + assetId;
     }
     obj.params = '';
 
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
-        $log.info("setEnterReading ", respuesta.data);
-        // var data = {};
-        // data.message = respuesta.message;
-        // if (respuesta.data != null && respuesta.data.length > 0) {
-        //   data.caseId = respuesta.data.caseId;
-        // }
+        $log.debug("setEnterReading ", respuesta.data);
         defer.resolve(respuesta);
       } else {
         $log.error('Error AssetDetail: ', respuesta.message);
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
 
@@ -59,15 +56,31 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });
@@ -81,7 +94,7 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
     var defer = $q.defer();
     try {
       var xmlTemplate = UTILS_CONFIG.PAYMENT_TEMPLATE;
-      $log.info("template previo: ", xmlTemplate);
+      $log.debug("template previo: ", xmlTemplate);
       xmlTemplate = xmlTemplate.replace('</banco>', UTILS_CONFIG.PAYMENT_ID_BANK + '</banco>');
       xmlTemplate = xmlTemplate.replace('</tipoPago>', paymentObject.paymentType + '</tipoPago>');
       xmlTemplate = xmlTemplate.replace('</monto>', paymentObject.amount + '</monto>');
@@ -93,18 +106,19 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
       xmlTemplate = xmlTemplate.replace('</nombre>', paymentObject.name + '</nombre>');
       xmlTemplate = xmlTemplate.replace('</rut>', paymentObject.rut + '</rut>');
       xmlTemplate = xmlTemplate.replace('</mail>', paymentObject.email + '</mail>');
-      $log.info("template post: ", xmlTemplate);
+      $log.debug("template post: ", xmlTemplate);
       var wordsEncode = CryptoJS.enc.Utf8.parse(xmlTemplate); // WordArray object
       var val = CryptoJS.enc.Base64.stringify(wordsEncode);
-      $log.info("val: ", val);
+      $log.debug("val: ", val);
       var wordsDecode = CryptoJS.enc.Base64.parse(val);
       var valDecode = CryptoJS.enc.Utf8.stringify(wordsDecode);
-      $log.info("valDecode: ", valDecode);
+      $log.debug("valDecode: ", valDecode);
       defer.resolve(val);
     } catch (exception) {
       var error = {};
       error.code = "-1";
       error.message = exception;
+      error.analyticsCode = "ERR999";
       defer.reject(error);
     }
 
@@ -121,7 +135,7 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
   //   obj.contentType = 'application/json';
 
   //   ConnectionProvider.sendPostForm(url, params, data, headers, function(respuesta) {
-  //     $log.info('Payment WebPay: ', respuesta);
+  //     $log.debug('Payment WebPay: ', respuesta);
   //     defer.resolve(respuesta);
   //   }, function(err) {
   //     $log.error('Error Payment WebPay: ' + err);
@@ -134,7 +148,7 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
   // GENERATE TEMPLATE BILL
   var generateTemplateBill = function(trxId, numeroSuministro, email, successCode) {
     var defer = $q.defer();
-    var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_GET_ASSET_PROOF_OF_DEBT;
+    var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_EXTERNAL_ASSET_PROOF_OF_DEBT;
     var params = {
       'trxId': trxId,
       'numeroSuministro': numeroSuministro,
@@ -147,7 +161,7 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
       'Content-type': 'application/json'
     };
     ConnectionProvider.sendGet(url, params, data, headers, function(respuesta) {
-      $log.info('Get TemplateBill: ', respuesta);
+      $log.debug('Get TemplateBill: ', respuesta);
       if (respuesta.code.toString() == "200") {
         var obj = {};
         obj.nombreBanco = respuesta.data.nombreBanco;
@@ -160,13 +174,18 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
         obj.IdTransaccionComercial = respuesta.data.idTransaccionComercial;
         obj.IdTransaccion = respuesta.data.idTransaccion;
         obj.mensaje = respuesta.data.mensaje;
-        $log.info("obj: ", obj);
+        $log.debug("obj: ", obj);
         defer.resolve(obj);
       } else {
         $log.error('Error TemplateBill: ' + respuesta.message);
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
     }, function(err) {
@@ -175,15 +194,31 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     })
@@ -192,10 +227,141 @@ angular.module('BillsModule').factory('BillsService', function($q, SalesforcePro
 
 
 
+  var paymentStatus = function(numeroSuministro) {
+    var defer = $q.defer();
+    var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_EXTERNAL_ASSET_PAYMENT_STATUS;
+    var params = {
+      'numeroSuministro': numeroSuministro
+
+    };
+    var data = {};
+    var headers = {
+      'Content-type': 'application/json'
+    };
+    ConnectionProvider.sendGet(url, params, data, headers, function(respuesta) {
+      $log.debug('Get PaymentStatus: ', respuesta);
+      if (respuesta.code.toString() == "200") {
+        defer.resolve(respuesta.data);
+      } else {
+        var obj = {};
+        obj.code = respuesta.code;
+        obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
+        defer.reject(obj);
+      }
+    }, function(err) {
+      $log.error('Error PaymentStatus: ' + err);
+      var obj = {};
+      if (err[0]) {
+        obj.code = err[0].errorCode;
+        obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
+      } else if (err.code) {
+        obj.code = err.code;
+        obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
+      } else if (err.data) {
+        obj.code = err.data.status;
+        obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
+      } else {
+        obj.code = "400";
+        obj.message = err;
+        obj.analyticsCode = "ERR999";
+      }
+      defer.reject(obj);
+    })
+    return defer.promise;
+  }
+
+
+  var paymentStatusAuth = function(numeroSuministro) {
+    var defer = $q.defer();
+    var obj = {};
+    obj.path = ENDPOINTS.ENDPOINTS_ASSET_PAYMENT_STATUS;
+    obj.method = 'GET';
+    obj.contentType = 'application/json';
+    obj.params = { 
+      numeroSuministro: numeroSuministro
+    };
+    obj.data = '';
+
+    SalesforceProvider.request(obj).then(function(respuesta) {
+      if (respuesta.code.toString() == "200") {
+        $log.debug("PaymentStatus", respuesta);
+        defer.resolve(respuesta.data);
+      } else {
+        $log.error('Error PaymentStatus: ', respuesta.message);
+        var obj = {};
+        obj.code = respuesta.code;
+        obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
+        defer.reject(obj);
+      }
+    }, function(err) {
+      $log.error('Error PaymentStatus: ', err.message);
+      var obj = {};
+      if (err[0]) {
+        obj.code = err[0].errorCode;
+        obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
+      } else if (err.code) {
+        obj.code = err.code;
+        obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
+      } else if (err.data) {
+        obj.code = err.data.status;
+        obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
+      } else {
+        obj.code = "400";
+        obj.message = err;
+        obj.analyticsCode = "ERR999";
+      }
+      defer.reject(obj);
+    });
+
+    return defer.promise;
+  }
+
   return {
     setEnterReading: setEnterReading,
     generateXmlPayment: generateXmlPayment,
     // generateTemplateBillAuth: generateTemplateBillAuth,
-    generateTemplateBill: generateTemplateBill
+    generateTemplateBill: generateTemplateBill,
+    paymentStatus: paymentStatus,
+    paymentStatusAuth: paymentStatusAuth
   };
 });

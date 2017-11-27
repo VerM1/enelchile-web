@@ -3,7 +3,7 @@
         <form name="forms.accidentForm" novalidate="" ng-submit="validateForm()" validate-form-focus>
             <ion-item class="item-icon-right lined-item" ng-class="isIos ? 'select-text-without-icon-ios': 'select-text-without-icon'">
                 <label class="label-input-form">{{translation.LABEL_TYPE_OF_PROBLEM}}</label>
-                <select name="typeOfProblem" title="{{translation.PLACEHOLDER_TYPE_OF_PROBLEM}}" ng-model="typeOfProblem" ng-change="sendAnalytics('Riesgo o accidente','Seleccionar tipo de problema '+typeOfProblem )" ng-options="item as item.label for item in listProblemTypes"
+                <select name="typeOfProblem" title="{{translation.PLACEHOLDER_TYPE_OF_PROBLEM}}" ng-model="typeOfProblem" ng-change="sendAnalytics('{{translation.PAGE_ACCIDENT_RISK}}','{{translation.GA_SELECT_TYPE_OF_PROBLEM}}: '+typeOfProblem.label )" ng-options="item as item.label for item in listProblemTypes"
                     ng-class="{'has-errors' : forms.accidentForm.typeOfProblem.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.typeOfProblem.$valid && forms.accidentForm.$submitted}" required>
                     <option value="" disabled selected>{{translation.PLACEHOLDER_SELECT}}</option>
                 </select>
@@ -14,7 +14,7 @@
             <div class="half-column-form">
                 <ion-item class="item-icon-right lined-item input-text-without-icon">
                     <label class="label-input-form">{{translation.LABEL_STREET}}</label>
-                    <input type="text" name="street" placeholder="{{translation.PLACEHOLDER_STREET}}" ng-model="street" ng-blur="sendAnalytics('Riesgo o accidente','Escribir Calle')" ng-class="{'has-errors' : forms.accidentForm.street.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.street.$valid && forms.accidentForm.$submitted}"
+                    <input type="text" name="street" placeholder="{{translation.PLACEHOLDER_STREET}}" ng-model="street" ng-blur="sendAnalytics(translation.PAGE_ACCIDENT_RISK,translation.GA_WRITE_STREET)" ng-class="{'has-errors' : forms.accidentForm.street.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.street.$valid && forms.accidentForm.$submitted}"
                         required>
                     <div class="error-container last-error-container" ng-show="forms.accidentForm.street.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.street.$error">
                         <div ng-messages-include="views/errorList.html"></div>
@@ -24,7 +24,7 @@
             <div class="half-column-form">
                 <ion-item class="item-icon-right lined-item input-text-without-icon">
                     <label class="label-input-form">{{translation.LABEL_NUMBER}}</label>
-                    <input type="number" name="number" placeholder="{{translation.PLACEHOLDER_NUMBER}}" ng-model="number" ng-blur="sendAnalytics('Riesgo o accidente','Escribir Número')" ng-class="{'has-errors' : forms.accidentForm.number.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.number.$valid && forms.accidentForm.$submitted}"
+                    <input type="number" name="number" placeholder="{{translation.PLACEHOLDER_NUMBER}}" ng-model="number" ng-blur="sendAnalytics(translation.PAGE_ACCIDENT_RISK,translation.GA_WRITE_NUMBER)" ng-class="{'has-errors' : forms.accidentForm.number.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.number.$valid && forms.accidentForm.$submitted}"
                         required>
                     <div class="error-container last-error-container" ng-show="forms.accidentForm.number.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.number.$error">
                         <div ng-messages-include="views/errorList.html"></div>
@@ -33,15 +33,15 @@
             </div>
             <ion-item class="item-icon-right lined-item input-text-without-icon">
                 <label class="label-input-form">{{translation.LABEL_DEPARTAMENT}}</label>
-                <input type="text" name="departament" placeholder="{{translation.PLACEHOLDER_DEPARTAMENT}}" ng-model="departament" ng-blur="sendAnalytics('Riesgo o accidente','Escribir Departamento')" ng-class="{'has-errors' : forms.accidentForm.departament.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.departament.$valid && forms.accidentForm.$submitted}">
+                <input type="text" name="departament" placeholder="{{translation.PLACEHOLDER_DEPARTAMENT}}" ng-model="departament" ng-blur="sendAnalytics(translation.PAGE_ACCIDENT_RISK,translation.GA_WRITE_DEPARTAMENT)" ng-class="{'has-errors' : forms.accidentForm.departament.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.departament.$valid && forms.accidentForm.$submitted}">
                 <div class="error-container last-error-container" ng-show="forms.accidentForm.departament.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.departament.$error">
                     <div ng-messages-include="views/errorList.html"></div>
                 </div>
             </ion-item>
             <ion-item class="item-icon-right lined-item" ng-class="isIos ? 'select-text-without-icon-ios': 'select-text-without-icon'">
                 <label class="label-input-form">{{translation.LABEL_STATE}}</label>
-                <select name="state" ng-change="sendAnalytics('Riesgo o accidente','Seleccionar Comuna')" title="{{translation.LABEL_STATE}}" ng-model="selectedState" ng-options="item as item.nombreComuna for item in listStates | orderBy:'nombreComuna'" ng-class="{'has-errors' : forms.accidentForm.state.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.state.$valid && forms.accidentForm.$submitted}"
-                    required>
+                <select name="state" ng-change="sendAnalytics('{{translation.PAGE_ACCIDENT_RISK}}','{{translation.GA_SELECT_STATE}}')" title="{{translation.LABEL_STATE}}" ng-model="selectedState" ng-options="item as item.nombreComuna for item in listStates | orderBy:'nombreComuna'"
+                    ng-class="{'has-errors' : forms.accidentForm.state.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.state.$valid && forms.accidentForm.$submitted}" required>
                     <option>{{translation.LABEL_STATE}}</option>
                 </select>
                 <div class="error-container last-error-container" ng-show="forms.accidentForm.state.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.state.$error">
@@ -53,7 +53,7 @@
             <!--no logeado-->
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!authenticated">
                 <label class="label-input-form">{{translation.LABEL_NAME}}</label>
-                <input type="text" name="name" placeholder="{{translation.PLACEHOLDER_NAME}}" ng-model="name" ng-blur="sendAnalytics('Riesgo o accidente','Escribir Nombre')" ng-class="{'has-errors' : forms.accidentForm.name.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.name.$valid && forms.accidentForm.$submitted}"
+                <input type="text" name="name" placeholder="{{translation.PLACEHOLDER_NAME}}" ng-model="name" ng-blur="sendAnalytics(translation.PAGE_ACCIDENT_RISK,translation.GA_WRITE_NAMES)" ng-class="{'has-errors' : forms.accidentForm.name.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.name.$valid && forms.accidentForm.$submitted}"
                     ng-required="{{!authenticated}}">
                 <div class="error-container last-error-container" ng-show="forms.accidentForm.name.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.name.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -61,7 +61,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!authenticated">
                 <label class="label-input-form">{{translation.LABEL_LASTNAME}}</label>
-                <input type="text" name="lastname" placeholder="{{translation.PLACEHOLDER_LASTNAME}}" ng-model="lastname" ng-blur="sendAnalytics('Riesgo o accidente','Escribir Apellidos')" ng-class="{'has-errors' : forms.accidentForm.lastname.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.lastname.$valid && forms.accidentForm.$submitted}"
+                <input type="text" name="lastname" placeholder="{{translation.PLACEHOLDER_LASTNAME}}" ng-model="lastname" ng-blur="sendAnalytics(translation.PAGE_ACCIDENT_RISK,translation.GA_WRITE_LASTNAME)" ng-class="{'has-errors' : forms.accidentForm.lastname.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.lastname.$valid && forms.accidentForm.$submitted}"
                     ng-required="{{!authenticated}}">
                 <div class="error-container last-error-container" ng-show="forms.accidentForm.lastname.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.lastname.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -69,7 +69,7 @@
             </ion-item>
             <ion-item class="item-icon-right lined-item input-text-without-icon" ng-if="!authenticated">
                 <label class="label-input-form">{{translation.LABEL_EMAIL}}</label>
-                <input type="email" name="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" ng-model="email" ng-blur="sendAnalytics('Riesgo o accidente','Escribir Correo Electrónico')" ng-class="{'has-errors' : forms.accidentForm.email.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.email.$valid && forms.accidentForm.$submitted}"
+                <input type="email" name="email" placeholder="{{translation.PLACEHOLDER_EMAIL}}" ng-model="email" ng-blur="sendAnalytics(translation.PAGE_ACCIDENT_RISK,translation.GA_WRITE_EMAIL)" ng-class="{'has-errors' : forms.accidentForm.email.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.email.$valid && forms.accidentForm.$submitted}"
                     ng-required="{{!authenticated}}" ng-maxlength="40">
                 <div class="error-container last-error-container" ng-show="forms.accidentForm.email.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.email.$error">
                     <div ng-messages-include="views/errorList.html"></div>
@@ -78,7 +78,7 @@
             <div class="half-column-form" ng-if="!authenticated">
                 <ion-item class="item-icon-right lined-item input-text-without-icon">
                     <label class="label-input-form">{{translation.LABEL_PHONE}}</label>
-                    <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_PHONE}}" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Riesgo o accidente','Escribir teléfono principal')" ng-class="{'has-errors' : forms.accidentForm.phone.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.phone.$valid && forms.accidentForm.$submitted}"
+                    <input type="number" name="phone" placeholder="{{translation.PLACEHOLDER_PHONE}}" ng-model="phone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics(translation.PAGE_ACCIDENT_RISK,translation.GA_WRITE_PHONE)" ng-class="{'has-errors' : forms.accidentForm.phone.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.phone.$valid && forms.accidentForm.$submitted}"
                         ng-required="{{!authenticated}}">
                     <div class="error-container last-error-container" ng-show="forms.accidentForm.phone.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.phone.$error">
                         <div ng-messages-include="views/errorList.html"></div>
@@ -88,34 +88,29 @@
             <div class="half-column-form" ng-if="!authenticated">
                 <ion-item class="item-icon-right lined-item input-text-without-icon">
                     <label class="label-input-form">{{translation.LABEL_CELLPHONE}}</label>
-                    <input type="number" name="cellphone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics('Riesgo o accidente','Escribir teléfono Secundario')" ng-class="{'has-errors' : forms.accidentForm.cellphone.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.cellphone.$valid && forms.accidentForm.$submitted}">
+                    <input type="number" name="cellphone" placeholder="{{translation.PLACEHOLDER_CELLPHONE}}" ng-model="cellphone" ng-maxlength="9" ng-minlength="9" ng-blur="sendAnalytics(translation.PAGE_ACCIDENT_RISK,translation.GA_WRITE_CELLPHONE)" ng-class="{'has-errors' : forms.accidentForm.cellphone.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.cellphone.$valid && forms.accidentForm.$submitted}">
                     <div class="error-container last-error-container" ng-show="forms.accidentForm.cellphone.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.cellphone.$error">
                         <div ng-messages-include="views/errorList.html"></div>
                     </div>
                 </ion-item>
             </div>
             <div class="row margin-top-10">
-                <!-- <div class="col"> -->
                 <ion-item class="item-icon-right lined-item input-text-without-icon width-full-size">
                     <label class="label-textarea-form">{{translation.LABEL_DESCRIBE_THE_INCIDENT}}</label>
-                    <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-model="description" ng-blur="sendAnalytics('Riesgo o accidente','Escribir Descripción')" ng-class="{'has-errors' : forms.accidentForm.description.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.description.$valid && forms.accidentForm.$submitted}"
+                    <textarea class="form-textarea center" placeholder="{{translation.PLACEHOLDER_DESCRIBE_THE_INCIDENT}}" name="description" ng-model="description" ng-blur="sendAnalytics(translation.PAGE_ACCIDENT_RISK,translation.GA_WRITE_DESCRIBE_THE_INCIDENT)" ng-class="{'has-errors' : forms.accidentForm.description.$invalid && forms.accidentForm.$submitted, 'no-errors' : forms.accidentForm.description.$valid && forms.accidentForm.$submitted}"
                         required></textarea>
                     <div class="error-container last-error-container" ng-show="forms.accidentForm.description.$error && forms.accidentForm.$submitted" ng-messages="forms.accidentForm.description.$error">
                         <div ng-messages-include="views/errorList.html"></div>
                     </div>
                 </ion-item>
-                <!-- </div> -->
             </div>
             <div class="row">
                 <div class="col">
-                    <button class="button button-block emergency-style button-general" ng-click="sendAnalytics('Riesgo o accidente','Presionar Aceptar')" type="submit">{{translation.ACCEPT | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
+                    <button class="button button-block emergency-style button-general" type="submit">{{translation.ACCEPT | uppercase}}
                     </button>
-                    <button ng-if="authenticated" class="button button-block back-button button-general" ng-click="sendAnalytics('L-Riesgo o accidente','Presionar Volver')" ui-sref="session.emergency">{{translation.BACK | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
+                    <button ng-if="authenticated" class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_ACCIDENT_RISK}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="session.emergencyMenu">{{translation.BACK | uppercase}}
                     </button>
-                    <button ng-if="!authenticated" class="button button-block back-button button-general" ng-click="sendAnalytics('SL-Riesgo o accidente','Presionar Volver')" ui-sref="guest.emergency">{{translation.BACK | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
+                    <button ng-if="!authenticated" class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_ACCIDENT_RISK}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="guest.emergencyMenu">{{translation.BACK | uppercase}}
                     </button>
                 </div>
             </div>

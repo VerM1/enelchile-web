@@ -17,8 +17,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="true" active-slide="0" pager-click="slide(index)" does-continue="false" class="branches-description-hours">
+            <div class="col center">
+                <div class="width-full-size">
+                    <h6><strong>{{translation.OPENING_HOURS | uppercase}}</strong></h6>
+                </div>
+                <div class="width-full-size">
+                    <span class="branches-time">
+                        <div ng-bind-html="branchesDescription.horario_apertura"></div>
+                    </span>
+                </div>
+                <!-- <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="true" active-slide="0" pager-click="slide(index)" does-continue="false" class="branches-description-hours">
                     <ion-slide>
                         <div class="row">
                             <div class="col-30">
@@ -64,7 +72,7 @@
                             </div>
                         </div>
                     </ion-slide>
-                </ion-slide-box>
+                </ion-slide-box> -->
             </div>
         </div>
         <div class="row">

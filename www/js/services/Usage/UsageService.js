@@ -6,83 +6,10 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
   pub = {};
   //PRIVATE SERVICES
   pub.getAssetList = function() {
-    // var defer = $q.defer();
-    // if (LocalStorageProvider.getLocalStorageItem('asset_list')) {
-    //     defer.resolve(LocalStorageProvider.getLocalStorageItem('asset_list'));
-    // } else {
-    //     var obj = {};
-    //     obj.path = ENDPOINTS.ENDPOINTS_ASSESTS_LIST;
-    //     obj.method = 'GET';
-    //     obj.contentType = 'application/json';
-    //     obj.params = {};
-    //     obj.data = '';
-
-    //     SalesforceProvider.request(obj).then(function(respuesta) {
-    //         if (respuesta.code.toString() == "200") {
-    //             $log.info("getAssetList ", respuesta.data);
-    //             var items = [];
-    //             if (respuesta.data != null && respuesta.data.length > 0) {
-    //                 angular.forEach(respuesta.data, function(value, key) {
-    //                     $log.info(key + ' : ', value);
-    //                     var data = {};
-    //                     data.index = key;
-    //                     data.direccion = value.direccion.direccion + " " + value.direccion.comuna;
-    //                     data.numeroSuministro = value.numeroSuministro;
-    //                     items.push(data);
-    //                 });
-    //             }
-    //             LocalStorageProvider.setLocalStorageItem('asset_list', items);
-    //             defer.resolve(items);
-    //         } else {
-    //             $log.error('Error AssetList: ', respuesta.message);
-    //             var obj = {};
-    //             obj.code = respuesta.code;
-    //             obj.message = respuesta.message;
-    //             defer.reject(obj);
-    //         }
-    //     }, function(err) {
-    //         if (err.errorCode && err.errorCode == "INVALID_SESSION_ID") {
-    //             if (LocalStorageProvider.getLocalStorageItem("login_data")) {
-    //                 var loginData = LocalStorageProvider.getLocalStorageItem("login_data");
-    //                 var userNumber = loginData.userNumber;
-    //                 var password = loginData.password;
-    //                 AccessService.getLoginServices(userNumber, password).then(
-    //                     function(response) {
-    //                         pub.getAssetList(contactId);
-    //                     },
-    //                     function(error) {
-    //                         $log.error('Error AssetList: ', error);
-
-    //                         defer.reject(error);
-    //                     });
-    //             }
-    //         } else {
-    //             $log.error('Error AssetList: ', err);
-    //             var obj = {};
-    //             if (err[0]) {
-    //                 obj.code = err[0].errorCode;
-    //                 obj.message = err[0].message;
-    //             } else if (err.code) {
-    //                 obj.code = err.code;
-    //                 obj.message = err.message;
-    //             } else if (err.data) {
-    //                 obj.code = err.data.status;
-    //                 obj.message = err.data.msg;
-    //             } else {
-    //                 obj.code = "400";
-    //                 obj.message = err;
-    //             }
-    //             defer.reject(obj);
-    //         }
-    //     });
-    // }
-    // return defer.promise;
-
-
-
     var defer = $q.defer();
     if (LocalStorageProvider.getLocalStorageItem('asset_list')) {
       defer.resolve(LocalStorageProvider.getLocalStorageItem('asset_list'));
+      LocalStorageProvider.setLocalStorageItem('asset_list_is_new_request', "false");
     } else {
       var obj = {};
       obj.path = ENDPOINTS.ENDPOINTS_ASSESTS_LIST;
@@ -93,11 +20,11 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
 
       SalesforceProvider.request(obj).then(function(respuesta) {
         if (respuesta.code.toString() == "200") {
-          $log.info("getAssetList ", respuesta.data);
+          $log.debug("getAssetList ", respuesta.data);
           var items = [];
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
-              $log.info(key + ' : ', value);
+              $log.debug(key + ' : ', value);
               var data = {};
               data.index = key;
               data.direccion = value.direccion.direccion;
@@ -109,8 +36,22 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               data.numeroSuministroDv = value.numeroSuministro + "-" + value.digitoVerificador;
               items.push(data);
             });
+
+            //PARA HACER PRUEBAS CON SLIDER/BULLETS Y MUCHOS SUMINISTROS
+            // for (var i = 0; i < 50; i++) {
+            //   var data = {};
+            //   data.index = i;
+            //   data.direccion = "direccion " + i;
+
+            //   data.comuna = "comuna " + i;
+            //   data.numeroSuministro = i;
+            //   data.numeroSuministroDv = i + "-" + i;
+            //   items.push(data);
+            // }
+
           }
           LocalStorageProvider.setLocalStorageItem('asset_list', items);
+          LocalStorageProvider.setLocalStorageItem('asset_list_is_new_request', "true");
           var actualDate = "";
           try {
             actualDate = moment().format("MM/DD/YYYY");
@@ -135,6 +76,11 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var obj = {};
           obj.code = respuesta.code;
           obj.message = respuesta.message;
+          if (respuesta.analyticsCode) {
+            obj.analyticsCode = respuesta.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
       }, function(err) {
@@ -143,15 +89,31 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
       });
@@ -180,7 +142,7 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
               if (value.nroDocumento != null && value.nroDocumento.toString() != "0" && value.nroDocumento.toString() != "-1") {
-                $log.info(key + ' : ', value);
+                $log.debug(key + ' : ', value);
                 var data = {};
                 data.index = key;
                 data.trxId = value.trxId;
@@ -213,29 +175,50 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           defer.resolve(items);
         } else {
           $log.error('Error AssetDebt: ', respuesta.message);
-          var error = {};
-          error.code = respuesta.code;
-          error.message = respuesta.message;
-          defer.reject(error);
+          var obj = {};
+          obj.code = respuesta.code;
+          obj.message = respuesta.message;
+          if (respuesta.analyticsCode) {
+            obj.analyticsCode = respuesta.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
+          defer.reject(obj);
         }
 
       }, function(err) {
         $log.error('Error AssetList: ', err);
-        var error = {};
+        var obj = {};
         if (err[0]) {
-          error.code = err[0].errorCode;
-          error.message = err[0].message;
+          obj.code = err[0].errorCode;
+          obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
-          error.code = err.code;
-          error.message = err.message;
+          obj.code = err.code;
+          obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
-          error.code = err.data.status;
-          error.message = err.data.msg;
+          obj.code = err.data.status;
+          obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
-          error.code = "400";
-          error.message = err;
+          obj.code = "400";
+          obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
-        defer.reject(error);
+        defer.reject(obj);
 
       });
     }
@@ -263,13 +246,7 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var data = {};
           if (respuesta.data != null && respuesta.data != '') {
             data.tarifa = respuesta.data.tarifa;
-            // data.numeroSuministro = respuesta.data.numeroSuministro;
-            // data.nombreSuministro = respuesta.data.nombreSuministro;
             data.montoUltimoPago = respuesta.data.montoUltimoPago;
-            // data.montoUltimaBoleta = respuesta.data.montoUltimaBoleta;
-            // data.montoDeudaAnterior = respuesta.data.montoDeudaAnterior;
-            // data.idSuministro = respuesta.data.idSuministro;
-            // data.fechaVencimiento = respuesta.data.fechaVencimiento;
             data.fechaUltimoPago = respuesta.data.fechaUltimoPago;
             data.fechaProximaLectura = respuesta.data.fechaProximaLectura;
             data.fechaCorte = respuesta.data.fechaCorte;
@@ -277,8 +254,6 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
             data.numeroSuministro = assetId;
             data.numeroSuministroDv = assetNumberDv;
             data.direccion = assetAddress;
-            // data.estadoSuministro = respuesta.data.estadoSuministro;
-            // data.direccion = respuesta.data.direccion.calle + " " + respuesta.data.direccion.casa + " " + respuesta.data.direccion.departamento + " " + respuesta.data.direccion.comuna;
           }
           LocalStorageProvider.setLocalStorageItem('asset_detail_' + index, data);
           defer.resolve(data);
@@ -287,24 +262,44 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var obj = {};
           obj.code = respuesta.code;
           obj.message = respuesta.message;
+          if (respuesta.analyticsCode) {
+            obj.analyticsCode = respuesta.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
-
       }, function(err) {
         $log.error('Error AssetList: ', err);
         var obj = {};
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
 
@@ -312,9 +307,6 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
     }
     return defer.promise;
   }
-
-
-
 
 
   pub.getAssetUsage = function(assetId, index) {
@@ -333,7 +325,7 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
 
       SalesforceProvider.request(obj).then(function(respuesta) {
         if (respuesta.code.toString() == "200") {
-          $log.info("getAssetUsage ", respuesta.data);
+          $log.debug("getAssetUsage ", respuesta.data);
           var response = {};
           var items = [];
           var graphlabels = [];
@@ -343,18 +335,23 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var pointBackgroundColor = [];
           var borderColor = [];
           //
-          var dataGraphLine = [];
-          var dataGraphLineReadingDay = [];
-          var dataGraphLineReadingNight = [];
-          var dataGraphLineReadingPeak = [];
+          var dataGraphReading = [];
+          var dataGraphReadingDay = [];
+          var dataGraphReadingNight = [];
+          var dataGraphReadingPeak = [];
+
+          var montoAux = 0;
+          var mesAux = 0;
+          var fechaAux = "";
           //
           if (respuesta.data != null && respuesta.data.length > 0) {
-            angular.forEach(respuesta.data, function(value, key) {
-              $log.info(key + ' : ', value);
+            for (var i = 0; i < respuesta.data.length; i++) {
+              $log.debug(i + ' : ', respuesta.data[i]);
               var data = {};
               var actualReading = "";
               var ammountGraph = "";
-              data.index = key;
+              data.index = i;
+              var value = respuesta.data[i];
               data.fechaFacturacion = value.fecha;
               if (value.totalConsumo != null && value.totalConsumo.toString() != "" && value.totalConsumo.toString() != "0" && value.totalConsumo.toString() != "-") {
                 data.lecturaActual = value.totalConsumo;
@@ -371,80 +368,64 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
                 ammountGraph = "0";
               }
               if (value.tipoConsumo && value.tipoConsumo != null && value.tipoConsumo.toString() != "" && value.tipoConsumo.toString() != "0" && value.tipoConsumo.toString() != "-") {
-                // if (value.tipoConsumo != UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_1) {
-                //     data.tipoConsumo = value.tipoConsumo;
-                // } else {
-                //     data.tipoConsumo = "-";
-                // }
                 data.tipoConsumo = value.tipoConsumo;
               } else {
                 data.tipoConsumo = "-";
               }
               items.push(data);
-              graphlabels.push(data.fechaFacturacion);
-              graphdata.push(ammountGraph);
-
               //
               if (data.tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_3) {
-                dataGraphLineReadingDay.push(ammountGraph);
+                dataGraphReadingDay.push(ammountGraph);
               } else if (data.tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_4) {
-                dataGraphLineReadingNight.push(ammountGraph);
+                dataGraphReadingNight.push(ammountGraph);
               } else if (data.tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_5) {
-                dataGraphLineReadingPeak.push(ammountGraph);
+                dataGraphReadingPeak.push(ammountGraph);
+              } else {
+                dataGraphReading.push(ammountGraph);
               }
               //
+              //
 
-              pointBackgroundColor.push('rgba(5,85,250,1)');
-              borderColor.push('rgba(5,85,250,1)');
-            });
+              if (data.tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_3 || data.tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_4 || data.tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_5) {
+                var fechaSplit = value.fecha.split("/");
+                var mesSplit = fechaSplit[1];
+                if (mesAux == mesSplit) {
+                  if ((i + 1) === respuesta.data.length) {
+                    graphlabels.push(value.fecha);
+                  }
+                } else if (mesAux != mesSplit && i != 0) {
+                  graphlabels.push(respuesta.data[i - 1].fecha);
+                  mesAux = mesSplit;
+                  fechaAux = value.fecha;
+                  if ((i + 1) === respuesta.data.length) {
+                    graphlabels.push(value.fecha);
+                  }
+                } else {
+                  mesAux = mesSplit;
+                  fechaAux = value.fecha;
+                }
+              } else {
+                graphlabels.push(value.fecha);
+              }
+            }
           }
           //
-          dataGraphLine.push(dataGraphLineReadingDay.reverse());
-          dataGraphLine.push(dataGraphLineReadingNight.reverse());
-          dataGraphLine.push(dataGraphLineReadingPeak.reverse());
+
           //
           response.items = items;
+          response.typeUsage = "";
           if (response.items.length > 0 && response.items[0].tipoConsumo === UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_1) {
             response.typeUsage = UTILS_CONFIG.USAGE_TYPE_RATE_TYPE_CODE_1;
+            graphdata.push(dataGraphReading.reverse());
+          } else {
+            graphdata.push(dataGraphReadingDay.reverse());
+            graphdata.push(dataGraphReadingNight.reverse());
+            graphdata.push(dataGraphReadingPeak.reverse());
           }
-
+          response.graphdata = graphdata;
           response.graphlabels = graphlabels.reverse();
-          response.graphdata = graphdata.reverse();
-
-          //
-          response.graphdataLine = dataGraphLine;
-          var graphlabelsLine = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic", "Ene"];
-          response.graphlabelsLine = graphlabelsLine;
-          var graphseriesLine = ['Dia (kWh)', 'Noche (kWh)', 'Punta (kWh)'];
-          response.graphseriesLine = graphseriesLine;
-          //
-          var ds = {
-            label: 'Consumos',
-            data: graphdata,
-            pointBackgroundColor: pointBackgroundColor,
-            borderColor: borderColor,
-          }
-          graphdataset.push(ds);
-          response.dataset = graphdataset;
-          // options = {
-          //     scales: {
-          //         xAxes: [{
-          //             display: false
-          //         }]
-          //     }
-          // }
-          // options: {
-          //     scales: {
-          //         yAxes: [{
-          //             ticks: {
-          //                 beginAtZero: true
-          //             }
-          //         }]
-          //     }
-          // }
-          options: {
-            pointLabelFontSize: 60
-          }
+          // options.responsive = false;
+          // options.maintainAspectRatio = false;
           response.options = options;
           LocalStorageProvider.setLocalStorageItem('asset_usages_' + index, response);
           defer.resolve(response);
@@ -453,24 +434,44 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var obj = {};
           obj.code = respuesta.code;
           obj.message = respuesta.message;
+          if (respuesta.analyticsCode) {
+            obj.analyticsCode = respuesta.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
-
       }, function(err) {
         $log.error('Error AssetUsage: ', err);
         var obj = {};
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
       });
@@ -494,18 +495,16 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
 
       SalesforceProvider.request(obj).then(function(respuesta) {
         if (respuesta.code.toString() == "200") {
-          $log.info("getAssetBills ", respuesta.data);
+          $log.debug("getAssetBills ", respuesta.data);
           var response = {};
           var items = [];
           var graphlabels = [];
           var graphdata = [];
-          var graphdataset = [];
+          var graphdataarray = [];
           var options = {};
-          var pointBackgroundColor = [];
-          var borderColor = [];
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
-              $log.info(key + ' : ', value);
+              $log.debug(key + ' : ', value);
               var data = {};
               data.index = key;
               var ammountGraph = "";
@@ -524,38 +523,15 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               }
               items.push(data);
               graphlabels.push(data.fecha);
-              graphdata.push(ammountGraph);
-              pointBackgroundColor.push('rgba(5,85,250,1)');
-              borderColor.push('rgba(5,85,250,1)');
+              graphdataarray.push(ammountGraph);
             });
           }
           response.items = items;
           response.graphlabels = graphlabels.reverse();
-          response.graphdata = graphdata.reverse();
-          var ds = {
-            label: 'Boletas',
-            data: graphdata,
-            pointBackgroundColor: pointBackgroundColor,
-            borderColor: borderColor,
-          }
-          graphdataset.push(ds);
-          response.dataset = graphdataset;
-          // options = {
-          //   scales: {
-          //     xAxes: [{
-          //       display: false
-          //     }]
-          //   }
-          // }
-          options: {
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero: true
-                }
-              }]
-            }
-          }
+          graphdata.push(graphdataarray.reverse());
+          response.graphdata = graphdata;
+          // options.responsive = false;
+          // options.maintainAspectRatio = false;
           response.options = options;
           LocalStorageProvider.setLocalStorageItem('asset_bills_' + index, response);
           defer.resolve(response);
@@ -564,6 +540,11 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var obj = {};
           obj.code = respuesta.code;
           obj.message = respuesta.message;
+          if (respuesta.analyticsCode) {
+            obj.analyticsCode = respuesta.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
       }, function(err) {
@@ -572,15 +553,31 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
       });
@@ -604,21 +601,16 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
 
       SalesforceProvider.request(obj).then(function(respuesta) {
         if (respuesta.code.toString() == "200") {
-          $log.info("getAssetBills ", respuesta.data);
+          $log.debug("getAssetBills ", respuesta.data);
           var response = {};
           var items = [];
           var graphlabels = [];
           var graphdata = [];
-          var graphdataset = [];
+          var graphdataarray = [];
           var options = {};
-          var pointBackgroundColor = [];
-          var borderColor = [];
-          var montoAux = 0;
-          var mesAux = 0;
-          var fechaAux = "";
           if (respuesta.data != null && respuesta.data.length > 0) {
             angular.forEach(respuesta.data, function(value, key) {
-              $log.info(key + ' : ', value);
+              $log.debug(key + ' : ', value);
               var data = {};
               data.index = key;
               if (value.tipoPago != null && value.tipoPago.toString() != "" && value.tipoPago.toString() != "0" && value.tipoPago.toString() != "-") {
@@ -636,72 +628,17 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
               items.push(data);
               // COMIENZO VERSIONANTIGUA
               graphlabels.push(data.fechaPago);
-              graphdata.push(data.monto);
+              graphdataarray.push(data.monto);
               // FIN VERSION ANTIGUA
-              pointBackgroundColor.push('rgba(5,85,250,1)');
-              borderColor.push('rgba(5,85,250,1)');
             });
-            var respuestaDataGraph = respuesta.data.reverse();
-            // for (var i = 0; i < respuestaDataGraph.length; i++) {
-            //     $log.info(i + ' : ', respuestaDataGraph[i]);
-            //     var fechaSplit = respuestaDataGraph[i].fechaPago.split("/");
-            //     var mesSplit = fechaSplit[1];
-            //     if (mesAux == mesSplit) {
-            //         montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
-            //         if ((i + 1) === respuestaDataGraph.length) {
-            //             graphlabels.push(respuestaDataGraph[i].fechaPago);
-            //             graphdata.push(montoAux);
-            //         }
-            //     } else if (mesAux != mesSplit && i != 0) {
-            //         graphlabels.push(respuestaDataGraph[i - 1].fechaPago);
-            //         graphdata.push(montoAux);
-            //         montoAux = 0;
-            //         montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
-            //         mesAux = mesSplit;
-            //         fechaAux = respuestaDataGraph[i].fechaPago;
-            //         if ((i + 1) === respuestaDataGraph.length) {
-            //             graphlabels.push(respuestaDataGraph[i].fechaPago);
-            //             graphdata.push(montoAux);
-            //         }
-            //     } else {
-            //         montoAux = 0;
-            //         montoAux = montoAux + parseInt(respuestaDataGraph[i].monto, 10);
-            //         mesAux = mesSplit;
-            //         fechaAux = respuestaDataGraph[i].fechaPago;
-            //     }
-            // }
-
 
           }
           response.items = items;
-          response.graphlabels = graphlabels;
+          response.graphlabels = graphlabels.reverse();
+          graphdata.push(graphdataarray.reverse());
           response.graphdata = graphdata;
-          $log.info("response.graphlabels: ", response.graphlabels);
-          $log.info("response.graphdata: ", response.graphdata);
-          var ds = {
-            label: 'Pagos',
-            data: graphdata,
-            pointBackgroundColor: pointBackgroundColor,
-            borderColor: borderColor,
-          }
-          graphdataset.push(ds);
-          response.dataset = graphdataset;
-          // options = {
-          //     scales: {
-          //         xAxes: [{
-          //             display: false
-          //         }]
-          //     }
-          // }
-          options: {
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero: true
-                }
-              }]
-            }
-          }
+          // options.responsive = false;
+          // options.maintainAspectRatio = false;
           response.options = options;
           LocalStorageProvider.setLocalStorageItem('asset_payments_' + index, response);
           defer.resolve(response);
@@ -710,6 +647,11 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
           var obj = {};
           obj.code = respuesta.code;
           obj.message = respuesta.message;
+          if (respuesta.analyticsCode) {
+            obj.analyticsCode = respuesta.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
       }, function(err) {
@@ -718,15 +660,31 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
       });
@@ -765,6 +723,11 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
     }, function(err) {
@@ -773,15 +736,31 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });
@@ -800,8 +779,6 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
         numeroSuministro: assetId,
         lectura: reading
       };
-
-      //'numeroSuministro=' + assetId + "&lectura" + reading;
     } else if ((reading == null || reading == '') && (readingDay != null && readingDay != '' && readingNight != null && readingNight != '' && readingPeak != null && readingPeak != '')) {
       obj.params = {
         numeroSuministro: assetId,
@@ -809,18 +786,16 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
         lecturaNoche: readingNight,
         lecturaPunta: readingPeak
       };
-      //'numeroSuministro=' + assetId + "&lecturaDia" + readingDay + "&lecturaNoche" + readingNight + "&lecturaPunta" + readingPeak;
     } else {
       obj.params = {
         numeroSuministro: assetId
-        //'numeroSuministro=' + assetId
       };
     }
     obj.data = '';
 
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
-        $log.info("setEnterReading ", respuesta.data);
+        $log.debug("setEnterReading ", respuesta.data);
         var data = {};
         if (respuesta.data != null && respuesta.data.length > 0) {
           data.caseId = respuesta.data.caseId;
@@ -831,24 +806,44 @@ angular.module('UsageModule').factory('UsageService', function($q, ConnectionPro
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
-
     }, function(err) {
       $log.error('Error AssetDetail: ', err);
       var obj = {};
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });

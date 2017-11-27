@@ -14,7 +14,7 @@
             <div class="row">
                 <ion-item class="item-icon-right lined-item input-text-without-icon  width-full-size">
                     <label class="label-input-form">{{translation.LABEL_INSERT_CODE}}</label>
-                    <input type="number" placeholder="{{translation.PLACEHOLDER_INSERT_CODE}}" name="insertCode" ng-model="insertCode" ng-class="{'has-errors' : forms.activateAccount.insertCode.$invalid && forms.activateAccount.$submitted, 'no-errors' : forms.activateAccount.insertCode.$valid && forms.activateAccount.$submitted}"
+                    <input type="number" placeholder="{{translation.PLACEHOLDER_INSERT_CODE}}" name="insertCode" ng-model="insertCode" ng-blur="sendAnalytics(translation.PAGE_VALIDATION,translation.GA_WRITE_INSERT_CODE)" ng-class="{'has-errors' : forms.activateAccount.insertCode.$invalid && forms.activateAccount.$submitted, 'no-errors' : forms.activateAccount.insertCode.$valid && forms.activateAccount.$submitted}"
                         required>
                     <div class="error-container last-error-container" ng-show="forms.activateAccount.insertCode.$error && forms.activateAccount.$submitted" ng-messages="forms.activateAccount.insertCode.$error">
                         <div ng-messages-include="views/errorList.html"></div>
@@ -24,7 +24,6 @@
             <div class="row">
                 <div class="col">
                     <button class="button button-block home-style button-general" type="submit">{{translation.ACTIVATE_ACCOUNT | uppercase}}
-                        <!--<i class="icon icon_enel_check"></i>-->
                     </button>
                 </div>
             </div>
@@ -32,16 +31,12 @@
         <div class="row">
             <div class="col">
                 <button class="button button-block btn-white" type="button" ng-click="regenerateCode()">{{translation.SEND_CODE_AGAIN | uppercase}}
-                    <!--<i class="icon icon_enel_check"></i>-->
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col text-center">
-                <!--<a ui-sref="guest.register" class="button-icon icon ion-arrow-left-c"></a>-->
-                <button class="button button-block back-button button-general" ng-click="sendAnalytics('Validacion','Presionar Volver')" ui-sref="guest.register">{{translation.BACK | uppercase}}</button>
-
-
+                <button class="button button-block back-button button-general" ng-click="sendAnalytics('{{translation.PAGE_VALIDATION}}','{{translation.GA_PUSH_BACK_BUTTON}}')" ui-sref="guest.register">{{translation.BACK | uppercase}}</button>
             </div>
         </div>
     </ion-content>

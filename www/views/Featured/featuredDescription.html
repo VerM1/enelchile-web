@@ -6,12 +6,9 @@
         </div>
         <div class="header-top">
             <div class="row header-subtitle-page border-bottom border-color-grey-enel">
-                <!--<div class="col-10">
-                    <div class="featured-style cursor"></div>
-                </div>-->
                 <div class="col center color-black position-rel">
                     <div class="featured-style cursor"></div>
-                    <div class="header-first-row">
+                    <div class="header-first-row" ng-class="featuredDescription.subtitulo ===null || featuredDescription.subtitulo ==='' ? 'margin-top-10' :''">
                         <span>
                             <div ng-bind-html="featuredDescription.titulo"></div>
                         </span>
@@ -31,7 +28,7 @@
         </div>
         <div class="row">
             <div class="col col-center">
-                <button class="button button-block featured-style button-general" ng-click="openUrl({{'featuredDescription.url'}})">{{translation.SEE_MORE | uppercase}}
+                <button class="button button-block featured-style button-general" ng-click='openUrl(featuredDescription.url,featuredDescription.titulo)'>{{translation.SEE_MORE | uppercase}}
                 </button>
             </div>
         </div>

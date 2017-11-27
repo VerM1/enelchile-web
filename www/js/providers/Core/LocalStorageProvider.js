@@ -48,7 +48,7 @@ angular.module("CoreModule").provider("LocalStorageProvider", function() { // es
               $window.localStorage.setItem(key, ciphertext);
             }
           } else {
-            throw "Key must not be null";
+            $log.error("Key not found: ", key);
           }
         };
 
@@ -56,8 +56,12 @@ angular.module("CoreModule").provider("LocalStorageProvider", function() { // es
           if (key) {
             if ($window.localStorage.getItem(key)) {
               $window.localStorage.removeItem(key);
-            } else throw "Key not found";
-          } else throw "Key not found";
+            } else {
+              $log.error("Key not found. ", key);
+            }
+          } else {
+            $log.error("Key not found: ", key);
+          }
 
         };
 
@@ -70,14 +74,19 @@ angular.module("CoreModule").provider("LocalStorageProvider", function() { // es
                 $log.debug("no elimina la llave: ", key);
               }
             }
-
           }
         };
 
         var removeLocalStorageIfStartWith = function(startText) {
           if (startText) {
             for (var key in $window.localStorage) {
-              if (key.toString().startsWith(startText.toString())) {
+              // if (key.toString().startsWith(startText.toString())) {
+              //   $window.localStorage.removeItem(key);
+              // } else {
+              //   $log.debug("no elimina la llave: ", key);
+              // }
+
+              if (_.startsWith(key.toString(), startText.toString())) {
                 $window.localStorage.removeItem(key);
               } else {
                 $log.debug("no elimina la llave: ", key);

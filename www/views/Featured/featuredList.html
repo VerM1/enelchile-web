@@ -1,0 +1,11 @@
+<ion-view class="title-page" title="{{translation.FEATURED | uppercase}}">
+    <ion-content scroll="true" padding="false" id="featuredlist">
+        <ul class="list featured-list">
+            <li value="{{item.titulo}}" ng-click="featuredDescription({{item.index}})" ng-repeat="item in featuredList">
+                <i class="padding featured-list-component featured-list-left-icon center featured-color"></i>
+                <span class="branches-list-component branches-list-title">{{item.titulo | uppercase}}</span>
+                <i class="ion-chevron-right featured-item-component featured-list-right-icon center featured-color"></i>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>

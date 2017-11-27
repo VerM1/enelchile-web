@@ -12,7 +12,7 @@
                         <ion-item class="item-icon-right lined-item input-text-without-icon">
                             <label class="label-input-form">{{translation.LABEL_NUM_CLIENT}}</label>
                             <i class="button button-clear icon color-pink ion-ios-information input-text-icon-helper" ng-click="helpModal()"></i>
-                            <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="clientNum" ng-model="clientNum" ng-blur="sendAnalytics('Inicio','Escribir número de cliente')" ng-class="{'has-errors' : forms.homeForm.clientNum.$invalid && forms.homeForm.$submitted, 'no-errors' : forms.homeForm.clientNum.$valid && forms.homeForm.$submitted}"
+                            <input type="text" placeholder="{{translation.PLACEHOLDER_NUM_CLIENT}}" name="clientNum" ng-model="clientNum" ng-blur="sendAnalytics(translation.PAGE_HOME,translation.GA_WRITE_CLIENT_NUMBER)" ng-class="{'has-errors' : forms.homeForm.clientNum.$invalid && forms.homeForm.$submitted, 'no-errors' : forms.homeForm.clientNum.$valid && forms.homeForm.$submitted}"
                                 required ng-rut rut-format="none" asset-format asset-validator ng-maxlength="9">
                             <div class="error-container last-error-container" ng-show="forms.homeForm.clientNum.$error && forms.homeForm.$submitted" ng-messages="forms.homeForm.clientNum.$error">
                                 <div ng-messages-include="views/errorList.html"></div>
@@ -23,25 +23,24 @@
             </div>
             <div class="row">
                 <div class="col center">
-                    <!--<button class="button-like-link" ng-click="searchClientId()" button-id="searchButton">{{translation.SEARCH_NUM_CLIENT}}</button>-->
                     <button class="button-like-link" ng-click="searchClientId()" type="button">{{translation.SEARCH_NUM_CLIENT}}</button>
                 </div>
             </div>
             <div class="row">
                 <div class="col center">
-                    <button class="button button-block emergency-style button-general" type="submit" ng-click="sendAnalytics('Inicio','Presionar reportar corte')" button-id="reportButton">{{translation.WITHOUT_LIGHT | uppercase}}
+                    <button class="button button-block emergency-style button-general" type="submit" button-id="reportButton">{{translation.WITHOUT_LIGHT | uppercase}}
                     </button>
-                    <button class="button button-block usage-style button-general" ng-click="sendAnalytics('Inicio','Presionar pagar cuenta')" type="submit" button-id="payButton">{{translation.PAY_ACCOUNT | uppercase}}
+                    <button class="button button-block usage-style button-general" type="submit" button-id="payButton">{{translation.PAY_ACCOUNT | uppercase}}
                     </button>
                 </div>
             </div>
         </form>
         <div class="row">
             <div class="col center ">
-                <button class="button button-block home-color background-none button-general-home-access" ng-click="sendAnalytics('Inicio','Presionar Ingresar')" ui-sref="guest.login ">{{translation.LOGIN_VIRTUAL_BRANCH | uppercase}}
+                <button class="button button-block home-color background-none button-general-home-access" ng-click="login()">{{translation.LOGIN_VIRTUAL_BRANCH | uppercase}}
                 </button>
-                <!-- <button class="button button-block register-color background-none button-general-home-register" ng-click="sendAnalytics('Inicio','Presionar Registro')" ui-sref="guest.register ">{{translation.REGISTER_VIRTUAL_BRANCH | uppercase}}
-                </button> -->
+                <button class="button button-block register-color background-none button-general-home-register" ng-click="registerNeol()">{{translation.REGISTER_VIRTUAL_BRANCH | uppercase}}
+                </button>
             </div>
         </div>
     </ion-content>

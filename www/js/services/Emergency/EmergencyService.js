@@ -30,6 +30,11 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
     }, function(err) {
@@ -38,15 +43,31 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });
@@ -86,6 +107,11 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
 
@@ -95,15 +121,31 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });
@@ -144,6 +186,11 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
 
@@ -153,15 +200,31 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });
@@ -174,7 +237,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     var defer = $q.defer();
     if (LocalStorageProvider.getLocalStorageItem("blackout_list") && LocalStorageProvider.getLocalStorageItem("blackout_list").length > 0) {
       defer.resolve(LocalStorageProvider.getLocalStorageItem("blackout_list"));
-      $log.info('getBlakcoutList: ', LocalStorageProvider.getLocalStorageItem("blackout_list"));
+      $log.debug('getBlakcoutList: ', LocalStorageProvider.getLocalStorageItem("blackout_list"));
     } else {
       var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_BLACKOUT_PROBLEMS_LIST;
       var params = {};
@@ -184,9 +247,9 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
       };
       ConnectionProvider.sendGet(url, params, data, headers, function(response) {
         if (response.code == 200) {
-          $log.info('Get getBlackoutList: ', response.data);
+          $log.debug('Get getBlackoutList: ', response.data);
           var obj = [];
-          $log.info("largo: ", response.data.length);
+          $log.debug("largo: ", response.data.length);
           for (var i = 0; i < response.data.length; i++) {
             obj.push(response.data[i]);
           }
@@ -215,24 +278,44 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
           var obj = {};
           obj.code = response.code;
           obj.message = response.message;
+          if (response.analyticsCode) {
+            obj.analyticsCode = response.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
-
       }, function(err) {
         $log.error('Error getBlackoutList: ' + err);
         var obj = {};
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
       });
@@ -245,7 +328,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     var defer = $q.defer();
     if (LocalStorageProvider.getLocalStorageItem("lighting_list") && LocalStorageProvider.getLocalStorageItem("lighting_list").length > 0) {
       defer.resolve(LocalStorageProvider.getLocalStorageItem("lighting_list"));
-      $log.info('getLightingList: ', LocalStorageProvider.getLocalStorageItem("lighting_list"));
+      $log.debug('getLightingList: ', LocalStorageProvider.getLocalStorageItem("lighting_list"));
     } else {
       var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_LIGHTING_PROBLEMS_LIST;
       var params = {};
@@ -255,9 +338,9 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
       };
       ConnectionProvider.sendGet(url, params, data, headers, function(response) {
         if (response.code == 200) {
-          $log.info('Get getLightingList: ', response.data);
+          $log.debug('Get getLightingList: ', response.data);
           var obj = [];
-          $log.info("largo: ", response.data.length);
+          $log.debug("largo: ", response.data.length);
           for (var i = 0; i < response.data.length; i++) {
             obj.push(response.data[i]);
           }
@@ -286,6 +369,11 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
           var obj = {};
           obj.code = response.code;
           obj.message = response.message;
+          if (response.analyticsCode) {
+            obj.analyticsCode = response.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
 
@@ -295,15 +383,31 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
       });
@@ -316,7 +420,7 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
     var defer = $q.defer();
     if (LocalStorageProvider.getLocalStorageItem("risk_accident_list") && LocalStorageProvider.getLocalStorageItem("risk_accident_list").length > 0) {
       defer.resolve(LocalStorageProvider.getLocalStorageItem("risk_accident_list"));
-      $log.info('getRiskAccidentList: ', LocalStorageProvider.getLocalStorageItem("risk_accident_list"));
+      $log.debug('getRiskAccidentList: ', LocalStorageProvider.getLocalStorageItem("risk_accident_list"));
     } else {
       var url = ENDPOINTS.ENDPOINTS_BASE_EXTERNAL + ENDPOINTS.ENDPOINTS_RISK_ACCIDENT_PROBLEMS_LIST;
       var params = {};
@@ -326,9 +430,9 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
       };
       ConnectionProvider.sendGet(url, params, data, headers, function(response) {
         if (response.code == 200) {
-          $log.info('Get getRiskAccidentList: ', response.data);
+          $log.debug('Get getRiskAccidentList: ', response.data);
           var obj = [];
-          $log.info("largo: ", response.data.length);
+          $log.debug("largo: ", response.data.length);
           for (var i = 0; i < response.data.length; i++) {
             obj.push(response.data[i]);
           }
@@ -357,24 +461,44 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
           var obj = {};
           obj.code = response.code;
           obj.message = response.message;
+          if (response.analyticsCode) {
+            obj.analyticsCode = response.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
           defer.reject(obj);
         }
-
       }, function(err) {
         $log.error('Error getRiskAccidentList: ' + err);
         var obj = {};
         if (err[0]) {
           obj.code = err[0].errorCode;
           obj.message = err[0].message;
+          if (err[0].analyticsCode) {
+            obj.analyticsCode = err[0].analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.code) {
           obj.code = err.code;
           obj.message = err.message;
+          if (err.analyticsCode) {
+            obj.analyticsCode = err.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else if (err.data) {
           obj.code = err.data.status;
           obj.message = err.data.msg;
+          if (err.data.analyticsCode) {
+            obj.analyticsCode = err.data.analyticsCode;
+          } else {
+            obj.analyticsCode = "ERR999";
+          }
         } else {
           obj.code = "400";
           obj.message = err;
+          obj.analyticsCode = "ERR999";
         }
         defer.reject(obj);
       });
@@ -403,13 +527,18 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
 
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
-        $log.info("RESPONSE EMERGENCY ", respuesta);
+        $log.debug("RESPONSE EMERGENCY ", respuesta);
         defer.resolve(respuesta);
       } else {
         $log.error('Error AssetList: ', respuesta.message);
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
     }, function(err) {
@@ -418,15 +547,31 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });
@@ -456,31 +601,51 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
 
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
-        $log.info("RESPONSE EMERGENCY ", respuesta);
+        $log.debug("RESPONSE EMERGENCY ", respuesta);
         defer.resolve(respuesta);
       } else {
         $log.error('Error AssetList: ', respuesta.message);
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
-
     }, function(err) {
       $log.error('Error AssetList: ', err.message);
       var obj = {};
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });
@@ -505,19 +670,23 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
         departamento: departamento,
         comuna: comuna
       }
-
     };
     obj.params = '';
 
     SalesforceProvider.request(obj).then(function(respuesta) {
       if (respuesta.code.toString() == "200") {
-        $log.info("RESPONSE EMERGENCY ", respuesta);
+        $log.debug("RESPONSE EMERGENCY ", respuesta);
         defer.resolve(respuesta);
       } else {
         $log.error('Error AssetList: ', respuesta.message);
         var obj = {};
         obj.code = respuesta.code;
         obj.message = respuesta.message;
+        if (respuesta.analyticsCode) {
+          obj.analyticsCode = respuesta.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
         defer.reject(obj);
       }
     }, function(err) {
@@ -526,15 +695,31 @@ angular.module('EmergencyModule').factory('EmergencyService', function($q, Conne
       if (err[0]) {
         obj.code = err[0].errorCode;
         obj.message = err[0].message;
+        if (err[0].analyticsCode) {
+          obj.analyticsCode = err[0].analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.code) {
         obj.code = err.code;
         obj.message = err.message;
+        if (err.analyticsCode) {
+          obj.analyticsCode = err.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else if (err.data) {
         obj.code = err.data.status;
         obj.message = err.data.msg;
+        if (err.data.analyticsCode) {
+          obj.analyticsCode = err.data.analyticsCode;
+        } else {
+          obj.analyticsCode = "ERR999";
+        }
       } else {
         obj.code = "400";
         obj.message = err;
+        obj.analyticsCode = "ERR999";
       }
       defer.reject(obj);
     });

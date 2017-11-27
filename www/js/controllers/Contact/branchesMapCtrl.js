@@ -1,7 +1,8 @@
-angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $state, $window, $rootScope, UtilsService, $cordovaGeolocation, ContactService, DataMapService, $log, LocalStorageProvider, $route, $ionicLoading, AnalyticsService, PopupService, UTILS_CONFIG, $ionicPlatform) {
+angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $state, $window, $rootScope, UtilsService, $cordovaGeolocation, ContactService, DataMapService, $log, LocalStorageProvider, $route, $ionicLoading, AnalyticsService, PopupService, UTILS_CONFIG, $ionicPlatform, $ionicScrollDelegate) {
 
+  $scope.forms = {};
   $scope.goToMap = function() {
-    AnalyticsService.evento('Sucursales Cercanas', 'Presionar Mapa'); //Analytics
+    AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_MAP, $rootScope.translation.GA_PUSH_OPEN_MAP); //Analytics
     $rootScope.tabActualAnalytics = 'Sucursales Cercanas';
     $log.debug("go goToMap");
     $log.debug("$rootScope.isLogged: " + $rootScope.isLogged);
@@ -13,7 +14,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
   }
 
   $scope.goToList = function() {
-    AnalyticsService.evento('Sucursales Cercanas', 'Presionar Lista'); //Analytics
+    AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_MAP, $rootScope.translation.GA_PUSH_OPEN_LIST); //Analytics
     $rootScope.tabActualAnalytics = 'Sucursales Cercanas';
     $log.debug("go goToList");
     $log.debug("$rootScope.isLogged: " + $rootScope.isLogged);
@@ -44,7 +45,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
     $log.debug("$scope.selectedBar3: " + $scope.selectedBar3);
     switch (item) {
       case 1:
-        AnalyticsService.evento('Sucursales Cercanas', 'Presionar Sucursales'); //Analytics
+        AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_MAP, $rootScope.translation.GA_PUSH_BRANCHES); //Analytics
         $rootScope.tabActualAnalytics = 'Sucursales Cercanas';
         $log.debug("Selected Case Number is 1");
         clearMarkers($scope.markersGoogle.branches);
@@ -60,7 +61,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
         $route.reload();
         break;
       case 2:
-        AnalyticsService.evento('Sucursales Cercanas', 'Presionar Lugares de Pago'); //Analytics
+        AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_MAP, $rootScope.translation.GA_PUSH_PLACES_OF_PAYMENT); //Analytics
         $rootScope.tabActualAnalytics = 'Sucursales Cercanas';
         $log.debug("Selected Case Number is 2");
         clearMarkers($scope.markersGoogle.branches);
@@ -76,7 +77,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
         $route.reload();
         break;
       case 3:
-        AnalyticsService.evento('Sucursales Cercanas', 'Presionar Otros Medios de Pago'); //Analytics
+        AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_MAP, $rootScope.translation.GA_PUSH_OTHER_MEANS_OF_PAYMENT); //Analytics
         $rootScope.tabActualAnalytics = 'Sucursales Cercanas';
         $log.debug("Selected Case Number is 3");
         if ($rootScope.isLogged) {
@@ -87,6 +88,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
         $route.reload();
         break;
       default:
+        AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_MAP, $rootScope.translation.GA_PUSH_BRANCHES); //Analytics
         $scope.selectedBar1 = true;
         $rootScope.tabActualAnalytics = 'Sucursales Cercanas';
         $log.debug("Selected Case Default");
@@ -106,10 +108,12 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
   }
 
   function initMap() {
-
+    $scope.forms.mapForm.search.$setViewValue("");
+    $scope.forms.mapForm.search.$modelValue.value = "";
+    $scope.forms.mapForm.search.$render();
     //INICIALIZACION DE MAPA
     var mapOptions = {
-      zoom: 11,
+      zoom: parseInt(UTILS_CONFIG.GOOGLE_MAPS_INIT_ZOOM, 10),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
@@ -119,10 +123,10 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
       timeout: 10000,
       enableHighAccuracy: true
     };
-    if ($ionicPlatform.is('corodva')) {
+    if ($ionicPlatform.is('cordova')) {
       if (cordova && cordova.plugins && cordova.plugins.diagnostic) {
         cordova.plugins.diagnostic.isLocationEnabled(function(enabled) {
-          console.log("Location is " + (enabled ? "enabled" : "not enabled"));
+          $log.info("Location is " + (enabled ? "enabled" : "not enabled"));
           if (enabled) {
             try {
               $cordovaGeolocation.getCurrentPosition(options).then(function(position) {
@@ -139,7 +143,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
             cordova.plugins.diagnostic.switchToLocationSettings();
           }
         }, function(error) {
-          console.error("The following error occurred: " + error);
+          $log.error("The following error occurred: " + error);
         });
       }
     } else {
@@ -160,6 +164,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
       // setMapOnAll($scope.markersJson.branches, codeBranches);
       $scope.selectedItem(1);
     }, function(err) {
+      AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_MAP, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.GET_BRANCHES + "-" + err.message + "-" + err.analyticsCode); //Analytics 
       var modalType = 'error';
       if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
         modalType = 'info';
@@ -191,6 +196,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
         });
         marker.addListener('click', function(obj) {
           return function() {
+            AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_MAP, $rootScope.translation.GA_PUSH_MARKER + ": " + obj.titulo); //Analytics
             DataMapService.setItem("branches_detail", obj);
             if ($rootScope.isLogged) {
               $state.go('session.branchesDescription');
@@ -234,7 +240,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
 
 
   $scope.searchElementOnMap = function(address) {
-    AnalyticsService.evento('Sucursales Cercanas', 'Presionar Buscar'); //Analytics
+    AnalyticsService.evento($rootScope.translation.PAGE_BRANCHES_MAP, $rootScope.translation.GA_PUSH_SEARCH_BRANCHES); //Analytics
     if (address && address.length > 0) {
       $log.debug("address.length: ", address.length);
       $ionicLoading.show({
@@ -249,7 +255,7 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
       }, function(results, status) {
         if (status == 'OK') {
           $scope.map.setCenter(results[0].geometry.location);
-          $scope.map.setZoom(13);
+          $scope.map.setZoom(parseInt(UTILS_CONFIG.GOOGLE_MAPS_SEARCH_ZOOM, 10));
           $ionicLoading.hide();
         } else {
           $ionicLoading.hide();
@@ -280,8 +286,9 @@ angular.module('CoreModule').controller('branchesMapCtrl', function($scope, $sta
   //LOCATIONCHANGESUCCESS
   $scope.$on('$locationChangeSuccess', function(ev, n) {
     if (n.indexOf('session/branchesMap') > -1 || n.indexOf('guest/branchesMap') > -1) {
+      AnalyticsService.pantalla($rootScope.translation.PAGE_BRANCHES_MAP);
+      $ionicScrollDelegate.scrollTop();
       initMap();
-      // $scope.selectedItem(1);
     }
   });
 });

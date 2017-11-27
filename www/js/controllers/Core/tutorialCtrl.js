@@ -1,53 +1,23 @@
-angular.module('CoreModule').controller('tutorialCtrl', function($scope, $ionicPlatform, $log, AnalyticsService, $state, LocalStorageProvider, $ionicSlideBoxDelegate) {
+angular.module('CoreModule').controller('tutorialCtrl', function($scope, $rootScope, $ionicPlatform, $log, AnalyticsService, $state, LocalStorageProvider, $ionicSlideBoxDelegate) {
   $scope.isIos = false;
   if ($ionicPlatform.is('ios')) {
     $scope.isIos = true;
   }
   $scope.antIndex = 0;
+  AnalyticsService.pantalla($rootScope.translation.GA_TUTORIAL_SLIDE + " " + ($scope.antIndex + 1));
 
-  //MÉTODO ANALYTICS
-  $scope.sendAnalytics = function(categoria, accion) {
-    AnalyticsService.evento(categoria, accion);
-  };
 
   $scope.passTuto = function(categoria, accion) {
-    $scope.sendAnalytics(categoria, accion);
+    AnalyticsService.evento(categoria, accion);
     LocalStorageProvider.setLocalStorageItem('pass_tuto', "true");
-    $state.go("guest.home");
+    if (force.isAuthenticated()) {
+      $rootScope.isLogged = true;
+      $state.go("session.usage");
+    } else {
+      $rootScope.isLogged = false;
+      $state.go("guest.home");
+    }
   }
-
-
-
-  // $scope.options = {
-  //   loop: false,
-  //   effect: 'slide',
-  //   speed: 500,
-  //   onInit: function(swiper) {
-  //     $scope.swiper = swiper;
-  //   },
-  //   onSlideChangeEnd: function(swiper) {
-  //     //Inicio Analytics
-  //     if ($scope.antIndex < swiper.activeIndex) {
-  //       AnalyticsService.evento('Splash ' + ($scope.antIndex + 1), 'Swipe Right');
-  //     } else {
-  //       AnalyticsService.evento('Splash ' + ($scope.antIndex + 1), 'Swipe Left');
-  //     } //Fin Analytics
-  //     $scope.antIndex = swiper.activeIndex;
-  //   }
-  // }
-
-  // $scope.$on("$ionicSlides.sliderInitialized", function(event, data) {
-  //   $scope.slider = data.slider;
-  // });
-
-  // $scope.$on("$ionicSlides.slideChangeStart", function(event, data) {
-  //   $log.debug('Slide change is beginning');
-  // });
-
-  // $scope.$on("$ionicSlides.slideChangeEnd", function(event, data) {
-  //   $scope.activeIndex = data.slider.activeIndex;
-  //   $scope.previousIndex = data.slider.previousIndex;
-  // });
 
 
 
@@ -56,16 +26,15 @@ angular.module('CoreModule').controller('tutorialCtrl', function($scope, $ionicP
     $ionicSlideBoxDelegate.slide(index);
   };
 
-  //siempre
   $scope.slideHasChanged = function(index) {
     if ($scope.antIndex < index) {
-      AnalyticsService.evento('Splash ' + ($scope.antIndex + 1), 'Swipe Right');
+      AnalyticsService.evento($rootScope.translation.GA_TUTORIAL_SLIDE + " " + ($scope.antIndex + 1), $rootScope.translation.GA_SWIPE_RIGHT);
     } else {
-      AnalyticsService.evento('Splash ' + ($scope.antIndex + 1), 'Swipe Left');
-    } //Fin Analytics
+      AnalyticsService.evento($rootScope.translation.GA_TUTORIAL_SLIDE + " " + ($scope.antIndex + 1), $rootScope.translation.GA_SWIPE_LEFT);
+    }
     $scope.antIndex = index;
+    AnalyticsService.pantalla($rootScope.translation.GA_TUTORIAL_SLIDE + " " + ($scope.antIndex + 1));
     $ionicSlideBoxDelegate.slide(index);
-
   };
 
 });

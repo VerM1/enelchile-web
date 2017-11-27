@@ -1,4 +1,4 @@
-angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope, $ionicPlatform, $log, LocalStorageProvider, $rootScope, UtilsService, EmergencyService, $ionicModal, $state, $ionicLoading, $cordovaGeolocation, ContactService, AnalyticsService, PopupService, UTILS_CONFIG, $timeout) {
+angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope, $ionicPlatform, $log, LocalStorageProvider, $rootScope, UtilsService, EmergencyService, $ionicModal, $state, $ionicLoading, $cordovaGeolocation, ContactService, AnalyticsService, PopupService, UTILS_CONFIG, $timeout, $ionicScrollDelegate) {
   $scope.isIos = false;
   if ($ionicPlatform.is('ios')) {
     $scope.isIos = true;
@@ -11,10 +11,6 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
   var formatAddress = function(addr) {
     var splitted = addr.split(',');
     var addrformat = {
-      // "calle": splitted[0].trim(),
-      // "comuna": splitted[1].trim(),
-      // "region": splitted[2].trim(),
-      // "pais": splitted[3].trim()
       "calle": splitted[0],
       "comuna": splitted[1],
       "region": splitted[2],
@@ -60,33 +56,20 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
     return null;
   };
 
-  // $scope.openModal = function(modalType, modalTitle, modalContent) {
-  //     var route = 'views/Modals/' + modalType + 'Modal.html';
-  //     $ionicModal.fromTemplateUrl(route, {
-  //         scope: $scope,
-  //         /*animation: 'slide-in-up',*/
-  //         animation: modalType == 'help' ? 'slide-in-up' : 'fade',
-  //     }).then(function(modal) {
-  //         $scope.modal = modal;
-  //         $scope.modal.title = modalTitle;
-  //         $scope.modal.content = modalContent;
-  //         $scope.modal.show();
-  //     });
-  // };
+
   $scope.closeModal = function() {
     $log.debug('sending to emergency');
     $scope.modal.hide();
     if (force.isAuthenticated()) {
-      $state.go('session.emergency');
+      $state.go('session.emergencyMenu');
     } else {
-      $state.go('guest.emergency');
+      $state.go('guest.emergencyMenu');
     }
 
   };
   var callbackSuccess = function(success) {
     $ionicLoading.hide();
     $log.debug(success);
-    // $scope.openModal('info', 'Exito', 'Su caso ha sido ingresado con el numero ' + success.caseNumber);
     var modalType = 'info';
     var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
     var modalContent = success.message;
@@ -96,7 +79,7 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
   var callbackError = function(err) {
     $ionicLoading.hide();
     $log.error(err);
-    // $scope.openModal('error', 'Error', 'Su caso no ha podido ser ingresado.  ' + err.message);
+    AnalyticsService.evento($rootScope.translation.PAGE_LIGHTING_PROBLEMS, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.SET_LIGHTING_PROBLEMS + "-" + err.message + "-" + err.analyticsCode); //Analytics 
     var modalType = 'error';
     if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
       modalType = 'info';
@@ -110,6 +93,7 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
 
   $scope.validateForm = function() {
     if ($scope.forms.lightingForm.$valid) {
+      AnalyticsService.evento($rootScope.translation.PAGE_LIGHTING_PROBLEMS, $rootScope.translation.GA_PUSH_SEND_FORM);
       $log.debug("formulario OK");
       var formData = LocalStorageProvider.getLocalStorageItem('no_session_form_data');
 
@@ -258,6 +242,8 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
 
   $scope.$on('$locationChangeSuccess', function(ev, n) {
     if (n.indexOf('guest/lightingProblems') > -1 || n.indexOf('session/lightingProblems') > -1) {
+      AnalyticsService.pantalla($rootScope.translation.PAGE_LIGHTING_PROBLEMS);
+      $ionicScrollDelegate.scrollTop();
       $scope.authenticated = force.isAuthenticated();
       $ionicLoading.show({
         template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
@@ -269,6 +255,7 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
       }, function(err) {
         $log.error(err);
         $ionicLoading.hide();
+        AnalyticsService.evento($rootScope.translation.PAGE_LIGHTING_PROBLEMS, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.GET_LIGHTING_PROBLEMS_LIST + "-" + err.message + "-" + err.analyticsCode); //Analytics 
       });
 
       $ionicLoading.show({
@@ -287,13 +274,14 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
           var lat = position.coords.latitude;
           var long = position.coords.longitude;
           ContactService.geocodeLatLng(lat, long).then(function(success) {
-            $log.info(success);
+            $log.debug(success);
             address = formatAddress(success);
             $ionicLoading.hide();
             resetForm();
           }, function(err) {
             $log.error(err);
             $ionicLoading.hide();
+            AnalyticsService.evento($rootScope.translation.PAGE_LIGHTING_PROBLEMS, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.GET_GEO_ADDRESS_SERVICES + "-" + err.message + "-" + err.analyticsCode); //Analytics 
             resetForm();
           })
         }, function(err) {
@@ -303,10 +291,9 @@ angular.module('CoreModule').controller('lightingProblemsCtrl', function($scope,
         });
       }, function(err) {
         $ionicLoading.hide();
+        AnalyticsService.evento($rootScope.translation.PAGE_LIGHTING_PROBLEMS, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.GET_STATES + "-" + err.message + "-" + err.analyticsCode); //Analytics 
         resetForm();
       });
-
-
     }
   });
 });

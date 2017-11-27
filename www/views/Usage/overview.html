@@ -17,57 +17,81 @@
     <img src="img/logos/launcher_app.gif" alt="launcher" class="loading-icon" />
 </div>
 <div class="usage-overview-payment-header" ng-show="showRetryDebt">
-    <!--<button class="button button-block background-grey button-general" ng-click="retryDebt()">{{translation.RETRY | uppercase}}</button>-->
     <i class="icon icon_enel_launcher reload-icon" ng-click="retryDebt()"></i>
 </div>
-<div class="row">
+<div class="row" ng-hide="dataUsageAssetDebtToShow.monto == null || dataUsageAssetDebtToShow.monto == 0">
     <div class="col">
-        <button class="button button-block background-pink button-general" ng-click="payBill()" ng-hide="dataUsageAssetDebtToShow.monto == null || dataUsageAssetDebtToShow.monto == 0">{{translation.PAY_ACCOUNT | uppercase}}
-        </button>
+        <button class="button button-block background-pink button-general" ng-click="payBill()">{{translation.PAY_ACCOUNT | uppercase}}</button>
     </div>
 </div>
 
-<div class="row">
-    <div class="col usage-overview-page-description" ng-show="showLoadingDetail">
+<div class="row" ng-show="showLoadingDetail">
+    <div class="col usage-overview-page-description">
         <img src="img/logos/launcher_app.gif" alt="launcher" class="loading-icon" />
     </div>
-    <div class="col usage-overview-page-description" ng-show="showAssetDetail">
-        <div class="row">
-            <div class="col col-50 text-left">{{translation.RATE}}</div>
-            <div>:</div>
-            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.tarifa}}</div>
-            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
-        </div>
-        <div class="row">
-            <div class="col col-50 text-left">{{translation.CUTOFF_DATE}}</div>
-            <div>:</div>
-            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.fechaCorte}}</div>
-            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
-        </div>
-        <div class="row">
-            <div class="col col-50 text-left">{{translation.LAST_PAYMENT_AMOUNT}}</div>
-            <div>:</div>
-            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.montoUltimoPago | currency : '$': 0}}</div>
-            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
-        </div>
-        <div class="row">
-            <div class="col col-50 text-left">{{translation.LAST_PAYMENT_DATE}}</div>
-            <div>:</div>
-            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.fechaUltimoPago}}</div>
-            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
-        </div>
-        <div class="row">
-            <div class="col col-50 text-left">{{translation.NEXT_READING_DATE}}</div>
-            <div>:</div>
-            <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.fechaProximaLectura}}</div>
-            <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+</div>
+
+<div class="margin-10 border-1 border-color-grey-enel border-radius-15" ng-show="showAssetDetail">
+    <div class="row">
+        <!-- <div class="col usage-overview-page-description" ng-show="showLoadingDetail">
+            <img src="img/logos/launcher_app.gif" alt="launcher" class="loading-icon" />
+        </div> -->
+        <div class="col usage-overview-page-description">
+            <div class="row">
+                <div class="col col-50 text-left">{{translation.RATE}}</div>
+                <div>:</div>
+                <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.tarifa}}</div>
+                <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+            </div>
+            <div class="row">
+                <div class="col col-50 text-left">{{translation.CUTOFF_DATE}}</div>
+                <div>:</div>
+                <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.fechaCorte}}</div>
+                <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+            </div>
+            <div class="row">
+                <div class="col col-50 text-left">{{translation.LAST_PAYMENT_AMOUNT}}</div>
+                <div>:</div>
+                <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.montoUltimoPago | currency : '$': 0}}</div>
+                <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+            </div>
+            <div class="row">
+                <div class="col col-50 text-left">{{translation.LAST_PAYMENT_DATE}}</div>
+                <div>:</div>
+                <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.fechaUltimoPago}}</div>
+                <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+            </div>
+            <div class="row">
+                <div class="col col-50 text-left">{{translation.NEXT_READING_DATE}}</div>
+                <div>:</div>
+                <div class="col col-50 text-right" ng-show="showAssetDetail">{{dataUsageAssetDetail.fechaProximaLectura}}</div>
+                <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+            </div>
+            <!--  SI TIENE EDE
+                <div class="row">
+                <div class="col col-50 text-left">{{translation.SEND_ELECTRONIC_DOCUMENT}}</div>
+                <div>:</div>
+                <div class="col col-50 text-right" ng-show="showAssetDetail"></div>
+                <div class="col col-50 text-right" ng-show="showRetryDetail">--</div>
+            </div> -->
         </div>
     </div>
 </div>
-<div class="row" ng-show="showAssetDetail">
-    <div class="col">
-        <button class="button button-block usage-style button-general" ng-click="goToInsertReading()" ng-hide="dataUsageAssetDetail.billingPeriod!='No'">{{translation.SEND_READING | uppercase}}</button>
-
+<!-- BOTON DE SUSCRIPCION A EDE
+    <div class="margin-10 border-1 border-color-grey-enel border-radius-15" ng-show="showAssetDetail">
+    <div class="row">
+        <div class="col center">
+            <div class="white-space font-size-14">{{translation.SUBSCRIBE_TEXT}}</div>
+            <button class="button button-block usage-style button-general" ng-click="goToSendElectronicDocument()">{{translation.SUBSCRIBE | uppercase}}</button>
+        </div>
+    </div>
+</div> -->
+<div class="margin-10 border-1 border-color-grey-enel border-radius-15" ng-show="showAssetDetail">
+    <div class="row">
+        <div class="col center">
+            <div class="white-space font-size-14">{{translation.SEND_READING_TEXT}}</div>
+            <button class="button button-block usage-style button-general" ng-click="goToInsertReading()" ng-hide="dataUsageAssetDetail.billingPeriod!='No'">{{translation.SEND_READING | uppercase}}</button>
+        </div>
     </div>
 </div>
 

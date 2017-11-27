@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'enel_icons';
-    src: url('../fonts/enel_icons.eot?6mqqdv');
-    src: url('../fonts/enel_icons.eot?6mqqdv#iefix') format('embedded-opentype'), url('../fonts/enel_icons.ttf?6mqqdv') format('truetype'), url('../fonts/enel_icons.woff?6mqqdv') format('woff'), url('../fonts/enel_icons.svg?6mqqdv#enel_icons') format('svg');
+    src: url('../fonts/enel_icons.eot?t5rvfb');
+    src: url('../fonts/enel_icons.eot?t5rvfb#iefix') format('embedded-opentype'), url('../fonts/enel_icons.ttf?t5rvfb') format('truetype'), url('../fonts/enel_icons.woff?t5rvfb') format('woff'), url('../fonts/enel_icons.svg?t5rvfb#enel_icons') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -143,4 +143,8 @@
 
 .icon_enel_search:before {
     content: "\e91e";
+}
+
+.icon_enel_trash:before {
+    content: "\e91f";
 }

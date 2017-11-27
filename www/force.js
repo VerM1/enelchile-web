@@ -175,7 +175,7 @@ var force = (function() {
     function refreshTokenWithHTTPRequest(success, error) {
 
         if (!oauth.refresh_token) {
-            console.log('ERROR: refresh token does not exist');
+            console.error('ERROR: refresh token does not exist');
             if (typeof error === "function") {
                 error();
             }
@@ -197,7 +197,7 @@ var force = (function() {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    console.log('Token refreshed');
+                    // console.log('Token refreshed');
                     var res = JSON.parse(xhr.responseText);
                     oauth.access_token = res.access_token;
                     window.localStorage.setItem("access_token", oauth.access_token);
@@ -206,7 +206,7 @@ var force = (function() {
                         success();
                     }
                 } else {
-                    console.log('Error while trying to refresh token: ' + xhr.responseText);
+                    console.error('Error while trying to refresh token: ' + xhr.responseText);
                     if (typeof error === "function") {
                         error();
                     }
@@ -277,9 +277,6 @@ var force = (function() {
             // Testing only - to set (or unset) requestHandler
             requestHandler = params.requestHandler;
         }
-
-        console.log("useProxy: " + useProxy);
-
     }
 
     /**
@@ -360,7 +357,7 @@ var force = (function() {
                     if (typeof successHandler === "function") successHandler();
                 },
                 function(error) {
-                    console.log(error);
+                    console.error(error);
                     if (typeof errorHandler === "function") errorHandler(error);
                 }
             );
@@ -368,9 +365,6 @@ var force = (function() {
     }
 
     function loginWithBrowser(successHandler, errorHandler) {
-        console.log('loginURL: ' + loginURL);
-        console.log('oauthCallbackURL: ' + oauthCallbackURL);
-
         var loginWindowURL = loginURL + '/services/oauth2/authorize?client_id=' + appId + '&redirect_uri=' +
             oauthCallbackURL + '&response_type=token&prompt=login';
         loginSuccessHandler = successHandler;
@@ -453,12 +447,12 @@ var force = (function() {
             return;
         }
 
-        console.log(" token: ", oauth.access_token);
+        // console.log(" token: ", oauth.access_token);
 
         var method = obj.method || 'GET',
             xhr = new XMLHttpRequest(),
             url = getRequestBaseURL();
-        console.log("base url: ", url);
+        // console.log("base url: ", url);
 
         // dev friendly API: Add leading '/' if missing so url + path concat always works
         if (obj.path.charAt(0) !== '/') {
@@ -472,16 +466,7 @@ var force = (function() {
             url += '?' + toQueryString(obj.params);
         }
 
-        //MODIFICADO
-        /*if (obj.params && obj.method == 'GET') {
-            console.log("modificado");
-            url = url + '?' + obj.params;
-        } else {
-            console.log("original");
-            url += '?' + toQueryString(obj.params);
-        }*/
-        //FIN MODIFICADO
-        console.log(" url params: ", url);
+        // console.log(" url params: ", url);
 
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {

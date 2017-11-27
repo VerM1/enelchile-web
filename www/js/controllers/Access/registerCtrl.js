@@ -1,4 +1,4 @@
-angular.module('AccessModule').controller('registerCtrl', function($scope, $log, AnalyticsService, AccessService, $ionicLoading, DataMapService, $rootScope, PopupService, $state, UTILS_CONFIG) {
+angular.module('AccessModule').controller('registerCtrl', function($scope, $log, AccessService, $ionicLoading, DataMapService, $rootScope, PopupService, $state, UTILS_CONFIG, AnalyticsService, $ionicScrollDelegate) {
 
   $scope.forms = {};
 
@@ -12,6 +12,7 @@ angular.module('AccessModule').controller('registerCtrl', function($scope, $log,
   }
 
   function registerStep1() {
+    AnalyticsService.evento($rootScope.translation.PAGE_REGISTER, $rootScope.translation.GA_PUSH_REGISTER); //Llamada a Analytics
     var rutAux = $scope.forms.registerForm.rut.$viewValue;
     var n = 0;
     if (rutAux.indexOf("-") > -1) {
@@ -42,7 +43,8 @@ angular.module('AccessModule').controller('registerCtrl', function($scope, $log,
       HomePhone: $scope.forms.registerForm.phone.$viewValue,
       MobilePhone: $scope.forms.registerForm.cellphone.$viewValue,
       email: $scope.forms.registerForm.email.$viewValue,
-      alias: $scope.forms.registerForm.alias.$viewValue,
+      // alias: $scope.forms.registerForm.alias.$viewValue,
+      alias: clientNum,
       numberClient: clientNum,
       numberTicket: $scope.forms.registerForm.numLastService.$viewValue,
       newPassword: $scope.forms.registerForm.password.$viewValue,
@@ -60,6 +62,7 @@ angular.module('AccessModule').controller('registerCtrl', function($scope, $log,
       $state.go("guest.validation");
     }, function(err) {
       $ionicLoading.hide();
+      AnalyticsService.evento($rootScope.translation.PAGE_REGISTER, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.REGISTER + "-" + err.message + "-" + err.analyticsCode); //Analytics 
       var modalType = 'error';
       if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
         modalType = 'info';
@@ -88,8 +91,8 @@ angular.module('AccessModule').controller('registerCtrl', function($scope, $log,
     $scope.forms.registerForm.cellphone.$render();
     $scope.forms.registerForm.email.$viewValue = '';
     $scope.forms.registerForm.email.$render();
-    $scope.forms.registerForm.alias.$viewValue = '';
-    $scope.forms.registerForm.alias.$render();
+    // $scope.forms.registerForm.alias.$viewValue = '';
+    // $scope.forms.registerForm.alias.$render();
     $scope.forms.registerForm.numClient.$viewValue = '';
     $scope.forms.registerForm.numClient.$render();
     $scope.forms.registerForm.numLastService.$viewValue = '';
@@ -108,6 +111,8 @@ angular.module('AccessModule').controller('registerCtrl', function($scope, $log,
 
   $scope.$on('$locationChangeSuccess', function(ev, n) {
     if (n.indexOf('guest/register') > -1) {
+      AnalyticsService.pantalla($rootScope.translation.PAGE_REGISTER);
+      $ionicScrollDelegate.scrollTop();
       $log.debug("llamando a resetForm Registro");
       resetForm();
     }

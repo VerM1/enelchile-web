@@ -1,4 +1,4 @@
-angular.module('ContactModule').controller('contactFormCtrl', function($scope, $ionicPlatform, $state, $ionicSlideBoxDelegate, $ionicLoading, $log, $rootScope, LocalStorageProvider, AnalyticsService, UtilsService, PopupService, ContactService, UTILS_CONFIG, $route) {
+angular.module('ContactModule').controller('contactFormCtrl', function($scope, $ionicPlatform, $state, $ionicSlideBoxDelegate, $ionicLoading, $log, $rootScope, LocalStorageProvider, AnalyticsService, UtilsService, PopupService, ContactService, UTILS_CONFIG, $route, $ionicScrollDelegate) {
   $scope.isIos = false;
   if ($ionicPlatform.is('ios')) {
     $scope.isIos = true;
@@ -6,29 +6,11 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
   $scope.isLogged = $rootScope.isLogged;
   $scope.actualIndex = 0;
   $scope.dataContactForm = {};
-
-
-
-  // $scope.slide = function(index) {
-  //     $ionicSlideBoxDelegate.slide(index);
-  // };
-
-  // $scope.slideHasChanged = function(index) {
-  //     //Inicio Analytics
-  //     if ($scope.actualIndex < index) {
-  //         AnalyticsService.evento('Formulario de Contacto', 'Swipe Right Suministros');
-  //     } else {
-  //         AnalyticsService.evento('Formulario de Contacto', 'Swipe Left Suministros');
-  //     } //Fin Analytics
-
-  //     $scope.actualIndex = index;
-  //     $log.debug("slide ejecutado");
-  //     resetForm();
-  // }
+  $scope.activeSlide = 0;
 
 
   $scope.pagerClick = function(index) {
-    $log.info("se aplica slide button");
+    $log.debug("se aplica slide button");
     $ionicSlideBoxDelegate.slide(index);
   };
 
@@ -37,14 +19,13 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
     $log.debug("slide ejecutado");
     //Inicio Analytics
     if ($scope.actualIndex < index) {
-      AnalyticsService.evento('Formulario de Contacto', 'Swipe Right Suministros');
+      AnalyticsService.evento($rootScope.translation.PAGE_CONTACT_FORM, $rootScope.translation.GA_SWIPE_RIGHT);
     } else {
-      AnalyticsService.evento('Formulario de Contacto', 'Swipe Left Suministros');
+      AnalyticsService.evento($rootScope.translation.PAGE_CONTACT_FORM, $rootScope.translation.GA_SWIPE_LEFT);
     } //Fin Analytics
 
     $scope.actualIndex = index;
     resetForm();
-    //$ionicSlideBoxDelegate.slide(index);
     $ionicSlideBoxDelegate.update();
     $route.reload();
   }
@@ -72,6 +53,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
 
     }, function(err) {
       $ionicLoading.hide();
+      AnalyticsService.evento($rootScope.translation.PAGE_CONTACT_FORM, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.GET_SUBJECT_LIST + "-" + err.message + "-" + err.analyticsCode); //Analytics 
       $log.error(err.message);
     });
 
@@ -82,12 +64,17 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
       });
       UtilsService.getAssetList().then(function(items) {
           if (items.length > 0) {
+            if (LocalStorageProvider.getLocalStorageItem("asset_list_is_new_request") && LocalStorageProvider.getLocalStorageItem("asset_list_is_new_request") === "true") {
+              $scope.activeSlide = 0;
+            }
+            $ionicSlideBoxDelegate.slide($scope.activeSlide);
             $scope.dataContactForm.items = items;
             $ionicLoading.hide();
             $ionicSlideBoxDelegate.update();
           } else {
             $log.error("No data");
             $ionicLoading.hide();
+            AnalyticsService.evento($rootScope.translation.PAGE_CONTACT_FORM, $rootScope.translation.GA_SUCCESS_SERVICES_RESPONSE + "-" + $rootScope.translation.NO_DATA); //Analytics 
             var modalType = 'info';
             var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
             var modalContent = $rootScope.translation.NO_DATA;
@@ -97,6 +84,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         function(err) {
           $log.error('Error to get Asset List: ', err);
           $ionicLoading.hide();
+          AnalyticsService.evento($rootScope.translation.PAGE_CONTACT_FORM, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.GET_ASSET_LIST + "-" + err.message + "-" + err.analyticsCode); //Analytics 
           var modalType = 'error';
           if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
             modalType = 'info';
@@ -111,6 +99,7 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
 
   $scope.validateForm = function() {
     if ($scope.forms.contactForm.$valid) {
+      AnalyticsService.evento($rootScope.translation.PAGE_CONTACT_FORM, $rootScope.translation.GA_PUSH_SEND_FORM);
       $log.debug("formulario OK");
       var asunto = $scope.forms.contactForm.topic.$viewValue.value;
       var descripcion = $scope.forms.contactForm.message.$viewValue;
@@ -131,12 +120,13 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = response.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
-            $state.go("session.contact");
+            $state.go("session.contactMenu");
             $scope.modal.hide();
           });
 
         }, function(err) {
           $ionicLoading.hide();
+          AnalyticsService.evento($rootScope.translation.PAGE_CONTACT_FORM, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.SET_CONTACT_FORM + "-" + err.message + "-" + err.analyticsCode); //Analytics 
           var modalType = 'error';
           if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
             modalType = 'info';
@@ -152,7 +142,6 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         var rut = $scope.forms.contactForm.rut.$viewValue;;
         var nombres = $scope.forms.contactForm.names.$viewValue;
         var apellidoPaterno = $scope.forms.contactForm.lastName.$viewValue;
-        var apellidoMaterno = $scope.forms.contactForm.motherLastName.$viewValue;
         var email = $scope.forms.contactForm.email.$viewValue;
         var telefono = $scope.forms.contactForm.phone.$viewValue;
         var movil = $scope.forms.contactForm.cellphone.$viewValue;
@@ -160,7 +149,6 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           formData.rut = $scope.forms.contactForm.rut.$viewValue;
           formData.name = $scope.forms.contactForm.names.$viewValue;
           formData.lastname = $scope.forms.contactForm.lastName.$viewValue;
-          formData.motherLastname = $scope.forms.contactForm.motherLastName.$viewValue;
           formData.email = $scope.forms.contactForm.email.$viewValue;
           formData.phone = $scope.forms.contactForm.phone.$viewValue;
           formData.cellphone = $scope.forms.contactForm.cellphone.$viewValue;
@@ -170,7 +158,6 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
             rut: $scope.forms.contactForm.rut.$viewValue,
             name: $scope.forms.contactForm.names.$viewValue,
             lastname: $scope.forms.contactForm.lastName.$viewValue,
-            motherLastname: $scope.forms.contactForm.motherLastName.$viewValue,
             email: $scope.forms.contactForm.email.$viewValue,
             phone: $scope.forms.contactForm.phone.$viewValue,
             cellphone: $scope.forms.contactForm.cellphone.$viewValue
@@ -179,19 +166,20 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         $ionicLoading.show({
           template: UTILS_CONFIG.STYLE_IONICLOADING_TEMPLATE
         });
-        ContactService.setContactForm(numeroSuministro, asunto, rut, nombres, apellidoPaterno, apellidoMaterno, email, telefono, movil, descripcion).then(function(response) {
+        ContactService.setContactForm(numeroSuministro, asunto, rut, nombres, apellidoPaterno, email, telefono, movil, descripcion).then(function(response) {
           $ionicLoading.hide();
           LocalStorageProvider.setLocalStorageItem('no_session_form_data', formData);
           var modalType = 'info';
           var modalTitle = $rootScope.translation.ATTENTION_MODAL_TITLE;
           var modalContent = response.message;
           PopupService.openModal(modalType, modalTitle, modalContent, $scope, function() {
-            $state.go("guest.contact");
+            $state.go("guest.contactMenu");
             $scope.modal.hide();
           });
 
         }, function(err) {
           $ionicLoading.hide();
+          AnalyticsService.evento($rootScope.translation.PAGE_CONTACT_FORM, $rootScope.translation.GA_ERROR_SERVICES_RESPONSE + "-" + $rootScope.translation.SET_CONTACT_FORM + "-" + err.message + "-" + err.analyticsCode); //Analytics 
           var modalType = 'error';
           if (err.code && err.code.toString() == UTILS_CONFIG.ERROR_INFO_CODE) {
             modalType = 'info';
@@ -218,7 +206,6 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           $scope.forms.contactForm.rut.$setViewValue(formData.rut);
           $scope.forms.contactForm.names.$setViewValue(formData.name);
           $scope.forms.contactForm.lastName.$setViewValue(formData.lastname);
-          $scope.forms.contactForm.motherLastName.$setViewValue(formData.motherLastname);
           $scope.forms.contactForm.email.$setViewValue(formData.email);
           $scope.forms.contactForm.phone.$setViewValue(formData.phone);
           $scope.forms.contactForm.cellphone.$setViewValue(formData.cellphone);
@@ -230,7 +217,6 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
           $scope.forms.contactForm.rut.$viewValue = '';
           $scope.forms.contactForm.names.$viewValue = '';
           $scope.forms.contactForm.lastName.$viewValue = '';
-          $scope.forms.contactForm.motherLastName.$viewValue = '';
           $scope.forms.contactForm.email.$viewValue = '';
           $scope.forms.contactForm.phone.$viewValue = '';
           $scope.forms.contactForm.cellphone.$viewValue = '';
@@ -244,7 +230,6 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
         $scope.forms.contactForm.rut.$render();
         $scope.forms.contactForm.names.$render();
         $scope.forms.contactForm.lastName.$render();
-        $scope.forms.contactForm.motherLastName.$render();
         $scope.forms.contactForm.email.$render();
         $scope.forms.contactForm.phone.$render();
         $scope.forms.contactForm.cellphone.$render();
@@ -263,6 +248,8 @@ angular.module('ContactModule').controller('contactFormCtrl', function($scope, $
 
   $scope.$on('$locationChangeSuccess', function(ev, n) {
     if (n.indexOf('guest/contactForm') > -1 || n.indexOf('session/contactForm') > -1) {
+      AnalyticsService.pantalla($rootScope.translation.PAGE_CONTACT_FORM);
+      $ionicScrollDelegate.scrollTop();
       $log.debug("llamando a resetForm Contact Form");
       resetForm();
       init();
